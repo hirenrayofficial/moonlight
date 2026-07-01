@@ -1,0 +1,42 @@
+.p-rt {
+  rotate: 350deg;
+}
+
+.hero-section {
+  position: relative;
+  background: radial-gradient(circle at top right, rgba(232, 121, 74, 0.12), transparent 25%),
+    radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.08), transparent 22%);
+}
+
+.hero-decorative {
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-decorative-2 {
+  top: 12rem;
+  left: -4rem;
+}
+
+.hero-main {
+  position: relative;
+  z-index: 10;
+}
+
+.hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.35), transparent 55%);
+  pointer-events: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .hero-main {
+    flex-direction: column;
+  }
+  .hero-decorative {
+    display: none;
+  }
+}
+
