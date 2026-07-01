@@ -7,17 +7,17 @@ import React, { useState } from "react";
  * quick-add on hover. Same system as the hero and product page.
  */
 
-const CATEGORIES = ["All", "Kitchen", "Workwear", "Tools"];
+const CATEGORIES = ["All", "Manually", "Automatic"];
 
 const PRODUCTS = [
-  { name: "Cast-iron skillet, 10in", price: 34.0, category: "Kitchen", image: "/images/skillet.jpg", tag: "In stock" },
-  { name: "Canvas work apron", price: 42.0, category: "Workwear", image: "/images/apron.jpg" },
-  { name: "Stainless prep bowls, set/3", price: 28.0, category: "Kitchen", image: "/images/prep-bowls.jpg" },
-  { name: "Waxed canvas tool roll", price: 56.0, category: "Tools", image: "/images/tool-roll.jpg" },
-  { name: "Work boots, steel toe", price: 118.0, category: "Workwear", image: "/images/boots.jpg", tag: "Low stock" },
-  { name: "Chef's knife, 8in carbon steel", price: 64.0, category: "Kitchen", image: "/images/knife.jpg" },
-  { name: "Hex key set, 9-piece", price: 19.0, category: "Tools", image: "/images/hex-keys.jpg" },
-  { name: "Duck canvas coveralls", price: 89.0, category: "Workwear", image: "/images/coveralls.jpg" },
+  { name: "Disposable Bowl single die  Machine", price: 50000.0, category: "Manually", image: "/p-d.png", tag: "In stock" },
+  { name: "Fully Automatic Paper Cup Machine", price: 60000.0, category: "Automatic", image: "/p-a.png" },
+  { name: "Automatic Single Die Paper Plate  Machine", price: 45000.0, category: "Automatic", image: "/p-b.png" },
+  { name: "Fully Automatic Paper Plate Machine", price: 70000.0, category: "Automatic", image: "/p-c.png", tag: "Low stock" },
+  { name: "Disposable Bowl single die  Machine", price: 50000.0, category: "Manually", image: "/p-d.png", tag: "In stock" },
+  { name: "Fully Automatic Paper Cup Machine", price: 60000.0, category: "Automatic", image: "/p-a.png" },
+  { name: "Automatic Single Die Paper Plate  Machine", price: 45000.0, category: "Automatic", image: "/p-b.png" },
+  { name: "Fully Automatic Paper Plate Machine", price: 70000.0, category: "Automatic", image: "/p-c.png", tag: "Low stock" },
 ];
 
 function money(n) {
@@ -47,7 +47,7 @@ export default function ProductShowcase() {
           --accent-ink: #15140f;
           --warn: #c1443c;
 
-          background: var(--bg);
+          // background: var(--bg);
           color: var(--ink);
           font-family: 'Work Sans', sans-serif;
           width: 100%;
@@ -111,7 +111,7 @@ export default function ProductShowcase() {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 1px;
-          background: var(--line-strong);
+          // background: var(--line-strong);
           border: 1px solid var(--line-strong);
         }
         @media (max-width: 900px) { .pl-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -170,7 +170,7 @@ export default function ProductShowcase() {
         .pl-quick-add:hover { background: var(--accent); color: var(--accent-ink); }
         .pl-quick-add:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
 
-        .pl-info { padding: 10px 12px 12px; border-top: 1px solid var(--line-strong); }
+        .pl-info { padding: 16px 12px 12px; border-top: 1px solid var(--line-strong); }
         .pl-name { font-size: 12.5px; line-height: 1.35; color: var(--ink); margin-bottom: 4px; }
         .pl-price { font-size: 13px; font-weight: 600; color: var(--ink); }
 
@@ -206,7 +206,7 @@ export default function ProductShowcase() {
       <div className="pl-inner">
         <div className="pl-head">
           <div>
-            <div className="pl-eyebrow pl-mono">Catalog No. 014</div>
+            <div className="pl-eyebrow pl-mono">Product No. 014</div>
             <h2 className="pl-title">In the warehouse now</h2>
           </div>
 
@@ -240,7 +240,7 @@ export default function ProductShowcase() {
                 </div>
                 <div className="pl-info">
                   <div className="pl-name">{p.name}</div>
-                  <div className="pl-price pl-mono">${money(p.price)}</div>
+                  <div className="pl-price pl-mono">₹{money(p.price)}</div>
                 </div>
               </div>
             ))}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 /**
@@ -51,7 +52,7 @@ export default function Header() {
         .hd-brand-mark {
           width: 22px;
           height: 22px;
-          background: var(--ink);
+          // background: var(--ink);
           color: var(--bg);
           display: flex;
           align-items: center;
@@ -120,8 +121,8 @@ export default function Header() {
 
       <div className="hd-inner">
         <div className="hd-brand">
-          <div className="hd-brand-mark">M</div>
-          <span className="hd-brand-name">Moonlight</span>
+          <div className="hd-brand-mark"><Image width={200} height={200} alt="Moonlight Machinery " src="/logo.png" /></div>
+          <span className="hd-brand-name">Moonlight Machinery</span>
         </div>
 
         <div className="hd-links">

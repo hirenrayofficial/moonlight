@@ -6,6 +6,10 @@ import Lenis from "lenis";
 import styles from "./slide.module.scss";
 import ProductPA from "./ProductPA";
 import ProductMannege from "../product/ProductMannege";
+import HowItWorks from "./Howworks";
+import SectionServices from "./SectionServices";
+import Testimonials from "./SectionTestimonials";
+import ContactPage from "./SectionContact";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +20,7 @@ export default function StackScroll() {
     { id: 1, title: "1", color: "#000000" },
     { id: 2, title: "2", color: "#ff0000" },
     { id: 3, title: "3", color: "#33ff00" },
-    { id: 4, title: "4", color: "#00d9ff" },
+    // { id: 4, title: "4", color: "#00d9ff" },
   ];
 
   useEffect(() => {
@@ -69,9 +73,9 @@ export default function StackScroll() {
           className={styles.cardWrapper}
         >
           <div className={styles.card}>
-            {card.title === "1" && <ProductPA />}
-            {card.title === "2" && <ProductPA />}
-            {card.title === "3" && <ProductPA />}
+            {/* {card.title === "1" && <HowItWorks />} */}
+            {card.title === "1" && <Testimonials />}
+            {card.title === "2" && <ContactPage />}
           </div>
         </section>
       ))}

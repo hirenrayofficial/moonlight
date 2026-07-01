@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image";
 import React, { useState } from "react";
 
 /**
@@ -11,7 +12,7 @@ import React, { useState } from "react";
 const LINK_COLUMNS = [
   {
     title: "Catalog",
-    links: ["Kitchen", "Workwear", "Tools", "New arrivals", "Full catalog"],
+    links: ["Manually", "Automatic", "Accessories", "All products"],
   },
   {
     title: "Company",
@@ -124,7 +125,7 @@ export default function Footer() {
         .ft-brand-mark {
           width: 22px;
           height: 22px;
-          background: var(--accent);
+          // background: var(--accent);
           color: var(--accent-ink);
           display: flex;
           align-items: center;
@@ -230,11 +231,11 @@ export default function Footer() {
         <div className="ft-manifest">
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Warehouse</div>
-            <div className="ft-manifest-value">412 Foundry St, Akron, OH</div>
+            <div className="ft-manifest-value">Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201</div>
           </div>
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Hours</div>
-            <div className="ft-manifest-value">Mon–Fri, 8am–5pm ET</div>
+            <div className="ft-manifest-value">Mon–Fri, 24hrs</div>
           </div>
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Next dispatch</div>
@@ -242,19 +243,18 @@ export default function Footer() {
           </div>
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Support</div>
-            <div className="ft-manifest-value">help@stockroom.co</div>
+            <div className="ft-manifest-value">help@moonlightmachinery.com</div>
           </div>
         </div>
 
         <div className="ft-grid">
           <div className="ft-brand-col">
             <div className="ft-brand">
-              <div className="ft-brand-mark">S</div>
-              <span className="ft-brand-name">Stockroom</span>
+              <div className="ft-brand-mark"><Image width={200} height={200} alt="Moonlight Machinery" src="/logo.png" /></div>
+              <span className="ft-brand-name">MoonLight Machinery</span>
             </div>
             <p className="ft-tagline">
-              Goods sourced direct, marked up once, and shipped from a
-              warehouse we'll happily show you on camera.
+              100% Natural Areca Leaf Plates Crafted from fallen leaves, these plates are naturally elegant, heat-resistant, and entirely compostable.
             </p>
           </div>
 
@@ -295,7 +295,7 @@ export default function Footer() {
         </div>
 
         <div className="ft-bottom">
-          <span className="ft-copyright ft-mono">© {year} Stockroom Supply Co.</span>
+          <a href="iam.hirenray.rest" className="ft-copyright ft-mono cursor-pointer">© {year} Rtech Agency.</a>
           <div className="ft-bottom-links">
             {SOCIALS.map((s) => (
               <a className="ft-bottom-link ft-mono" href="#" key={s}>{s}</a>

@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 /**
@@ -8,15 +9,15 @@ import React, { useEffect, useState } from "react";
  */
 
 const PRODUCTS = [
-  { name: "Cast-iron skillet, 10in", price: 34.0, image: "/p-a.png" },
-  { name: "Canvas work apron", price: 42.0, image: "/p-b.png" },
-  { name: "Stainless prep bowls, set/3", price: 28.0, image: "/p-c.png" },
-  { name: "Waxed canvas tool roll", price: 56.0, image: "/shp-m.jpg" },
+  { name: "Fully Automatic Paper Cup Machine", price: 60000.0, image: "/p-a.png" },
+  { name: "Semi Automatic Single Die Paper Plate Making Machine", price: 45000.0, image: "/p-b.png" },
+  { name: "Double Die Hydraulic Dona Making Machine", price: 54000.0, image: "/p-e.png" },
+  { name: "Disposable Bowl single die Making Machine", price: 50000.0, image: "/p-d.png" },
 ];
 
 const LEDGER = [
-  { label: "Pricing", value: "Cost + 20%, always" },
-  { label: "Shipping", value: "Flat $6, free $75+" },
+  { label: "Pricing", value: "Cost + 10% off, always" },
+  { label: "Shipping", value: "FREE" },
   { label: "Returns", value: "30 days, no questions" },
   { label: "Sourcing", value: "Same factories, no brand tax" },
 ];
@@ -67,6 +68,7 @@ export default function ShoppingUtilitarianHero() {
           font-family: 'Work Sans', sans-serif;
           min-height: 100vh;
           width: 100%;
+          // padding-top: 50px;
         }
 
         .sr-root * { box-sizing: border-box; }
@@ -164,7 +166,7 @@ export default function ShoppingUtilitarianHero() {
         .sr-headline {
           font-family: 'Archivo Black', sans-serif;
           text-transform: uppercase;
-          font-size: clamp(38px, 5.6vw, 64px);
+          font-size: clamp(38px, 5.6vw, 40px);
           line-height: 0.98;
           margin: 0 0 24px 0;
         }
@@ -313,7 +315,7 @@ export default function ShoppingUtilitarianHero() {
         .sr-ledger-value { font-size: 14.5px; color: var(--ink); }
       `}</style>
 
-      <nav className="sr-nav">
+      {/* <nav className="sr-nav">
         <div className="sr-logo">
           <div className="sr-logo-mark">S</div>
           <span className="sr-wordmark">Stockroom</span>
@@ -325,28 +327,26 @@ export default function ShoppingUtilitarianHero() {
           <a className="sr-nav-link" href="#account">Account</a>
           <button className="sr-nav-cta">Shop now</button>
         </div>
-      </nav>
+      </nav> */}
 
       <section className="sr-hero">
         <div className="sr-hero-left">
           <div className="sr-eyebrow sr-mono">
-            Catalog No. 014 — {stock.toLocaleString("en-US")} items in stock
+            Product No. 014 — {stock.toLocaleString("en-US")} items in stock
           </div>
 
           <h1 className="sr-headline">
-            Good gear.
+            India's  
             <br />
-            <mark>Fair price.</mark> No games.
+            <mark> Trusted</mark> Manufacturer of Areca Leaf & Disposable Plates
           </h1>
 
           <p className="sr-subhead">
-            Stockroom sells the tools, kitchenware, and workwear we'd
-            actually buy — sourced direct, marked up once, and shipped from
-            stock. No sales, no bundles, no markdown theater.
+            At Moonlight Machinery, We provide high-quality, eco-friendly dining solutions designed for the conscious consumer and professional business. Our products offer a premium, sustainable alternative to traditional disposables, ensuring you never have to compromise on durability or safety
           </p>
 
           <div className="sr-cta-row">
-            <button className="sr-btn-primary">Browse the catalog</button>
+            <button className="sr-btn-primary">Browse the Product</button>
             <button className="sr-btn-secondary">See how pricing works</button>
           </div>
 
@@ -358,10 +358,10 @@ export default function ShoppingUtilitarianHero() {
             {PRODUCTS.map((p, i) => (
               <div className="sr-product-card" key={p.name}>
                 {i === 0 && <span className="sr-product-tag sr-mono">In stock</span>}
-                <img className="sr-product-image" src={p.image} alt={p.name} />
+                <Image width={300} height={300} className="sr-product-image" src={p.image} alt={p.name} />
                 <div className="sr-product-info">
                   <div className="sr-product-name">{p.name}</div>
-                  <div className="sr-product-price sr-mono">${money(p.price)}</div>
+                  <div className="sr-product-price sr-mono">₹{money(p.price)}</div>
                 </div>
               </div>
             ))}

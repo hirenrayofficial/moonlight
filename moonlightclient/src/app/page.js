@@ -17,14 +17,15 @@ export default function page() {
       <UtilitarianHero />
 
       <ProductShowcase />
+
       {/* <ProductPage /> */}
       {/* <HeroDesign /> */}
-      <HowItWorks/>
+      {/* <HowItWorks/> */}
       {/* <SectionServices /> */}
       {/* <ProductPA /> */}
-      {/* <StackScroll /> */}
-      <SectionTestimonials />
-      <SectionContact />
+      <StackScroll />
+      {/* <SectionTestimonials /> */}
+      {/* <SectionContact /> */}
     </div>
   )
 }

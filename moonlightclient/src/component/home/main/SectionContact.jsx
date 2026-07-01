@@ -227,9 +227,9 @@ export default function ContactPage() {
         .ct-faq-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
       `}</style>
 
-      <div className="ct-crumb ct-mono">
+      {/* <div className="ct-crumb ct-mono">
         Home / <span className="current">Contact</span>
-      </div>
+      </div> */}
 
       <div className="ct-head">
         <div className="ct-eyebrow ct-mono">Contact</div>
@@ -329,37 +329,37 @@ export default function ContactPage() {
           <div className="ct-manifest">
             <div className="ct-manifest-row">
               <span className="ct-manifest-label ct-mono">Support</span>
-              <span className="ct-manifest-value">help@stockroom.co</span>
+              <span className="ct-manifest-value">hhelp@moonlightmachinery.com</span>
             </div>
             <div className="ct-manifest-row">
               <span className="ct-manifest-label ct-mono">Wholesale</span>
-              <span className="ct-manifest-value">wholesale@stockroom.co</span>
+              <span className="ct-manifest-value">wholesale@moonlightmachinery.com</span>
             </div>
             <div className="ct-manifest-row">
               <span className="ct-manifest-label ct-mono">Phone</span>
-              <span className="ct-manifest-value">(330) 555-0148</span>
+              <span className="ct-manifest-value">+91 8178445596,+91 9354327757, +91 9883500259, +91 9907330121</span>
             </div>
             <div className="ct-manifest-row">
               <span className="ct-manifest-label ct-mono">Warehouse</span>
-              <span className="ct-manifest-value">412 Foundry St, Akron, OH</span>
+              <span className="ct-manifest-value">Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201</span>
             </div>
             <div className="ct-manifest-row">
               <span className="ct-manifest-label ct-mono">Hours</span>
-              <span className="ct-manifest-value">Mon–Fri, 8am–5pm ET</span>
+              <span className="ct-manifest-value">Mon–Fri, 24hrs</span>
             </div>
           </div>
 
           <div className="ct-response">
             <div className="ct-response-label ct-mono">Average response time</div>
-            <div className="ct-response-value ct-mono">4.2 hrs</div>
+            <div className="ct-response-value ct-mono">12 hrs</div>
             <div className="ct-response-sub">During business hours, Mon–Fri</div>
           </div>
 
-          <div className="ct-faq-title">Common questions</div>
+          {/* <div className="ct-faq-title">Common questions</div>
           <a className="ct-faq-link" href="#">Where's my order?</a>
           <a className="ct-faq-link" href="#">How do returns work?</a>
           <a className="ct-faq-link" href="#">Do you ship internationally?</a>
-          <a className="ct-faq-link" href="#">Do you offer wholesale pricing?</a>
+          <a className="ct-faq-link" href="#">Do you offer wholesale pricing?</a> */}
         </div>
       </div>
     </div>
