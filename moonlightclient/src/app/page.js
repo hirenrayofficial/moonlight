@@ -20,7 +20,7 @@ export default function page() {
 
       {/* <ProductPage /> */}
       {/* <HeroDesign /> */}
-      {/* <HowItWorks/> */}
+      <HowItWorks/>
       {/* <SectionServices /> */}
       {/* <ProductPA /> */}
       <StackScroll />
