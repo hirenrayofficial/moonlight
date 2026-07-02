@@ -30,8 +30,8 @@ const myfont = localFont({
 });
 
 export const metadata = {
-  title: "MoonLight — Product Launch Studio",
-  description: "A premium responsive landing page for product launches, built with Next.js, Tailwind, and motion design.",
+  title: "Areca Leaf & Disposable Plates Manufacturer in India | Moonlight Machinery",
+  description: "Leading manufacturer of eco-friendly areca leaf plates & disposable paper plates in India. 100% biodegradable, bulk orders, PAN-India & export shipping. Get a quote today.",
 };
 
 export default function RootLayout({ children }) {
