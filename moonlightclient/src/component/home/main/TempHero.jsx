@@ -10,17 +10,40 @@ import './temphero.scss'
  */
 
 const PRODUCTS = [
-  { name: "Fully Automatic Paper Cup Machine", price: 60000.0, image: "/p-a.png" },
-  { name: "Semi Automatic Single Die Paper Plate Making Machine", price: 45000.0, image: "/p-b.png" },
-  { name: "Double Die Hydraulic Dona Making Machine", price: 54000.0, image: "/p-e.png" },
-  { name: "Disposable Bowl single die Making Machine", price: 50000.0, image: "/p-d.png" },
+  {
+    name: "FULL AUTOMATIC SINGLE DIE PAPER PLATE MAKING MACHINE",
+    price: 35000.0,
+    category: "Automatic",
+    image: "/p-d.png",
+    tag: "In stock",
+  },
+  {
+    name: "Fully Automatic Paper Cup Machine",
+    price: 60000.0,
+    category: "Automatic",
+    image: "/p-a.png",
+  },
+  {
+    name: "FULL AUTOMATIC DOUBLE DIE PAPER PLATE MAKING MACHINE",
+    price: 73000.0,
+    category: "Automatic",
+    image: "/doubledie.png",
+  },
+  {
+    name: "HYDRAULIC SINGLE CYLINDER WITH PANEL BOARD PAPER PLATE MAKING MACHINE",
+    price: 70000.0,
+    category: "Manually",
+    image: "/HYDRAULICSINGLECYLINDER.png",
+    tag: "Low stock",
+  },
+
 ];
 
 const LEDGER = [
-  { label: "Pricing", value: "Cost + 10% off, always" },
-  { label: "Shipping", value: "FREE" },
-  { label: "Returns", value: "30 days, no questions" },
-  { label: "Sourcing", value: "Same factories, no brand tax" },
+  { label: "Pricing", value: "Cost always Contact Based" },
+  { label: "Shipping", value: "Contact Based" },
+  { label: "Returns", value: "Contact Based" },
+  { label: "Sourcing", value: "Own factories" },
 ];
 
 function money(n) {

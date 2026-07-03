@@ -1,47 +1,76 @@
 "use client"
 import React, { useState } from "react";
+import Video from "./Video";
+import useYouTubeMeta from "./useYouTubeMeta";
 
 /**
  * STOCKROOM — how it works + trust videos
- * Native <video> controls, no custom play-button chrome — fits the brand's
- * "function over polish" argument literally. Steps are numbered because
- * fulfillment genuinely is a sequence, unlike the earlier metric strips.
+ * Fixed version: the playable URL now lives in `src` (what actually gets
+ * passed to ReactPlayer). `poster` was renamed `thumbnail` and is passed
+ * to Video's `light` prop, since react-player has no `poster` prop.
  */
 
 const STEPS = [
-  { n: "01", title: "Order placed", desc: "You order direct from the catalog — no reseller, no markup layered on top." },
-  { n: "02", title: "Picked from stock", desc: "Every item shown is sitting in our warehouse already. Nothing is drop-shipped." },
-  { n: "03", title: "Packed in-house", desc: "Same team that receives the goods packs your order, same day it's placed." },
-  { n: "04", title: "Shipped same day", desc: "Orders in by 3pm ship that afternoon. You get tracking within the hour." },
+  { n: "01", title: "See the product", desc: "A full walkthrough of what it actually is, what it does, and who it's for — before you spend anything." },
+  { n: "02", title: "Know the real price", desc: "Exact cost breakdown, no hidden fees or bundled upsells hiding the real number." },
+  { n: "03", title: "See how it earns", desc: "The actual day-to-day method — what you do, how often, and what it realistically pays." },
+  { n: "04", title: "Try it yourself", desc: "Everything you need to start today, laid out step by step, no guesswork." },
 ];
+
 
 const VIDEOS = [
   {
-    title: "Inside the warehouse",
     duration: "2:14",
-    poster: "/videos/warehouse-poster.jpg",
-    src: "/videos/warehouse.mp4",
+    src: "https://www.youtube.com/watch?v=dvi_CI2-xDI",
     desc: "A walkthrough of where your order actually sits before it ships.",
   },
   {
-    title: "How we pack an order",
     duration: "1:48",
-    poster: "/videos/packing-poster.jpg",
-    src: "/videos/packing.mp4",
+    src: "https://www.youtube.com/watch?v=U-2XoKMIy90",
     desc: "Start to finish: pick ticket to sealed box, no cuts.",
   },
   {
-    title: "Meet the team",
     duration: "3:02",
-    poster: "/videos/team-poster.jpg",
-    src: "/videos/team.mp4",
+    src: "https://youtu.be/7K7ZxO2hJIg?si=FDRj-ZVGhGpF8Vgs",
     desc: "The seven people who pack, ship, and answer your emails.",
   },
 ];
 
+function isYouTubeUrl(url) {
+  return typeof url === "string" && /youtube\.com|youtu\.be/.test(url);
+}
+
+function VideoCard({ video, active, onClick }) {
+  const meta = useYouTubeMeta(isYouTubeUrl(video.src) ? video.src : null);
+  const title = video.title || meta.title || "Untitled";
+  const thumbnail = video.thumbnail || meta.thumbnail;
+
+  return (
+    <button className={`hw-card ${active ? "active" : ""}`} onClick={onClick}>
+      <div className="hw-thumb-wrap">
+        {thumbnail && <img className="hw-thumb" src={thumbnail} alt={title} />}
+        <span className="hw-thumb-duration hw-mono">{video.duration}</span>
+        <span className="hw-play-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="15" fill="rgba(21,20,15,0.55)" stroke="white" strokeWidth="1" />
+            <path d="M13 10.5L22 16L13 21.5V10.5Z" fill="white" />
+          </svg>
+        </span>
+      </div>
+      <div className="hw-card-info">
+        <div className="hw-card-title">{title}</div>
+        <div className="hw-card-desc">{video.desc}</div>
+      </div>
+    </button>
+  );
+}
+
 export default function HowItWorks() {
   const [activeVideo, setActiveVideo] = useState(0);
   const current = VIDEOS[activeVideo];
+  const currentMeta = useYouTubeMeta(isYouTubeUrl(current.src) ? current.src : null);
+  const currentTitle = current.title || currentMeta.title || "Loading title…";
+  const currentThumbnail = current.thumbnail || currentMeta.thumbnail;
 
   return (
     <section className="hw-root">
@@ -102,13 +131,6 @@ export default function HowItWorks() {
         }
         @media (max-width: 900px) {
           .hw-player-col { border-right: none; border-bottom: 1px solid var(--line-strong); }
-        }
-
-        .hw-video {
-          width: 100%;
-          aspect-ratio: 16 / 9;
-          display: block;
-          background: #1a1a17;
         }
 
         .hw-player-meta {
@@ -185,6 +207,7 @@ export default function HowItWorks() {
           justify-content: center;
           color: var(--bg);
           opacity: 0.9;
+          pointer-events: none;
         }
 
         .hw-card-info { padding: 14px 16px 16px; border-top: 1px solid var(--line-strong); }
@@ -200,17 +223,9 @@ export default function HowItWorks() {
 
         <div className="hw-layout">
           <div className="hw-player-col">
-            <video
-              className="hw-video"
-              key={current.src}
-              controls
-              poster={current.poster}
-              preload="none"
-            >
-              <source src={current.src} type="video/mp4" />
-            </video>
+            <Video key={current.src} link={current.src} thumbnail={currentThumbnail} />
             <div className="hw-player-meta">
-              <span className="hw-player-title">{current.title}</span>
+              <span className="hw-player-title">{currentTitle}</span>
               <span className="hw-player-duration hw-mono">{current.duration}</span>
             </div>
           </div>
@@ -231,26 +246,12 @@ export default function HowItWorks() {
         <div className="hw-trust-head hw-mono">More from inside the warehouse</div>
         <div className="hw-grid">
           {VIDEOS.map((v, i) => (
-            <button
-              key={v.title}
-              className={`hw-card ${i === activeVideo ? "active" : ""}`}
+            <VideoCard
+              key={v.src}
+              video={v}
+              active={i === activeVideo}
               onClick={() => setActiveVideo(i)}
-            >
-              <div className="hw-thumb-wrap">
-                <img className="hw-thumb" src={v.poster} alt={v.title} />
-                <span className="hw-thumb-duration hw-mono">{v.duration}</span>
-                <span className="hw-play-icon" aria-hidden="true">
-                  <svg width="32" height="32" viewBox="0 0 32 32">
-                    <circle cx="16" cy="16" r="15" fill="rgba(21,20,15,0.55)" stroke="white" strokeWidth="1" />
-                    <path d="M13 10.5L22 16L13 21.5V10.5Z" fill="white" />
-                  </svg>
-                </span>
-              </div>
-              <div className="hw-card-info">
-                <div className="hw-card-title">{v.title}</div>
-                <div className="hw-card-desc">{v.desc}</div>
-              </div>
-            </button>
+            />
           ))}
         </div>
       </div>
