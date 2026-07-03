@@ -11,7 +11,7 @@ import "./header.scss";
 export default function Header() {
   const handelCall = () => {
     alert("hii")
-    const phoneNumber = "+911234567890"; // replace with your actual number
+    const phoneNumber = "+918178445596"; // replace with your actual number
 
     window.location.href = `tel:${phoneNumber}`;
   };
