@@ -30,20 +30,9 @@ const UnderConstruction = () => {
 
         {/* Buttons */}
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            onClick={() => window.history.back()}
-            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-yellow-500 text-black font-semibold hover:bg-yellow-400 transition"
-          >
-            <ArrowLeft size={18} />
-            Go Back
-          </button>
+       
 
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-3 rounded-xl border border-gray-700 text-white hover:bg-gray-800 transition"
-          >
-            Refresh Page
-          </button>
+       
         </div>
 
         {/* Footer */}
