@@ -15,17 +15,12 @@ import HowItWorks from '@/component/home/main/Howworks'
 export default function page() {
   return (
     <div className='p-0 bg-[#faf9f5]  w-full max-w-[1200px]  mx-auto'>
-      //<UtilitarianHero />//
+    
 
-      //<ProductShowcase />
       <Under/>
       {/* <ProductPage /> */}
       {/* <HeroDesign /> */}
-     // <HowItWorks/>
-      {/* <SectionServices /> */}
-      {/* <ProductPA /> */}
-     // <StackScroll />
-      {/* <SectionTestimonials /> */}
+     
       {/* <SectionContact /> */}
     </div>
   )
