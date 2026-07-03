@@ -107,7 +107,6 @@ export default function Testimonials() {
           --accent: #f2b705;
           --accent-ink: #15140f;
 
-          background: var(--bg);
           color: var(--ink);
           font-family: 'Work Sans', sans-serif;
           width: 100%;
