@@ -3,6 +3,7 @@ import ProductPA from '@/component/home/main/ProductPA'
 import SectionServices from '@/component/home/main/SectionServices'
 import SectionTestimonials from '@/component/home/main/SectionTestimonials'
 import SectionContact from '@/component/home/main/SectionContact'
+import Under from '@/component/home/main/Under.jsx'
 import StackScroll from '@/component/home/main/Sliderpage'
 import Footer from '@/component/home/fixed/Footer'
 import React from 'react'
@@ -14,16 +15,16 @@ import HowItWorks from '@/component/home/main/Howworks'
 export default function page() {
   return (
     <div className='p-0 bg-[#faf9f5]  w-full max-w-[1200px]  mx-auto'>
-      <UtilitarianHero />
+      //<UtilitarianHero />//
 
-      <ProductShowcase />
-
+      //<ProductShowcase />
+      <Under/>
       {/* <ProductPage /> */}
       {/* <HeroDesign /> */}
-      <HowItWorks/>
+     // <HowItWorks/>
       {/* <SectionServices /> */}
       {/* <ProductPA /> */}
-      <StackScroll />
+     // <StackScroll />
       {/* <SectionTestimonials /> */}
       {/* <SectionContact /> */}
     </div>
