@@ -8,6 +8,7 @@ import '@fontsource/kalam';
 import '@fontsource/sniglet';
 import '@fontsource/dm-serif-text';
 import Footer from "@/component/home/fixed/Footer";
+import Queryprovider from "@/services/provider/Queryprovider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -43,7 +44,7 @@ export default function RootLayout({ children }) {
       <header>
         <Header />
       </header>
-      <body className="min-h-full bg-[#faf9f5] flex flex-col ">{children}</body>
+      <body className="min-h-full bg-[#faf9f5] flex flex-col "><Queryprovider>  {children}</Queryprovider></body>
       <footer>
         <Footer />
       </footer>

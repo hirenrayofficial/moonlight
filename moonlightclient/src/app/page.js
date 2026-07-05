@@ -10,13 +10,15 @@ import UtilitarianHero from '@/component/home/main/TempHero'
 import ProductPage from '@/component/home/main/ProductList'
 import ProductShowcase from '@/component/home/main/Listproduct'
 import HowItWorks from '@/component/home/main/Howworks'
+import BannerCarousel from '@/component/home/main/Crousal'
 
 export default function page() {
   return (
-    <div className='p-0  w-full max-w-[1200px]  mx-auto'>
-      <UtilitarianHero />
+    <div className='p-0  w-full flex flex-col  mx-auto justify-center items-center flex flex-col gap-10'>
+     <BannerCarousel/>
+      {/* <UtilitarianHero /> */}
 
-      <ProductShowcase />
+      <ProductShowcase view={{show:true}}/>
 
       {/* <ProductPage /> */}
       {/* <HeroDesign /> */}

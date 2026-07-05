@@ -118,7 +118,7 @@ export default function ShoppingUtilitarianHero() {
             {PRODUCTS.map((p, i) => (
               <div className="sr-product-card" key={p.name}>
                 {i === 0 && <span className="sr-product-tag sr-mono">In stock</span>}
-                <Image width={300} height={300} className="sr-product-image" src={p.image} alt={p.name} />
+                <Image width={300} height={300} loading="lazy" className="sr-product-image" src={p.image} alt={p.name} />
                 <div className="sr-product-info">
                   <div className="sr-product-name">{p.name}</div>
                   <div className="sr-product-price sr-mono">₹{money(p.price)}</div>
