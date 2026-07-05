@@ -25,9 +25,9 @@ export default function page() {
       <HowItWorks/>
       {/* <SectionServices /> */}
       {/* <ProductPA /> */}
-      <StackScroll />
-      {/* <SectionTestimonials /> */}
-      {/* <SectionContact /> */}
+      {/* <StackScroll /> */}
+      <SectionTestimonials />
+      <SectionContact />
     </div>
   )
 }

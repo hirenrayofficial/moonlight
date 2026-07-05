@@ -84,9 +84,13 @@ export default function BannerCarousel() {
     touchStartX.current = null;
   }
 
+  const handelClick = () => {
+    window.location.href = "/machines"
+  }
+
   return (
     <div
-      className={`cb-root ${paused ? "cb-paused" : ""} w-full`}
+      className={`cb-root ${paused ? "cb-paused" : ""} w-full py-16`}
       // className="w-full max-w-[1200px] mx-auto relative"
       ref={trackRef}
       tabIndex={0}
@@ -310,7 +314,7 @@ export default function BannerCarousel() {
         <p className="cb-desc">{SLIDES[index].desc}</p>
         <div className="cb-cta-row">
           <span className="cb-price cb-mono">{SLIDES[index].price}</span>
-          <button className="cb-cta-btn">{SLIDES[index].cta}</button>
+          <button className="cb-cta-btn" onClick={(e)=>handelClick()}>{SLIDES[index].cta}</button>
         </div>
       </div>
 
