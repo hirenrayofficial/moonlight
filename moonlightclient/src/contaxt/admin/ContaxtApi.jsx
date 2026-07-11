@@ -1,5 +1,5 @@
 "use client";
-const { createContext, Children, useState, useContext } = require("react");
+import { createContext, useState, useContext } from "react"; // Use import instead of require
 
 const modalContaxt = createContext();
 
@@ -7,10 +7,13 @@ export const ModalProvider = ({ children }) => {
   const [mopen, setOpen] = useState(false);
 
   const modalOpen = () => {
-    alert("hii")
     setOpen(true);
   };
-  const modalClose = setOpen(false);
+
+  // ✅ Wrap this in a function so it doesn't execute on render
+  const modalClose = () => {
+    setOpen(false);
+  };
 
   return (
     <modalContaxt.Provider value={{ modalOpen, modalClose, mopen }}>
