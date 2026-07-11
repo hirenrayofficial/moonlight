@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
-
 .hd-root {
   --bg: #faf9f5;
   --ink: #15140f;
@@ -7,7 +6,6 @@
   --line-strong: #b8b5a4;
   --accent: #f2b705;
   --accent-ink: #15140f;
-
   position: fixed;
   top: 0;
   left: 0;
@@ -19,6 +17,65 @@
 }
 .hd-root * {
   box-sizing: border-box;
+}
+
+/* ---------- top social strip ---------- */
+.hd-topbar {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 24px;
+  border-bottom: 1px solid var(--line-strong);
+}
+@media (min-width: 768px) {
+  .hd-topbar {
+    padding: 7px 0;
+  }
+}
+
+.hd-topbar-msg {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+@media (max-width: 560px) {
+  .hd-topbar-msg {
+    display: none;
+  }
+}
+
+.hd-social {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.hd-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: var(--ink-dim);
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.hd-social-link:hover {
+  color: var(--accent-ink);
+  background: var(--accent);
+}
+.hd-social-link:hover svg {
+  color: var(--accent-ink);
+}
+.hd-social-link svg {
+  color: inherit;
+}
+.hd-social-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
 }
 
 .hd-inner {
@@ -34,38 +91,35 @@
     padding: 14px 0;
   }
 }
-
 .hd-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+display: flex;
+align-items: center;
+gap: 10px;
 }
 .hd-brand-mark {
-  width: 50px;
-  height: 50px;
-  // background: var(--ink);
-  color: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  // flex-shrink: 0;
+width: 50px;
+height: 50px;
+// background: var(--ink);
+color: var(--bg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 12px;
+font-weight: 600;
+// flex-shrink: 0;
 }
 .hd-brand-name {
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink);
+font-weight: 600;
+font-size: 14px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--ink);
 }
-
 .hd-links {
   display: flex;
   align-items: center;
   gap: 32px;
 }
-
 .hd-nav {
   display: none;
   align-items: center;
@@ -97,7 +151,6 @@
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
-
 .hd-shop-btn {
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;

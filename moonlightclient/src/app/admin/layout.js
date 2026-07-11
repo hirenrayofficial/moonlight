@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Header from "@/component/home/fixed/Header";
+
+
 import localFont from 'next/font/local'
 import '@fontsource-variable/unbounded/wght.css';
 import '@fontsource/gugi';
@@ -10,6 +10,7 @@ import '@fontsource/dm-serif-text';
 import Footer from "@/component/home/fixed/Footer";
 import Queryprovider from "@/services/provider/Queryprovider";
 import SocialSection from "@/component/home/fixed/Socailsection";
+import { ModalProvider } from "@/contaxt/admin/ContaxtApi";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -19,17 +20,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-// const mono = Geist_Mono({
-//   variable: "--font-geist-monoa",
-//   subsets: ["latin"],
-// });
 
-const myfont = localFont({
-  src: [
-    { path: "./geist-mono-latin-300-normal.ttf", weight: '400', style: "normal" },
-  ],
-  variable: "--font-myfont",
-});
 
 export const metadata = {
   title: "Areca Leaf & Disposable Plates Manufacturer in India | Moonlight Machinery",
@@ -40,16 +31,12 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${myfont.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable}  h-full antialiased`}
     >
-      {/* <header>
-   
-        <Header />
-      </header> */}
-      <body className="min-h-full bg-[#faf9f5] flex flex-col "><Queryprovider>  {children}</Queryprovider></body>
-      {/* <footer>
-        <Footer />
-      </footer> */}
+      <ModalProvider>      
+        <body className="min-h-full bg-[#faf9f5] flex flex-col "><Queryprovider>  {children}</Queryprovider></body>
+      </ModalProvider>
+
     </html>
   );
 }

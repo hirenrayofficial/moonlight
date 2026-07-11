@@ -4,7 +4,7 @@ import React from "react";
 export default function Card({ product }) {
   const handelViewitem = (slug)=>{
     // alert(slug)
-    window.location.href = `/machines/${slug}`
+    window.location.href = `/home/machines/${slug}` 
   }
   return (
     <div>

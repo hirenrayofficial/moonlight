@@ -90,7 +90,7 @@ export default function Footer() {
           ))}
 
           <div className="ft-sub-col">
-            <div className="ft-col-title ft-mono">Restock alerts</div>
+            <div className="ft-col-title ft-mono">Moonlight alerts</div>
             <p className="ft-sub-desc">
               One email when a sold-out item is back. Nothing else.
             </p>

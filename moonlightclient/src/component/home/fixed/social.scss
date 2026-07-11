@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+.sc-root {
+  --bg: #faf9f5;
+  --paper: #ffffff;
+  --ink: #15140f;
+  --ink-dim: #5a594e;
+  --ink-faint: #9b9a8c;
+  --line-strong: #b8b5a4;
+  --accent: #f2b705;
+  --accent-ink: #15140f;
+
+  background: var(--bg);
+  width: 100%;
+  padding: 56px 32px 64px;
+  border-top: 1px solid var(--line-strong);
+  font-family: "IBM Plex Mono", monospace;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 720px) {
+    padding: 40px 20px 48px;
+  }
+}
+
+.sc-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sc-head {
+  margin-bottom: 28px;
+}
+
+.sc-eyebrow {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+}
+
+.sc-title {
+  font-family: "Archivo Black", sans-serif;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.sc-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--line-strong);
+  border: 1px solid var(--line-strong);
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 560px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.sc-card {
+  background: var(--paper);
+  border: none;
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+  text-align: left;
+  position: relative;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: var(--ink);
+
+    .sc-name,
+    .sc-handle,
+    .sc-icon,
+    .sc-arrow {
+      color: var(--bg);
+    }
+
+    .sc-arrow {
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+}
+
+.sc-icon {
+  color: var(--ink);
+  transition: color 0.15s ease;
+}
+
+.sc-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sc-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: color 0.15s ease;
+}
+
+.sc-handle {
+  font-size: 11px;
+  color: var(--ink-faint);
+  transition: color 0.15s ease;
+}
+
+.sc-arrow {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 13px;
+  color: var(--ink-faint);
+  opacity: 0.6;
+  transition: color 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+}
