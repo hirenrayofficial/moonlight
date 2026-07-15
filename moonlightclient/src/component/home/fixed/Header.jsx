@@ -67,7 +67,7 @@ const SOCIALS = [
 export default function Header() {
   const handelCall = (link) => {
     if (link === "machine") {
-      window.location.href = "/machines";
+      window.location.href = "/home/machines";
     } else if (link === "about") {
       window.location.href = "/about";
     } else if (link === "num") {

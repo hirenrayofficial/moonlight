@@ -1,30 +1,134 @@
-.ad-overlay {
-  // position: fixed;
-  // inset: 0;
-  // background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // z-index: 50;
-  // padding: 20px;
+/* ==========================================================================
+   Design tokens — previously undefined, everything below depended on these
+   ========================================================================== */
+.ad-page {
+  --bg: #15140f;
+  --panel: #1c1b16;
+  --panel-raised: #232219;
+  --line: #34332a;
+  --line-strong: #47463a;
+  --ink: #ecece4;
+  --ink-dim: #9b9a8c;
+  --ink-faint: #6c6b5f;
+  --accent: #f2b705;
+  --accent-ink: #15140f;
+  --danger: #e2574c;
+
+  background: var(--bg);
+  min-height: 100vh;
+  // max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+  color: var(--ink);
+  font-family: "Work Sans", sans-serif;
+
+  * {
+    box-sizing: border-box;
+  }
 }
+
+.ad-admin-embedded {
+  background: transparent;
+  min-height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   Sticky page header — was plain static content before, now pinned on scroll
+   ========================================================================== */
+.ad-page-head {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: var(--bg);
+  padding: 20px 24px;
+  margin: 0 -24px 20px;
+  border-bottom: 1px solid var(--line-strong);
+  width: fit-content;
+}
+
+@media (max-width: 640px) {
+  .ad-page-head {
+    padding: 16px;
+    margin: 0 -16px 16px;
+  }
+}
+
+.ad-page-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.ad-page-subtitle {
+  margin: 0;
+  color: var(--ink-faint);
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   Overlay + modal — the overlay rules were fully commented out before,
+   which is why the modal wasn't rendering as an actual dialog
+   ========================================================================== */
+.ad-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 100;
+  padding: 0px 2px;
+  overflow-y: auto;
+  height: 100%;
+}
+
 .ad-modal {
   width: 100%;
-  // max-width: 420px;
+  max-width: 420px;
   background: var(--panel);
   border: 1px solid var(--line-strong);
+  margin: auto;
+  height: 100%;
 }
+
+/* .ad-modal-lg was referenced in the JSX but never defined — this is why
+   the big product form rendered at the same cramped width as a small
+   confirm dialog. Gets its own max-width, a capped height, and an
+   internally scrolling body so the header/footer stay in view. */
+.ad-modal-lg {
+  max-width: 720px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 760px) {
+  .ad-modal-lg {
+    max-width: 100%;
+  }
+}
+
 .ad-modal-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
   border-bottom: 1px solid var(--line-strong);
+  flex-shrink: 0;
 }
+
 .ad-modal-title {
   font-size: 14px;
   font-weight: 600;
 }
+
 .ad-modal-close {
   background: none;
   border: none;
@@ -35,10 +139,37 @@
 .ad-modal-close:hover {
   color: var(--ink);
 }
-.ad-modal-body {
-  padding: 20px;
+.ad-modal-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
+.ad-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* ==========================================================================
+   Section labels inside the big form
+   ========================================================================== */
+.ad-section-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--line-strong);
+  padding-top: 16px;
+  margin: 20px 0 14px;
+}
+.ad-section-label:first-of-type {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* ==========================================================================
+   Fields
+   ========================================================================== */
 .ad-field {
   margin-bottom: 16px;
 }
@@ -65,16 +196,168 @@
   outline: 2px solid var(--accent);
   outline-offset: -1px;
 }
+.ad-input:disabled {
+  opacity: 0.6;
+}
+.ad-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* row grids — now actually responsive */
 .ad-row2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+.ad-row3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 12px;
+}
+.ad-row-gap-small {
+  gap: 12px;
+}
 
+@media (max-width: 560px) {
+  .ad-row2 {
+    grid-template-columns: 1fr;
+  }
+  .ad-row3 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ad-unit-select {
+    grid-column: span 2;
+  }
+}
+
+.ad-checkbox-field {
+  display: flex;
+  align-items: flex-end;
+}
+.ad-checkbox-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--ink);
+  font-size: 13px;
+}
+.ad-checkbox-row input {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+}
+
+/* ==========================================================================
+   Chip input
+   ========================================================================== */
+.ad-chip-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.ad-chip-add {
+  padding: 10px 14px;
+  flex-shrink: 0;
+}
+.ad-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ad-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-raised);
+  color: var(--ink);
+  font-size: 12px;
+}
+.ad-chip-remove {
+  border: none;
+  background: transparent;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+}
+.ad-chip-remove:hover {
+  color: var(--danger);
+}
+.ad-chip-remove:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Image dropzone — switched the stray blue to the actual accent color,
+   and squared off the corners to match the rest of the system
+   ========================================================================== */
+.ad-dropzone {
+  border: 1px dashed var(--line-strong);
+  padding: 24px 20px;
+  background: var(--panel-raised);
+  text-align: center;
+  cursor: pointer;
+  color: var(--ink-dim);
+  margin-bottom: 16px;
+  font-size: 13px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.ad-dropzone.active {
+  border-color: var(--accent);
+  background: rgba(242, 183, 5, 0.08);
+  color: var(--ink);
+}
+
+.ad-image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.ad-image-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+}
+.ad-image-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ad-image-remove {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: none;
+  background: rgba(21, 20, 15, 0.75);
+  color: #fff;
+  padding: 5px 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.ad-image-remove:hover {
+  background: var(--danger);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
 .ad-modal-actions {
   display: flex;
   gap: 10px;
   margin-top: 4px;
+  flex-shrink: 0;
 }
 .ad-btn-primary {
   flex: 1;
@@ -88,10 +371,15 @@
   border: 1px solid var(--accent);
   padding: 12px;
   cursor: pointer;
+  // width: 50px;
 }
-.ad-btn-primary:hover {
+.ad-btn-primary:hover:not(:disabled) {
   background: transparent;
   color: var(--accent);
+}
+.ad-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 .ad-btn-secondary {
   font-family: "IBM Plex Mono", monospace;
@@ -105,9 +393,18 @@
   padding: 12px 16px;
   cursor: pointer;
 }
-.ad-btn-secondary:hover {
+.ad-btn-secondary:hover:not(:disabled) {
   color: var(--ink);
   border-color: var(--ink-dim);
+}
+.ad-btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.ad-btn-primary:focus-visible,
+.ad-btn-secondary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .ad-confirm-text {
@@ -115,4 +412,129 @@
   color: var(--ink-dim);
   line-height: 1.6;
   margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   Toolbar + search
+   ========================================================================== */
+.ad-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 18px;
+}
+.ad-search {
+  max-width: 380px;
+}
+
+/* ==========================================================================
+   Product list — now stacks cleanly instead of squeezing on mobile
+   ========================================================================== */
+.ad-product-list {
+  display: grid;
+  gap: 14px;
+}
+
+.ad-product-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 18px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-raised);
+}
+
+@media (max-width: 720px) {
+  .ad-product-card {
+    grid-template-columns: 1fr;
+  }
+  .ad-product-right {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+.ad-product-card-left {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+}
+
+.ad-product-thumb {
+  width: 84px;
+  height: 84px;
+  min-width: 84px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  overflow: hidden;
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.ad-product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ad-product-info {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.ad-product-name {
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ad-product-meta,
+.ad-product-stats {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+.ad-product-stats span {
+  margin-right: 10px;
+}
+
+.ad-product-right {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+  text-align: right;
+}
+.ad-product-price {
+  font-weight: 600;
+  font-family: "IBM Plex Mono", monospace;
+}
+.ad-product-stock {
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-family: "IBM Plex Mono", monospace;
+}
+.ad-product-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ad-empty {
+  padding: 32px;
+  border: 1px dashed var(--line-strong);
+  background: var(--panel);
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+.ad-error-text {
+  color: var(--danger);
+  font-size: 12px;
+  margin-top: 6px;
+}
+.ad-submit-error {
+  margin-top: 8px;
+  margin-bottom: 4px;
 }

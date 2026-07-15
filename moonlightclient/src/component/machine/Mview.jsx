@@ -5,7 +5,7 @@ import "./style/mview.scss";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getspcItem } from "@/services/home/GetProduct";
+import { getRelatedItem, getspcItem } from "@/services/home/GetProduct";
 import Link from "next/link";
 /**
  * STOCKROOM — product page
@@ -67,6 +67,15 @@ export default function Mview({ slug }) {
     queryFn: () => getspcItem(slug), // Use an arrow function wrapper
   });
 
+  // Always call the hook, but control execution with 'enabled'
+  const { data: relatedData, isLoading: isRelatedLoading } = useQuery({
+    queryKey: ["relatedItem", data?.[0]?.machineType],
+    queryFn: () => getRelatedItem(data[0].machineType),
+    // The query will only run if machineType is truthy
+    enabled: !!data?.[0]?.machineType,
+  });
+  // console.log(data)
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -77,9 +86,9 @@ export default function Mview({ slug }) {
   }
 
   return (
-    <div className="pd-root py-24 w-full max-w-[1200px]  ">
-      <div className="pd-crumb pd-mono flex">
-        <Link href="/">Home</Link>
+    <div className="pd-root py-32 w-full max-w-[1200px]  ">
+      <div className="pd-crumb pd-mono flex hidden md:flex">
+        {/* <Link href="/">Home</Link> */}
         {segments.map((segment, index) => {
           // Build the path up to this segment
           const href = `/${segments.slice(0, index + 1).join("/")}`;
@@ -101,11 +110,11 @@ export default function Mview({ slug }) {
             width={400}
             height={400}
             className="pd-image-main"
-            src={data.images[activeImage]}
-            alt={data.name}
+            src={data[0]?.images?.[0]}
+            alt={data[0]?.name}
           />
           <div className="pd-thumbs">
-            {data.images.map((src, i) => (
+            {data[0].images?.map((src, i) => (
               <button
                 key={src}
                 className={`pd-thumb ${i === activeImage ? "active" : ""}`}
@@ -121,18 +130,20 @@ export default function Mview({ slug }) {
         <div className="pd-info">
           <div className="pd-eyebrow pd-mono">
             <span className="pd-dot" aria-hidden="true" />
-            In stock — {data.stock} available
+            In stock — {data[0].stock} available
           </div>
 
-          <h1 className="pd-name">{data.name}</h1>
-          <div className="pd-sku pd-mono">SKU {data.sku}</div>
+          <h1 className="pd-name">{data[0].name}</h1>
+          <div className="pd-sku pd-mono">SKU {data[0].sku}</div>
 
-          <div className="pd-price pd-mono">₹{money(data.price)}</div>
+          <div className="pd-price pd-mono">
+            ₹{money(data[0]?.pricing.basePrice)}
+          </div>
 
-          <p className="pd-desc">{data.description}</p>
+          <p className="pd-desc">{data[0].description}</p>
 
           <div className="pd-buy-row">
-            <div className="pd-qty">
+            {/* <div className="pd-qty">
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 aria-label="Decrease quantity"
@@ -146,9 +157,9 @@ export default function Mview({ slug }) {
               >
                 +
               </button>
-            </div>
-            <button className="pd-add-btn" onClick={(e) => findDiectory()}>
-              Add to cart — ${money(data.price * qty)}
+            </div> */}
+            <button className="pd-add-btn py-2" onClick={(e) => findDiectory()}>
+              Enquery Now
             </button>
           </div>
 
@@ -157,23 +168,24 @@ export default function Mview({ slug }) {
           </p>
 
           <div className="pd-specs-title pd-mono">Specification</div>
-          {data.specs.map((s) => (
-            <div className="pd-spec-row" key={s.label}>
-              <span className="pd-spec-label pd-mono">{s.label}</span>
-              <span className="pd-spec-value">{s.value}</span>
-            </div>
-          ))}
+
+          <div className="pd-spec-row">
+            <span className="pd-spec-label pd-mono">
+              {data[0]?.specifications.motor}
+            </span>
+            {/* <span className="pd-spec-value">{s.motor}</span> */}
+          </div>
         </div>
       </section>
 
       <div className="pd-related-head pd-mono">Also in stock</div>
       <div className="pd-related">
-        {RELATED.map((p) => (
-          <div className="pd-related-card" key={p.name}>
-            <img className="pd-related-image" src={p.image} alt={p.name} />
+        {relatedData?.map((p) => (
+          <div className="pd-related-card" key={p?.name}>
+            <img className="pd-related-image" src={p?.images?.[0]} alt={p?.name} />
             <div className="pd-related-info">
-              <div className="pd-related-name">{p.name}</div>
-              <div className="pd-related-price pd-mono">${money(p.price)}</div>
+              <div className="pd-related-name">{p?.name}</div>
+              <div className="pd-related-price pd-mono">₹{money(p?.pricing.basePrice)}</div>
             </div>
           </div>
         ))}

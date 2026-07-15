@@ -9,7 +9,17 @@ export const getItem = async () => {
   return res.data.item;
 };
 export const getspcItem = async (slug) => {
-  const res = await axios.post("/api/home/product",{slug});
+  const res = await axios.post(`/api/home/product?slug=${slug}`);
+  console.log(slug)
+  if (!res) {
+    return;
+  }
+  //   console.log(res.data.item)
+  return res.data.item;
+};
+export const getRelatedItem = async (type) => {
+  const res = await axios.post(`/api/home/productrelated?type=${type}`);
+  console.log(type)
   if (!res) {
     return;
   }

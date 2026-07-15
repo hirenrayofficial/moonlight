@@ -15,7 +15,7 @@ import Header from '@/component/home/fixed/Header'
 
 export default function Hero() {
   return (
-    <div className='py-24  w-full flex flex-col  mx-auto justify-center items-center flex flex-col gap-10'>
+    <div className=' w-full flex flex-col  mx-auto justify-center items-center flex flex-col gap-10'>
      <Header/>
      <BannerCarousel/>
       {/* <UtilitarianHero /> */}

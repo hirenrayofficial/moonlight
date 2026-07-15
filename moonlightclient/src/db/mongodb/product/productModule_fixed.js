@@ -7,6 +7,11 @@ const ProductSchema = new mongoose.Schema(
       required: [true, 'Product name is required'],
       trim: true,
     },
+    slug: {
+      type: String,
+      // required:true,
+      trim: true,
+    },
     sku: {
       type: String,
       default: '',
@@ -68,6 +73,10 @@ const ProductSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    images: {
+      type: [String],
+      default: [],
+    },
     warranty: {
       type: String,
       default: '',
@@ -104,7 +113,7 @@ const ProductSchema = new mongoose.Schema(
   },
   {
     // Automatically adds createdAt and updatedAt timestamps
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

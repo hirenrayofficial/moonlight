@@ -1,6 +1,6 @@
 "use client";
 import { useModal } from "@/contaxt/admin/ContaxtApi"; // Note: verify if 'contaxt' is a typo in your folder path
-import { findProduct } from "@/services/admin/apiService/Product";
+import { findProducts } from "@/services/admin/apiService/Product";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -23,7 +23,7 @@ export default function Inventory({
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["data"],
-    queryFn: findProduct,
+    queryFn: findProducts,
   });
 
   const handelAddproduct = () => {

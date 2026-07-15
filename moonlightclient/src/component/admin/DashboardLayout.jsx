@@ -2,10 +2,9 @@
 import React, { useMemo, useState } from "react";
 import "./admindash.scss";
 import Dashboard from "./Dashboard";
-import Inventory from "./Inventory";
-import ProductFormModal from "./product/AddpModal";
 import { useModal } from "@/contaxt/admin/ContaxtApi";
-import ProductPage from "./product/AddpModal";
+import ProductAdmin, { SearchBox } from "./product/ProductAdmin";
+
 
 /**
  * STOCKROOM ADMIN — dashboard
@@ -83,7 +82,7 @@ const RECENT_ORDERS = [
 function money(n) {
   // If n is undefined, null, or not a number, fallback to 0
   const priceAsNumber = Number(n) || 0;
-  
+
   return priceAsNumber.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -287,16 +286,10 @@ export default function AdminDashboard() {
             Dashboard
           </button>
           <button
-            className={`ad-nav-item ${view === "inventory" ? "active" : ""}`}
-            onClick={() => setView("inventory")}
+            className={`ad-nav-item ${view === "products" ? "active" : ""}`}
+            onClick={() => setView("products")}
           >
-            Inventory
-          </button>
-          <button
-            className={`ad-nav-item ${view === "addproduct" ? "active" : ""}`}
-            onClick={() => setView("addproduct")}
-          >
-            Add Product
+            Products
           </button>
         </nav>
         <div className="ad-sidebar-foot ad-mono">v1.0 · admin</div>
@@ -305,71 +298,9 @@ export default function AdminDashboard() {
       {/* ---------- main ---------- */}
       <div className="ad-main">
         <div className="ad-topbar">
-          <input
-            className="ad-search"
-            placeholder="Search products, SKUs…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
+          <SearchBox searchQuery={query} setSearchQuery={setQuery} />
           <div className="ad-topbar-right">
-            <div className="ad-bell-wrap">
-              <button
-                className="ad-bell-btn"
-                onClick={() => setNotifOpen((o) => !o)}
-                aria-label="Notifications"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path
-                    d="M4 6.5C4 4 5.8 2.5 8 2.5C10.2 2.5 12 4 12 6.5V9L13.2 11H2.8L4 9V6.5Z"
-                    stroke="currentColor"
-                    strokeWidth="1.3"
-                  />
-                  <path
-                    d="M6.3 12.5C6.5 13.2 7.2 13.7 8 13.7C8.8 13.7 9.5 13.2 9.7 12.5"
-                    stroke="currentColor"
-                    strokeWidth="1.3"
-                  />
-                </svg>
-                {unreadCount > 0 && (
-                  <span className="ad-bell-badge ad-mono">{unreadCount}</span>
-                )}
-              </button>
 
-              {notifOpen && (
-                <div className="ad-notif-panel">
-                  <div className="ad-notif-head">
-                    <span className="ad-notif-title ad-mono">
-                      Notifications
-                    </span>
-                    <button className="ad-notif-clear" onClick={markAllRead}>
-                      Mark all read
-                    </button>
-                  </div>
-                  <div className="ad-notif-list">
-                    {notifications.length === 0 ? (
-                      <div className="ad-notif-empty">
-                        You're all caught up.
-                      </div>
-                    ) : (
-                      notifications.map((n) => (
-                        <div
-                          className={`ad-notif-item ${n.read ? "" : "unread"}`}
-                          key={n.id}
-                        >
-                          <span className={`ad-notif-dot ${n.type}`} />
-                          <div>
-                            <div className="ad-notif-text">{n.message}</div>
-                            <div className="ad-notif-time ad-mono">
-                              {n.time}
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
 
             <div className="ad-user" onClick={(e) => setMenusOpen((o) => !o)}>
               <div className="ad-avatar ad-mono">AD</div>
@@ -416,33 +347,7 @@ export default function AdminDashboard() {
               RECENT_ORDERS={RECENT_ORDERS}
             />
           )}
-
-          {view === "inventory" && (
-            <Inventory
-              categoryFilter={categoryFilter}
-              confirmDelete={confirmDelete}
-              openEditModal={openEditModal}
-              stockStatus={stockStatus}
-              money={money}
-              filtered={filtered}
-              CATEGORIES={CATEGORIES}
-              openAddModal={openAddModal}
-              setView={setView}
-            />
-          )}
-          {view === "addproduct" && (
-            <ProductPage
-              categoryFilter={categoryFilter}
-              confirmDelete={confirmDelete}
-              openEditModal={openEditModal}
-              stockStatus={stockStatus}
-              money={money}
-              filtered={filtered}
-              CATEGORIES={CATEGORIES}
-              openAddModal={openAddModal}
-              setView={setView}
-            />
-          )}
+          {view === "products" && <ProductAdmin compact />}
         </div>
       </div>
 

@@ -1,43 +1,25 @@
 "use client";
-import { useMemo, useState, useCallback } from "react";
+
+import { useCallback, useMemo, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import {
+  createProduct,
+  deleteProduct,
+  findProducts,
+  updateProduct,
+} from "@/services/admin/apiService/Product";
 import "./amodal.scss";
-import { createProduct } from "@/services/admin/apiService/Product";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { slugify } from "@/utilis/slujgify";
 
-/**
- * ProductPage
- * ------------------------------------------------------------
- * Fully self-contained — owns ALL of its own data:
- *   - the list of saved products
- *   - the current draft being added/edited
- *   - whether the form is open
- *   - which product (if any) is being edited
- *
- * Nothing is passed in as props. Drop this component onto any
- * route/page and it works on its own — no parent state needed.
- *
- * Fixes vs. previous version:
- *  - Single source of truth (`draft`) instead of ~30 duplicate
- *    useState hooks that the UI wrote to but save logic ignored.
- *  - Chip fields (itemsProduced/features/tags) are real arrays,
- *    not strings — ChipInput no longer crashes on first keystroke.
- *  - Modal now actually respects `modalOpen` (was always rendered).
- *  - One submit path (form onSubmit) — no more duplicate/racing
- *    submit handlers.
- *  - `warranty` setter bug fixed (was hard-coding the string
- *    "warranty" instead of the typed value).
- *  - Optimistic add/edit with rollback on API failure, inline
- *    validation, disabled/loading submit button, no blocking
- *    window.alert.
- */
-
-export const CATEGORIES = [
+const CATEGORIES = [
   "Paper Plate Making Machine",
   "Lamination Machine",
   "Cotton Wick Machine",
   "Paper Cup Machine",
 ];
 
-export const MACHINE_TYPES = [
+const MACHINE_TYPES = [
   "Manual",
   "Semi-Automatic",
   "Full-Automatic",
@@ -45,22 +27,17 @@ export const MACHINE_TYPES = [
   "All-in-One",
 ];
 
-export const AVAILABILITY_OPTIONS = [
-  "In Stock",
-  "Out of Stock",
-  "Made to Order",
-];
-
-export const STATUS_OPTIONS = ["active", "inactive", "draft"];
+const AVAILABILITY_OPTIONS = ["In Stock", "Out of Stock", "Made to Order"];
+const STATUS_OPTIONS = ["active", "inactive", "draft"];
 
 const emptyDraft = {
   name: "",
+  slug: "",
   sku: "",
   category: CATEGORIES[0],
   subCategory: "",
   machineType: "",
   description: "",
-
   specifications: {
     productionCapacity: "",
     motor: "",
@@ -77,7 +54,6 @@ const emptyDraft = {
     paperCupSizeRange: "",
     electricityBillEstimate: "",
   },
-
   pricing: {
     currency: "INR",
     basePrice: "",
@@ -85,18 +61,16 @@ const emptyDraft = {
     otherExpenses: "",
     totalPrice: 0,
   },
-
   itemsProduced: [],
   features: [],
   tags: [],
-
+  images: [],
   warranty: "",
   deliveryTime: "",
   availability: "In Stock",
   isReturnable: false,
   mainMarket: "India",
   status: "active",
-
   stock: "",
   threshold: "",
 };
@@ -108,7 +82,6 @@ function makeId() {
   return `tmp_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
-/** Validates the parts of the draft that are actually required to save. */
 function validateDraft(draft) {
   const errors = {};
   if (!draft.name?.trim()) errors.name = "Product name is required.";
@@ -122,52 +95,78 @@ function validateDraft(draft) {
   return errors;
 }
 
-/** Converts string form fields into the correctly-typed payload the API expects. */
+export function SearchBox({ searchQuery, setSearchQuery }) {
+  return (
+    <div className="ad-toolbar">
+      <input
+        type="text"
+        className="ad-input ad-search"
+        placeholder="Search by name, SKU or category"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+    </div>
+  );
+}
+
 function buildPayload(draft) {
-  const toNum = (v) => (v === "" || v === null || v === undefined ? null : Number(v));
+  const toNumber = (value) => {
+    if (value === "" || value === null || value === undefined) return null;
+    const number = Number(value);
+    return Number.isNaN(number) ? null : number;
+  };
+
   return {
     ...draft,
     specifications: {
       ...draft.specifications,
       dimensions: {
         ...draft.specifications.dimensions,
-        length: toNum(draft.specifications.dimensions.length),
-        width: toNum(draft.specifications.dimensions.width),
-        height: toNum(draft.specifications.dimensions.height),
+        length: toNumber(draft.specifications.dimensions.length),
+        width: toNumber(draft.specifications.dimensions.width),
+        height: toNumber(draft.specifications.dimensions.height),
       },
     },
     pricing: {
       ...draft.pricing,
-      basePrice: toNum(draft.pricing.basePrice) ?? 0,
-      otherExpenses: toNum(draft.pricing.otherExpenses) ?? 0,
-      totalPrice: toNum(draft.pricing.totalPrice) ?? 0,
+      basePrice: toNumber(draft.pricing.basePrice) ?? 0,
+      otherExpenses: toNumber(draft.pricing.otherExpenses) ?? 0,
+      totalPrice: toNumber(draft.pricing.totalPrice) ?? 0,
     },
-    stock: toNum(draft.stock) ?? 0,
-    threshold: toNum(draft.threshold) ?? 0,
+    stock: toNumber(draft.stock) ?? 0,
+    threshold: toNumber(draft.threshold) ?? 0,
+    images: draft.images || [],
   };
 }
 
-// ---- Small reusable chip/tag input for array fields (itemsProduced / features / tags) ----
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 function ChipInput({ label, placeholder, values, onChange }) {
   const [text, setText] = useState("");
 
   const addChip = () => {
-    const v = text.trim();
-    if (!v) return;
-    if (values.includes(v)) {
+    const next = text.trim();
+    if (!next) return;
+    if (values.includes(next)) {
       setText("");
       return;
     }
-    onChange([...values, v]);
+    onChange([...values, next]);
     setText("");
   };
 
-  const removeChip = (idx) => {
-    onChange(values.filter((_, i) => i !== idx));
-  };
+  const removeChip = (idx) =>
+    onChange(values.filter((_, index) => index !== idx));
 
   return (
-    <div className="ad-field flex">
+    <div className="ad-field">
       <label className="ad-label">{label}</label>
       <div className="ad-chip-row">
         <input
@@ -182,20 +181,24 @@ function ChipInput({ label, placeholder, values, onChange }) {
             }
           }}
         />
-        <button type="button" className="ad-btn-secondary ad-chip-add" onClick={addChip}>
+        <button
+          type="button"
+          className="ad-btn-secondary ad-chip-add"
+          onClick={addChip}
+        >
           Add
         </button>
       </div>
       {values.length > 0 && (
         <div className="ad-chip-list">
-          {values.map((v, i) => (
-            <span className="ad-chip" key={`${v}-${i}`}>
-              {v}
+          {values.map((value, index) => (
+            <span className="ad-chip" key={`${value}-${index}`}>
+              {value}
               <button
                 type="button"
                 className="ad-chip-remove"
-                onClick={() => removeChip(i)}
-                aria-label={`Remove ${v}`}
+                onClick={() => removeChip(index)}
+                aria-label={`Remove ${value}`}
               >
                 ✕
               </button>
@@ -207,14 +210,44 @@ function ChipInput({ label, placeholder, values, onChange }) {
   );
 }
 
-export default function ProductPage() {
-  const [products, setProducts] = useState([]);
+export default function ProductAdmin({ compact = false }) {
+  const queryClient = useQueryClient();
+  const [searchQuery, setSearchQuery] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState(emptyDraft);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  const {
+    data: queryData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const response = await findProducts();
+      if (!response?.success) {
+        throw new Error(response?.error || "Failed to load products.");
+      }
+      return response.data;
+    },
+  });
+
+  const products = useMemo(
+    () =>
+      (queryData || []).map((item) => ({
+        ...item,
+        id: item._id || item.id || makeId(),
+      })),
+    [queryData],
+  );
+
+  const fetchError = isError
+    ? error?.message || "Could not load products."
+    : "";
 
   const openAdd = () => {
     setEditingId(null);
@@ -226,14 +259,63 @@ export default function ProductPage() {
 
   const openEdit = (product) => {
     setEditingId(product.id);
-    setDraft(product);
+    setDraft({
+      name: product.name || "",
+      slug: product.slug || "",
+      sku: product.sku || "",
+      category: product.category || CATEGORIES[0],
+      subCategory: product.subCategory || "",
+      machineType: product.machineType || "",
+      description: product.description || "",
+      specifications: {
+        productionCapacity: product.specifications?.productionCapacity || "",
+        motor: product.specifications?.motor || "",
+        totalPower: product.specifications?.totalPower || "",
+        powerSource: product.specifications?.powerSource || "",
+        voltage: product.specifications?.voltage || "",
+        phase: product.specifications?.phase || "",
+        weight: product.specifications?.weight || "",
+        rawMaterial: product.specifications?.rawMaterial || "",
+        dimensions: {
+          length: product.specifications?.dimensions?.length ?? "",
+          width: product.specifications?.dimensions?.width ?? "",
+          height: product.specifications?.dimensions?.height ?? "",
+          unit: product.specifications?.dimensions?.unit || "inch",
+        },
+        plateSizeRange: product.specifications?.plateSizeRange || "",
+        rollerSize: product.specifications?.rollerSize || "",
+        drive: product.specifications?.drive || "",
+        paperCupSizeRange: product.specifications?.paperCupSizeRange || "",
+        electricityBillEstimate:
+          product.specifications?.electricityBillEstimate || "",
+      },
+      pricing: {
+        currency: product.pricing?.currency || "INR",
+        basePrice: product.pricing?.basePrice ?? "",
+        priceLabel: product.pricing?.priceLabel || "Gurgaon Price",
+        otherExpenses: product.pricing?.otherExpenses ?? "",
+        totalPrice: product.pricing?.totalPrice ?? 0,
+      },
+      itemsProduced: product.itemsProduced || [],
+      features: product.features || [],
+      tags: product.tags || [],
+      images: product.images || [],
+      warranty: product.warranty || "",
+      deliveryTime: product.deliveryTime || "",
+      availability: product.availability || "In Stock",
+      isReturnable: product.isReturnable || false,
+      mainMarket: product.mainMarket || "India",
+      status: product.status || "active",
+      stock: product.stock ?? "",
+      threshold: product.threshold ?? "",
+    });
     setErrors({});
     setSubmitError("");
     setModalOpen(true);
   };
 
   const closeModal = () => {
-    if (isSubmitting) return; // don't let the user close mid-save
+    if (isSubmitting) return;
     setModalOpen(false);
     setEditingId(null);
     setDraft(emptyDraft);
@@ -241,50 +323,79 @@ export default function ProductPage() {
     setSubmitError("");
   };
 
-  const deleteProduct = (id) => {
-    setProducts((list) => list.filter((p) => p.id !== id));
-  };
-
   const setField = useCallback(
-    (field, value) => setDraft((d) => ({ ...d, [field]: value })),
+    (field, value) => setDraft((prev) => ({ ...prev, [field]: value })),
     [],
   );
 
   const setSpec = useCallback(
     (field, value) =>
-      setDraft((d) => ({
-        ...d,
-        specifications: { ...d.specifications, [field]: value },
+      setDraft((prev) => ({
+        ...prev,
+        specifications: { ...prev.specifications, [field]: value },
       })),
     [],
   );
 
   const setDimension = useCallback(
     (field, value) =>
-      setDraft((d) => ({
-        ...d,
+      setDraft((prev) => ({
+        ...prev,
         specifications: {
-          ...d.specifications,
-          dimensions: { ...d.specifications.dimensions, [field]: value },
+          ...prev.specifications,
+          dimensions: { ...prev.specifications.dimensions, [field]: value },
         },
       })),
     [],
   );
 
   const setPricing = useCallback((field, value) => {
-    setDraft((d) => {
-      const pricing = { ...d.pricing, [field]: value };
+    setDraft((prev) => {
+      const pricing = { ...prev.pricing, [field]: value };
       if (field === "basePrice" || field === "otherExpenses") {
-        const base = parseFloat(field === "basePrice" ? value : pricing.basePrice) || 0;
-        const other = parseFloat(field === "otherExpenses" ? value : pricing.otherExpenses) || 0;
+        const base =
+          parseFloat(field === "basePrice" ? value : pricing.basePrice) || 0;
+        const other =
+          parseFloat(
+            field === "otherExpenses" ? value : pricing.otherExpenses,
+          ) || 0;
         pricing.totalPrice = base + other;
       }
-      return { ...d, pricing };
+      return { ...prev, pricing };
     });
   }, []);
 
-  const saveDraft = async (e) => {
-    e.preventDefault();
+  const onDrop = useCallback(async (acceptedFiles) => {
+    if (!acceptedFiles || acceptedFiles.length === 0) return;
+
+    try {
+      const dataUrls = await Promise.all(
+        acceptedFiles.map((file) => fileToDataURL(file)),
+      );
+      setDraft((prev) => ({
+        ...prev,
+        images: [...(prev.images || []), ...dataUrls],
+      }));
+    } catch (error) {
+      console.error("Image upload failed", error);
+    }
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { "image/*": [] },
+    multiple: true,
+  });
+
+  const removeImage = (index) => {
+    setDraft((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, idx) => idx !== index),
+    }));
+  };
+
+  const saveDraft = async (event) => {
+    event.preventDefault();
     if (isSubmitting) return;
 
     const validationErrors = validateDraft(draft);
@@ -294,30 +405,55 @@ export default function ProductPage() {
     setIsSubmitting(true);
     setSubmitError("");
 
-    const payload = buildPayload(draft);
-
     try {
-      const res = await createProduct(payload);
-      if (!res) {
-        throw new Error("Server did not confirm the save.");
-      }
+      const payload = buildPayload(draft);
+      let response;
 
       if (editingId) {
-        setProducts((list) =>
-          list.map((p) => (p.id === editingId ? { ...payload, id: editingId } : p)),
-        );
+        response = await updateProduct(editingId, payload);
+        if (!response?.success) {
+          throw new Error(response?.error || "Update failed.");
+        }
       } else {
-        const newId = res?.id || makeId();
-        setProducts((list) => [...list, { ...payload, id: newId }]);
+        response = await createProduct(payload);
+        if (!response?.success) {
+          throw new Error(response?.error || "Create failed.");
+        }
       }
 
+      await queryClient.invalidateQueries(["products"]);
       closeModal();
-    } catch (err) {
-      setSubmitError(err?.message || "Something went wrong while saving. Please try again.");
+    } catch (error) {
+      setSubmitError(error?.message || "Failed to save product.");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const handleDelete = async (productId) => {
+    if (!window.confirm("Delete this product permanently?")) return;
+    try {
+      const response = await deleteProduct(productId);
+      if (!response?.success) {
+        throw new Error(response?.error || "Delete failed.");
+      }
+      await queryClient.invalidateQueries(["products"]);
+    } catch (error) {
+      window.alert(error?.message || "Could not delete product.");
+    }
+  };
+
+  const filteredProducts = useMemo(() => {
+    if (!searchQuery.trim()) return products;
+    return products.filter((product) => {
+      const query = searchQuery.toLowerCase();
+      return (
+        product.name?.toLowerCase().includes(query) ||
+        product.sku?.toLowerCase().includes(query) ||
+        product.category?.toLowerCase().includes(query)
+      );
+    });
+  }, [products, searchQuery]);
 
   const totalPriceDisplay = useMemo(
     () => draft.pricing.totalPrice || 0,
@@ -325,76 +461,135 @@ export default function ProductPage() {
   );
 
   return (
-    <div className="ad-page">
-      {/* ---------------- PAGE HEADER ----------------
-      <div className="ad-page-head">
-        <span className="ad-page-title">Products</span>
-        <button className="ad-btn-primary" onClick={openAdd}>
-          + Add product
-        </button>
-      </div> */}
+    <div
+      className={
+        compact
+          ? "ad-page ad-admin-page ad-admin-embedded"
+          : "ad-page ad-admin-page"
+      }
+    >
+      {compact && (
+        <div className="bt-main w-full flex justify-end items-end">
+          <button
+            className=" flex justify-end items-end bg-[#f2b705] text-[#15140f] hover:bg-[#e2a704] p-2"
+            onClick={openAdd}
+          >
+            + Add product
+          </button>
+        </div>
+      )}
 
-      {/* ---------------- PRODUCT LIST ---------------- */}
-      {/* {products.length === 0 ? (
-        <div className="ad-empty">No products yet. Click "Add product" to create one.</div>
+      {/* {compact && (
+        <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      )} */}
+
+      {isLoading ? (
+        <div className="ad-empty">Loading products…</div>
+      ) : fetchError ? (
+        <div className="ad-error-text">{fetchError}</div>
+      ) : filteredProducts.length === 0 ? (
+        <div className="ad-empty">
+          No products found. Add the first product to get started.
+        </div>
       ) : (
         <div className="ad-product-list">
-          {products.map((p) => (
-            <div className="ad-product-card" key={p.id}>
-              <div className="ad-product-card-top">
-                <div>
-                  <div className="ad-product-name">{p.name || "Untitled product"}</div>
+          {filteredProducts.map((product) => (
+            <div className="ad-product-card" key={product.id}>
+              <div className="ad-product-card-left">
+                <div className="ad-product-thumb">
+                  {product.images?.[0] ? (
+                    <img src={product.images[0]} alt={product.name} />
+                  ) : (
+                    <span>No image</span>
+                  )}
+                </div>
+                <div className="ad-product-info">
+                  <div className="ad-product-name">
+                    {product.name || "Untitled product"}
+                  </div>
                   <div className="ad-product-meta">
-                    {p.category} {p.subCategory && `· ${p.subCategory}`}
+                    {product.category} · {product.sku}
+                  </div>
+                  <div className="ad-product-stats">
+                    <span>{product.availability || "In Stock"}</span>
+                    <span>{product.status || "active"}</span>
                   </div>
                 </div>
-                <div className="ad-product-price">
-                  {p.pricing.currency} {p.pricing.totalPrice || 0}
-                </div>
               </div>
-              <div className="ad-product-card-actions">
-                <button className="ad-btn-secondary" onClick={() => openEdit(p)}>
-                  Edit
-                </button>
-                <button className="ad-btn-secondary" onClick={() => deleteProduct(p.id)}>
-                  Delete
-                </button>
+
+              <div className="ad-product-right">
+                <div className="ad-product-price">
+                  {product.pricing?.currency || "INR"}{" "}
+                  {product.pricing?.totalPrice ?? 0}
+                </div>
+                <div className="ad-product-stock">
+                  Stock: {product.stock ?? 0} / Threshold:{" "}
+                  {product.threshold ?? 0}
+                </div>
+                <div className="ad-product-actions">
+                  <button
+                    className="ad-btn-secondary"
+                    onClick={() => openEdit(product)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="ad-btn-secondary"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
-      )} */}
+      )}
 
-
+      {modalOpen && (
         <div className="ad-overlay" onClick={closeModal}>
-          <div className="ad-modal ad-modal-lg" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="ad-modal ad-modal-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="ad-modal-head">
-              <span className="ad-modal-title">{editingId ? "Edit product" : "Add product"}</span>
-              <button type="button" className="ad-modal-close" onClick={closeModal}>
+              <span className="ad-modal-title">
+                {editingId ? "Edit product" : "Add product"}
+              </span>
+              <button
+                type="button"
+                className="ad-modal-close"
+                onClick={closeModal}
+              >
                 ✕
               </button>
             </div>
-
             <form className="ad-modal-body" onSubmit={saveDraft} noValidate>
-              {/* ---------------- BASIC INFO ---------------- */}
               <div className="ad-section-label">Basic info</div>
-
               <div className="ad-field">
                 <label className="ad-label">Product name</label>
                 <input
                   className="ad-input"
                   value={draft.name}
-                  onChange={(e) => setField("name", e.target.value)}
+                  onChange={(e) => {
+                    const name = e.target.value;
+                    setDraft((prev) => ({
+                      ...prev,
+                      name,
+                      slug: slugify(name),
+                    }));
+                  }}
                 />
-                {errors.name && <div className="ad-error-text">{errors.name}</div>}
+                {errors.name && (
+                  <div className="ad-error-text">{errors.name}</div>
+                )}
               </div>
-
               <div className="ad-row2">
                 <div className="ad-field">
                   <label className="ad-label">SKU</label>
                   <input
                     className="ad-input"
-                    placeholder="Auto-generated"
+                    placeholder="Enter SKU"
                     value={draft.sku}
                     onChange={(e) => setField("sku", e.target.value)}
                   />
@@ -406,9 +601,9 @@ export default function ProductPage() {
                     value={draft.category}
                     onChange={(e) => setField("category", e.target.value)}
                   >
-                    {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
+                    {CATEGORIES.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
                       </option>
                     ))}
                   </select>
@@ -433,9 +628,9 @@ export default function ProductPage() {
                     onChange={(e) => setField("machineType", e.target.value)}
                   >
                     <option value="">Select type</option>
-                    {MACHINE_TYPES.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
+                    {MACHINE_TYPES.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
                       </option>
                     ))}
                   </select>
@@ -452,9 +647,36 @@ export default function ProductPage() {
                 />
               </div>
 
-              {/* ---------------- SPECIFICATIONS ---------------- */}
-              <div className="ad-section-label">Specifications</div>
+              <div className="ad-section-label">Product images</div>
+              <div
+                className={`ad-dropzone ${isDragActive ? "active" : ""}`}
+                {...getRootProps()}
+              >
+                <input {...getInputProps()} />
+                <p>
+                  {isDragActive
+                    ? "Drop the images here…"
+                    : "Drag and drop one or more images here, or click to select files."}
+                </p>
+              </div>
+              {draft.images?.length > 0 && (
+                <div className="ad-image-grid">
+                  {draft.images.map((image, index) => (
+                    <div className="ad-image-thumb" key={`${image}-${index}`}>
+                      <img src={image} alt={`Product ${index + 1}`} />
+                      <button
+                        type="button"
+                        className="ad-image-remove"
+                        onClick={() => removeImage(index)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
 
+              <div className="ad-section-label">Specifications</div>
               <div className="ad-row2">
                 <div className="ad-field">
                   <label className="ad-label">Production capacity</label>
@@ -462,14 +684,16 @@ export default function ProductPage() {
                     className="ad-input"
                     placeholder="e.g. 15000 pieces in 10 hours"
                     value={draft.specifications.productionCapacity}
-                    onChange={(e) => setSpec("productionCapacity", e.target.value)}
+                    onChange={(e) =>
+                      setSpec("productionCapacity", e.target.value)
+                    }
                   />
                 </div>
                 <div className="ad-field">
                   <label className="ad-label">Motor</label>
                   <input
                     className="ad-input"
-                    placeholder="e.g. 0.5 HP Crompton Greaves"
+                    placeholder="e.g. 0.5 HP"
                     value={draft.specifications.motor}
                     onChange={(e) => setSpec("motor", e.target.value)}
                   />
@@ -490,7 +714,7 @@ export default function ProductPage() {
                   <label className="ad-label">Power source</label>
                   <input
                     className="ad-input"
-                    placeholder="e.g. 220V 50Hz (Single Phase)"
+                    placeholder="e.g. 220V 50Hz"
                     value={draft.specifications.powerSource}
                     onChange={(e) => setSpec("powerSource", e.target.value)}
                   />
@@ -526,7 +750,7 @@ export default function ProductPage() {
                   <label className="ad-label">Weight</label>
                   <input
                     className="ad-input"
-                    placeholder="e.g. 200 KG Approx"
+                    placeholder="e.g. 200 KG"
                     value={draft.specifications.weight}
                     onChange={(e) => setSpec("weight", e.target.value)}
                   />
@@ -581,52 +805,27 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* Category-specific spec fields */}
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Plate size range</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 4-14 inch (paper plate machines)"
-                    value={draft.specifications.plateSizeRange}
-                    onChange={(e) => setSpec("plateSizeRange", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Roller size</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 32 inch (lamination machines)"
-                    value={draft.specifications.rollerSize}
-                    onChange={(e) => setSpec("rollerSize", e.target.value)}
-                  />
-                </div>
-              </div>
+              <div className="ad-section-label">Catalog content</div>
+              <ChipInput
+                label="Items produced"
+                placeholder="e.g. Fancy Thali — press Enter"
+                values={draft.itemsProduced}
+                onChange={(value) => setField("itemsProduced", value)}
+              />
+              <ChipInput
+                label="Special features"
+                placeholder="e.g. Easy maintenance — press Enter"
+                values={draft.features}
+                onChange={(value) => setField("features", value)}
+              />
+              <ChipInput
+                label="Tags"
+                placeholder="e.g. dona machine — press Enter"
+                values={draft.tags}
+                onChange={(value) => setField("tags", value)}
+              />
 
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Paper cup size range</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 40ml to 750ml"
-                    value={draft.specifications.paperCupSizeRange}
-                    onChange={(e) => setSpec("paperCupSizeRange", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Est. electricity bill</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 120 to 150 per month"
-                    value={draft.specifications.electricityBillEstimate}
-                    onChange={(e) => setSpec("electricityBillEstimate", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* ---------------- PRICING ---------------- */}
               <div className="ad-section-label">Pricing</div>
-
               <div className="ad-row2">
                 <div className="ad-field">
                   <label className="ad-label">Base price</label>
@@ -638,13 +837,15 @@ export default function ProductPage() {
                     value={draft.pricing.basePrice}
                     onChange={(e) => setPricing("basePrice", e.target.value)}
                   />
-                  {errors.basePrice && <div className="ad-error-text">{errors.basePrice}</div>}
+                  {errors.basePrice && (
+                    <div className="ad-error-text">{errors.basePrice}</div>
+                  )}
                 </div>
                 <div className="ad-field">
                   <label className="ad-label">Price label</label>
                   <input
                     className="ad-input"
-                    placeholder="e.g. Gurgaon Price / Ex-Factory Delhi"
+                    placeholder="e.g. Gurgaon Price"
                     value={draft.pricing.priceLabel}
                     onChange={(e) => setPricing("priceLabel", e.target.value)}
                   />
@@ -660,42 +861,23 @@ export default function ProductPage() {
                     step="0.01"
                     min="0"
                     value={draft.pricing.otherExpenses}
-                    onChange={(e) => setPricing("otherExpenses", e.target.value)}
+                    onChange={(e) =>
+                      setPricing("otherExpenses", e.target.value)
+                    }
                   />
                 </div>
                 <div className="ad-field">
                   <label className="ad-label">Total price (auto)</label>
-                  <input className="ad-input" value={totalPriceDisplay} disabled readOnly />
+                  <input
+                    className="ad-input"
+                    value={totalPriceDisplay}
+                    disabled
+                    readOnly
+                  />
                 </div>
               </div>
 
-              {/* ---------------- ARRAY FIELDS ---------------- */}
-              <div className="ad-section-label">Catalog content</div>
-
-              <ChipInput
-                label="Items produced"
-                placeholder="e.g. Fancy Thali — press Enter"
-                values={draft.itemsProduced}
-                onChange={(v) => setField("itemsProduced", v)}
-              />
-
-              <ChipInput
-                label="Special features"
-                placeholder="e.g. Easy maintenance — press Enter"
-                values={draft.features}
-                onChange={(v) => setField("features", v)}
-              />
-
-              <ChipInput
-                label="Tags"
-                placeholder="e.g. dona machine — press Enter"
-                values={draft.tags}
-                onChange={(v) => setField("tags", v)}
-              />
-
-              {/* ---------------- LOGISTICS / STOCK ---------------- */}
               <div className="ad-section-label">Logistics & stock</div>
-
               <div className="ad-row2">
                 <div className="ad-field">
                   <label className="ad-label">Stock qty</label>
@@ -706,7 +888,9 @@ export default function ProductPage() {
                     value={draft.stock}
                     onChange={(e) => setField("stock", e.target.value)}
                   />
-                  {errors.stock && <div className="ad-error-text">{errors.stock}</div>}
+                  {errors.stock && (
+                    <div className="ad-error-text">{errors.stock}</div>
+                  )}
                 </div>
                 <div className="ad-field">
                   <label className="ad-label">Low-stock threshold</label>
@@ -749,9 +933,9 @@ export default function ProductPage() {
                     value={draft.availability}
                     onChange={(e) => setField("availability", e.target.value)}
                   >
-                    {AVAILABILITY_OPTIONS.map((a) => (
-                      <option key={a} value={a}>
-                        {a}
+                    {AVAILABILITY_OPTIONS.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
                       </option>
                     ))}
                   </select>
@@ -763,16 +947,16 @@ export default function ProductPage() {
                     value={draft.status}
                     onChange={(e) => setField("status", e.target.value)}
                   >
-                    {STATUS_OPTIONS.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
+                    {STATUS_OPTIONS.map((value) => (
+                      <option key={value} value={value}>
+                        {value}
                       </option>
                     ))}
                   </select>
                 </div>
               </div>
 
-              <div className="ad-row2">
+              <div className="ad-row2 ad-row-gap-small">
                 <div className="ad-field">
                   <label className="ad-label">Main market</label>
                   <input
@@ -787,14 +971,20 @@ export default function ProductPage() {
                     <input
                       type="checkbox"
                       checked={draft.isReturnable}
-                      onChange={(e) => setField("isReturnable", e.target.checked)}
+                      onChange={(e) =>
+                        setField("isReturnable", e.target.checked)
+                      }
                     />
                     <span>Item can be returned</span>
                   </label>
                 </div>
               </div>
 
-              {submitError && <div className="ad-error-text ad-submit-error">{submitError}</div>}
+              {submitError && (
+                <div className="ad-error-text ad-submit-error">
+                  {submitError}
+                </div>
+              )}
 
               <div className="ad-modal-actions">
                 <button
@@ -805,14 +995,22 @@ export default function ProductPage() {
                 >
                   Cancel
                 </button>
-                <button type="submit" className="ad-btn-primary" disabled={isSubmitting}>
-                  {isSubmitting ? "Saving…" : editingId ? "Save changes" : "Add product"}
+                <button
+                  type="submit"
+                  className="ad-btn-primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting
+                    ? "Saving…"
+                    : editingId
+                      ? "Save changes"
+                      : "Add product"}
                 </button>
               </div>
             </form>
           </div>
         </div>
-      
+      )}
     </div>
   );
 }
