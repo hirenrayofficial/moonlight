@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
     await connectDB()
-    const res = await Product.find()
+    const res = await Product.find().select({name:1,slug:1,sku:1,pricing:1,images:1})
 
     return NextResponse.json({ message: "Product get successfull", item: res })
 }

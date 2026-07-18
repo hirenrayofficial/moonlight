@@ -1,7 +1,8 @@
 "use client"
 import AdminDashboard from '@/component/admin/DashboardLayout';
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation';
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -11,9 +12,39 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 export default function page() {
+  const router = useRouter();
+  const [authChecked, setAuthChecked] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
 
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/admin/adminAutorizetion');
+        if (!res.ok) {
+          router.replace('/getway');
+          return;
+        }
 
-    useEffect(() => {
+        const data = await res.json();
+        if (!data?.isAuthenticated) {
+          router.replace('/getway');
+          return;
+        }
+
+        setAuthorized(true);
+      } catch (err) {
+        router.replace('/getway');
+      } finally {
+        setAuthChecked(true);
+      }
+    }
+
+    checkAuth();
+  }, [router]);
+
+  useEffect(() => {
+    if (!authorized) return;
+
     async function subscribe() {
       if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
 
@@ -34,13 +65,25 @@ export default function page() {
         body: JSON.stringify(sub),
       });
     }
+
     subscribe();
-  }, []);
+  }, [authorized]);
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Checking authorization…</p>
+      </div>
+    );
+  }
+
+  if (!authorized) {
+    return null;
+  }
 
   return (
     <div>
-      {/* <ProductAdmin /> */}
-      <AdminDashboard/>
+      <AdminDashboard />
     </div>
   );
 }

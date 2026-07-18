@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import Code from "@/db/mongodb/authbase/codeBase";
 import { genrateCode }  from '@/services/home/Genratecode'
 import connectDB from "@/db/mongodb/db";
+import { codeSend } from "@/services/admin/noadmailer/noadmailer";
 
 
 export async function POST(req) {
@@ -40,8 +41,10 @@ export async function POST(req) {
         createdAt: Date.now()
     })
     await savedCode.save()
-    console.log(savedCode.code)
-    if(!savedCode){
+    // console.log(savedCode.code)
+
+    const emaildens = await codeSend({email:savedCode.email,code:savedCode.code})
+    if(!emaildens){
         return NextResponse.json({ message: "Code  genrate Unsuccesfull" },{status:500})
     }
     return NextResponse.json({message: "Code send Your mail",},{status:200})

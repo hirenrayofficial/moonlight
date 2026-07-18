@@ -1,9 +1,11 @@
 "use client";
 import React, { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import "./admindash.scss";
 import Dashboard from "./Dashboard";
-import { useModal } from "@/contaxt/admin/ContaxtApi";
+import DeviceInfo from "./currentDeviceacces/CurrentDevice";
 import ProductAdmin, { SearchBox } from "./product/ProductAdmin";
+import Notification from "@/component/admin/notification/Notification";
 
 
 /**
@@ -118,6 +120,7 @@ const emptyDraft = {
 };
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [view, setView] = useState("dashboard"); // dashboard | inventory
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
   const [query, setQuery] = useState("");
@@ -266,17 +269,14 @@ export default function AdminDashboard() {
     setConfirmDeleteId(null);
   }
 
-  //MODAL SECTION//
-
-  const { mopen } = useModal();
 
   return (
     <div className="ad-root">
       {/* ---------- sidebar ---------- */}
       <aside className="ad-sidebar">
         <div className="ad-brand">
-          <div className="ad-brand-mark ">S</div>
-          <span className="ad-brand-name hidden md:flex">Stockroom</span>
+          <div className="ad-brand-mark ">M</div>
+          <span className="ad-brand-name hidden md:flex">MoonlightPanel</span>
         </div>
         <nav className="ad-nav">
           <button
@@ -291,6 +291,19 @@ export default function AdminDashboard() {
           >
             Products
           </button>
+          <button
+            className={`ad-nav-item ${view === "notification" ? "active" : ""}`}
+            onClick={() => setView("notification")}
+          >
+            Notification
+          </button>
+          <button
+            className={`ad-nav-item ${view === "device" ? "active" : ""}`}
+            onClick={() => setView("device")}
+          >
+            Device Info
+          </button>
+
         </nav>
         <div className="ad-sidebar-foot ad-mono">v1.0 · admin</div>
       </aside>
@@ -298,10 +311,14 @@ export default function AdminDashboard() {
       {/* ---------- main ---------- */}
       <div className="ad-main">
         <div className="ad-topbar">
-          <SearchBox searchQuery={query} setSearchQuery={setQuery} />
+          {/* <SearchBox searchQuery={query} setSearchQuery={setQuery} /> */}
+          <div>
+                              <h1 className="ad-page-title">Dashboard</h1>
+        <p className="ad-page-sub">
+          Live snapshot of inventory and today's orders.
+        </p>
+          </div>
           <div className="ad-topbar-right">
-
-
             <div className="ad-user" onClick={(e) => setMenusOpen((o) => !o)}>
               <div className="ad-avatar ad-mono">AD</div>
               <span className="ad-user-name">Admin</span>
@@ -344,10 +361,11 @@ export default function AdminDashboard() {
               products={products}
               stockStatus={stockStatus}
               money={money}
-              RECENT_ORDERS={RECENT_ORDERS}
             />
           )}
           {view === "products" && <ProductAdmin compact />}
+          {view === "notification" && <Notification  />}
+          {view === "device" && <DeviceInfo  />}
         </div>
       </div>
 

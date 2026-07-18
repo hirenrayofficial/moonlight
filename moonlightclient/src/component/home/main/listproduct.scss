@@ -92,6 +92,10 @@
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
+.pl-tab:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* ---------- grid ---------- */
 .pl-grid {
@@ -200,6 +204,64 @@
   color: var(--ink-faint);
   font-size: 13px;
   background: var(--paper);
+}
+
+/* ==========================================================================
+   Loading skeleton — shows while useQuery is fetching. Same pl-card shape
+   (image block + info block) so there's zero layout shift once real data
+   arrives, just a shimmer sweep instead of static gray boxes.
+   ========================================================================== */
+.pl-skel-block,
+.pl-skel-line {
+  position: relative;
+  overflow: hidden;
+  background: var(--line);
+}
+.pl-skel-block::after,
+.pl-skel-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  animation: pl-shimmer 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-skel-block::after,
+  .pl-skel-line::after {
+    animation: none;
+  }
+}
+@keyframes pl-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.pl-skeleton-card {
+  pointer-events: none;
+}
+.pl-skel-line {
+  height: 11px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+.pl-skel-line-name {
+  width: 90%;
+}
+.pl-skel-line-name.short {
+  width: 55%;
+}
+.pl-skel-line-price {
+  width: 40%;
+  height: 13px;
+  margin-top: 4px;
+  margin-bottom: 0;
 }
 
 .pl-footer {

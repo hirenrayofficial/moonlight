@@ -1,0 +1,67 @@
+/* Reusing your color palette */
+.di-page {
+  --bg: #15140f;
+  --panel: #1c1b16;
+  --line-strong: #47463a;
+  --ink: #ecece4;
+  --ink-dim: #9b9a8c;
+  --accent: #f2b705;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Work Sans", sans-serif;
+  padding: 24px;
+}
+
+// .di-inner { max-width: 800px; margin: 0 auto; }
+
+.di-title {
+  font-family: "Archivo Black", sans-serif;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.di-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.di-card {
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  padding: 20px;
+}
+
+.di-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+}
+
+.di-value {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Status indicator styling */
+.di-value.active { color: #57d9a3; }
+
+.di-action-btn {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 12px 20px;
+  cursor: pointer;
+  
+  &:hover {
+    background: var(--ink);
+    color: var(--bg);
+  }
+}

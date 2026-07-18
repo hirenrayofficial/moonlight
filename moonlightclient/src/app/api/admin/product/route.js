@@ -2,19 +2,7 @@
 import connectDB from '@/db/mongodb/db';
 import Product from '@/db/mongodb/product/productModule_fixed';
 import { NextResponse } from 'next/server';
-
-// Verify admin session/authentication
-async function verifyAdminAuth(req) {
-  try {
-    const session = req.headers.get('authorization');
-    if (!session || !session.startsWith('Bearer ')) {
-      return null;
-    }
-    return true; // Replace with actual session verification
-  } catch (error) {
-    return null;
-  }
-}
+import { verifyAdminSession, unauthorizedJson } from '@/lib/adminAuth';
 
 // Helper function to scrub empty strings and format numbers safely
 const cleanPayload = (data) => {
@@ -63,14 +51,9 @@ const validateProduct = (data) => {
 
 export async function POST(req) {
   try {
-    // Verify admin authentication
-    // const isAdmin = await verifyAdminAuth(req);
-    // if (!isAdmin) {
-    //   return NextResponse.json(
-    //     { success: false, error: 'Unauthorized access' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!(await verifyAdminSession())) {
+      return unauthorizedJson();
+    }
 
     // Parse and validate request
     const body = await req.json();
@@ -145,46 +128,12 @@ export async function POST(req) {
   }
 }
 
-// GET - Retrieve products
-// export async function GET(req) {
-//   try {
-//     await connectDB();
-
-//     const { searchParams } = new URL(req.url);
-//     const category = searchParams.get('category');
-//     const status = searchParams.get('status');
-//     const limit = parseInt(searchParams.get('limit') || '50', 10);
-//     const skip = parseInt(searchParams.get('skip') || '0', 10);
-
-//     const query = {};
-//     if (category) query.category = category;
-//     if (status) query.status = status;
-
-//     const products = await Product.find(query)
-//       .sort({ createdAt: -1 })
-//       .limit(limit)
-//       .skip(skip);
-
-//     const total = await Product.countDocuments(query);
-
-//     return NextResponse.json(
-//       {
-//         success: true,
-//         data: products,
-//         pagination: { total, limit, skip },
-//       },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error('Product retrieval error:', error.message);
-//     return NextResponse.json(
-//       { success: false, error: 'Failed to retrieve products.' },
-//       { status: 500 }
-//     );
-//   }
-// }
 export async function GET(req) {
   try {
+    if (!(await verifyAdminSession())) {
+      return unauthorizedJson();
+    }
+
     await connectDB();
 
     const { searchParams } = new URL(req.url);
@@ -200,7 +149,8 @@ export async function GET(req) {
     const products = await Product.find()
       .sort({ createdAt: -1 })
       .limit(limit)
-      .skip(skip);
+      .skip(skip)
+
 
     const total = await Product.countDocuments(query);
 
@@ -224,14 +174,9 @@ export async function GET(req) {
 // PUT - Update product
 export async function PUT(req) {
   try {
-    // TODO: enable admin auth verification by implementing verifyAdminAuth
-    // const isAdmin = await verifyAdminAuth(req);
-    // if (!isAdmin) {
-    //   return NextResponse.json(
-    //     { success: false, error: 'Unauthorized access' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!(await verifyAdminSession())) {
+      return unauthorizedJson();
+    }
 
     const body = await req.json();
     const { productId, rawPayload } = body;
@@ -288,14 +233,9 @@ export async function PUT(req) {
 // DELETE - Remove product
 export async function DELETE(req) {
   try {
-    // TODO: enable admin auth verification by implementing verifyAdminAuth
-    // const isAdmin = await verifyAdminAuth(req);
-    // if (!isAdmin) {
-    //   return NextResponse.json(
-    //     { success: false, error: 'Unauthorized access' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!(await verifyAdminSession())) {
+      return unauthorizedJson();
+    }
 
     const { searchParams } = new URL(req.url);
     const productId = searchParams.get('id');

@@ -2,37 +2,34 @@ import mongoose from "mongoose";
 
 
 
-const adminAuthschema =  new mongoose.Schema({
+const adminAuthschema = new mongoose.Schema({
     userId: {
         type: String,
         require: true,
-        unique: true,
     },
     deviceFingerprint: {
         type: String,
         require: true,
-        unique: true,
     },
     ipAddress: {
         type: String,
         require: true,
-        unique: true,
     },
     userAgent: {
         type: String,
         require: true,
-        unique: true,
     },
     browser: {
         type: String,
         require: true,
-        unique: true,
     },
-
     os: {
         type: String,
         require: true,
-        unique: true,
+    },
+    deviceType: {
+        type: String,
+        require: true,
     },
     firstSeen: {
         type: Date,
@@ -44,6 +41,8 @@ const adminAuthschema =  new mongoose.Schema({
         type: Boolean,
     },
 })
+
+adminAuthschema.index({ userId: 1, deviceFingerprint: 1 }, { unique: true });
 
 const device = mongoose.model("deviceinfo",adminAuthschema)
 

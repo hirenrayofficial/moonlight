@@ -357,7 +357,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: var(--line-strong);
+  // background: var(--line-strong);
   border: 1px solid var(--line-strong);
   margin-bottom: 28px;
 }
@@ -391,7 +391,7 @@
 /* two-col dashboard */
 .ad-dash-grid {
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
+  // grid-template-columns: 1.3fr 0.7fr;
   gap: 20px;
 }
 @media (max-width: 900px) {

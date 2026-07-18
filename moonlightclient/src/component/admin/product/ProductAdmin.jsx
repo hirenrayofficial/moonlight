@@ -8,6 +8,7 @@ import {
   findProducts,
   updateProduct,
 } from "@/services/admin/apiService/Product";
+import { imgUpload } from "@/services/admin/imgbb/imgbbuploader";
 import "./amodal.scss";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { slugify } from "@/utilis/slujgify";
@@ -219,6 +220,7 @@ export default function ProductAdmin({ compact = false }) {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [uploading, setUploading] = useState({});
 
   const {
     data: queryData,
@@ -368,17 +370,52 @@ export default function ProductAdmin({ compact = false }) {
   const onDrop = useCallback(async (acceptedFiles) => {
     if (!acceptedFiles || acceptedFiles.length === 0) return;
 
-    try {
-      const dataUrls = await Promise.all(
-        acceptedFiles.map((file) => fileToDataURL(file)),
-      );
-      setDraft((prev) => ({
-        ...prev,
-        images: [...(prev.images || []), ...dataUrls],
-      }));
-    } catch (error) {
-      console.error("Image upload failed", error);
-    }
+    // Add previews immediately and mark as uploading
+    const previews = acceptedFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+
+    setDraft((prev) => ({
+      ...prev,
+      images: [...(prev.images || []), ...previews.map((p) => p.preview)],
+    }));
+
+    // mark all as uploading
+    setUploading((prev) => {
+      const next = { ...prev };
+      previews.forEach((p) => (next[p.preview] = true));
+      return next;
+    });
+
+    // Upload each file and replace preview with final URL
+    await Promise.all(
+      previews.map(async ({ file, preview }) => {
+        try {
+          const url = await imgUpload(file);
+          // replace preview with final url
+          setDraft((prev) => ({
+            ...prev,
+            images: prev.images.map((img) => (img === preview ? url : img)),
+          }));
+        } catch (err) {
+          console.error("imgbb upload failed for file:", file.name, err);
+          // remove the preview on failure
+          setDraft((prev) => ({
+            ...prev,
+            images: prev.images.filter((img) => img !== preview),
+          }));
+        } finally {
+          setUploading((prev) => {
+            const next = { ...prev };
+            delete next[preview];
+            return next;
+          });
+          // revoke object URL to free memory
+          try { URL.revokeObjectURL(preview); } catch (e) {}
+        }
+      }),
+    );
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -469,7 +506,7 @@ export default function ProductAdmin({ compact = false }) {
       }
     >
       {compact && (
-        <div className="bt-main w-full flex justify-end items-end">
+        <div className="bt-main w-full flex justify-end items-end py-8">
           <button
             className=" flex justify-end items-end bg-[#f2b705] text-[#15140f] hover:bg-[#e2a704] p-2"
             onClick={openAdd}
@@ -659,15 +696,22 @@ export default function ProductAdmin({ compact = false }) {
                     : "Drag and drop one or more images here, or click to select files."}
                 </p>
               </div>
+              {Object.keys(uploading).length > 0 && (
+                <div className="ad-uploading-note">Uploading {Object.keys(uploading).length} image(s)…</div>
+              )}
               {draft.images?.length > 0 && (
                 <div className="ad-image-grid">
                   {draft.images.map((image, index) => (
                     <div className="ad-image-thumb" key={`${image}-${index}`}>
                       <img src={image} alt={`Product ${index + 1}`} />
+                      {uploading[image] && (
+                        <div className="ad-image-uploading">Uploading…</div>
+                      )}
                       <button
                         type="button"
                         className="ad-image-remove"
                         onClick={() => removeImage(index)}
+                        disabled={!!uploading[image]}
                       >
                         Delete
                       </button>
@@ -998,7 +1042,7 @@ export default function ProductAdmin({ compact = false }) {
                 <button
                   type="submit"
                   className="ad-btn-primary"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || Object.keys(uploading).length > 0}
                 >
                   {isSubmitting
                     ? "Saving…"

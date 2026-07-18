@@ -2,6 +2,11 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
+  images: {
+    domains: ['i.ibb.co'],
+    remotePatterns: [{ protocol: 'https', hostname: 'i.ibb.co',port: '', pathname: '/**' }],
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development',
+  },
   async headers() {
     return [
       {

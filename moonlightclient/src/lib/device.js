@@ -62,24 +62,70 @@ export function looksLikeBotUA(userAgent) {
 // Logs every page view and login attempt (success or failure) for audit purposes.
 export async function logAccessEvent({ deviceInfo, event, usernameAttempted = null, reason = null }) {
   await connectDB();
-  await Logs.insertOne({
-    usernameAttempted,
-    ipAddress: deviceInfo.ip,
-    userAgent: deviceInfo.userAgent,
-    browser: deviceInfo.browser,
-    os: deviceInfo.os,
-    deviceType: deviceInfo.deviceType,
-    event, // 'page_view' | 'login_success' | 'login_failed' | 'bot_blocked'
-    reason,
-    createdAt: new Date(),
-  });
+
+  const ipfind = await Logs.findOne({ ipAddress: deviceInfo.ip })
+  if (!ipfind) {
+    await Logs.insertOne({
+      usernameAttempted,
+      ipAddress: deviceInfo.ip,
+      userAgent: deviceInfo.userAgent,
+      browser: deviceInfo.browser,
+      os: deviceInfo.os,
+      deviceType: deviceInfo.deviceType,
+      event, // 'page_view' | 'login_success' | 'login_failed' | 'bot_blocked'
+      reason,
+      createdAt: new Date(),
+    });
+  } else {
+    return
+  }
+
 }
 
 // Records or updates the (user, device) row and reports whether this
 // was a brand-new device for that user.
-export async function recordDeviceForUser(userId, deviceInfo) {
+async function ensureAdminDeviceIndexes() {
   await connectDB();
 
+  const staleIndexes = [
+    'userId_1',
+    'deviceFingerprint_1',
+    'ipAddress_1',
+    'userAgent_1',
+    'browser_1',
+    'os_1',
+  ];
+
+  const indexes = await device.collection.indexes();
+  for (const index of indexes) {
+    if (staleIndexes.includes(index.name)) {
+      try {
+        await device.collection.dropIndex(index.name);
+      } catch (err) {
+        if (!/IndexNotFound|index not found/i.test(err.message)) {
+          throw err;
+        }
+      }
+    }
+  }
+
+  const hasCompound = indexes.some(
+    (index) =>
+      index.key &&
+      index.key.userId === 1 &&
+      index.key.deviceFingerprint === 1
+  );
+
+  if (!hasCompound) {
+    await device.collection.createIndex(
+      { userId: 1, deviceFingerprint: 1 },
+      { unique: true, name: 'userId_1_deviceFingerprint_1' }
+    );
+  }
+}
+
+export async function recordDeviceForUser(userId, deviceInfo) {
+  await ensureAdminDeviceIndexes();
 
   const existing = await device.findOne({ userId, deviceFingerprint: deviceInfo.fingerprint });
 
@@ -98,6 +144,7 @@ export async function recordDeviceForUser(userId, deviceInfo) {
     userAgent: deviceInfo.userAgent,
     browser: deviceInfo.browser,
     os: deviceInfo.os,
+    deviceType: deviceInfo.deviceType,
     firstSeen: new Date(),
     lastSeen: new Date(),
     isTrusted: false,
@@ -109,7 +156,7 @@ export async function recordDeviceForUser(userId, deviceInfo) {
 // Simple Mongo-backed sliding-window rate limiter, keyed by IP.
 // Durable across server restarts/instances, unlike an in-memory Map.
 export async function checkRateLimit(ip, { windowMs = 15 * 60 * 1000, max = 10 } = {}) {
-   await connectDB();
+  await connectDB();
   const windowStart = new Date(Date.now() - windowMs);
 
   await attemp.insertOne({ ip, createdAt: new Date() });

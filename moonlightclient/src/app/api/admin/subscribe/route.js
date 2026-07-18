@@ -1,10 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-
-const filePath = path.join(process.cwd(), 'subscription.json');
+import { saveSubscription } from '@/services/admin/notification/subscription';
+import { verifyAdminSession, unauthorizedJson } from '@/lib/adminAuth';
 
 export async function POST(req) {
+  if (!(await verifyAdminSession())) {
+    return unauthorizedJson();
+  }
+
   const sub = await req.json();
-  fs.writeFileSync(filePath, JSON.stringify(sub));
+  await saveSubscription(sub);
   return Response.json({ success: true });
 }

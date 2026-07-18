@@ -1,18 +1,39 @@
-import { getAll, markAllRead } from '@/lib/notifications';
+import { deleteAll, deleteSingle, getAll, markAllRead } from '@/services/admin/notification/webpush';
+import { verifyAdminSession, unauthorizedJson } from '@/lib/adminAuth';
 
 export async function GET(req) {
-  const authHeader = req.headers.get('x-admin-secret');
-  if (authHeader !== process.env.ADMIN_SECRET) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!(await verifyAdminSession())) {
+    return unauthorizedJson();
   }
-  return Response.json(getAll());
+
+  const notifications = await getAll();
+  return Response.json(notifications);
 }
 
 export async function POST(req) {
-  const authHeader = req.headers.get('x-admin-secret');
-  if (authHeader !== process.env.ADMIN_SECRET) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!(await verifyAdminSession())) {
+    return unauthorizedJson();
   }
-  markAllRead();
+
+  await markAllRead();
+  return Response.json({ success: true });
+}
+export async function DELETE(req) {
+  if (!(await verifyAdminSession())) {
+    return unauthorizedJson();
+  }
+
+  const body = await req.json();
+  const {option,id} = body;
+  console.log(option,id)
+  if(option === "all"){
+    await deleteAll();
+    console.log("deleteoption " + option)
+  }else if(option === "single"){
+    console.log("deleteid " + id)
+    // await deleteSingle(id);
+      return Response.json({ success: true, message: "This service not availeble this time" });
+  }
+  
   return Response.json({ success: true });
 }

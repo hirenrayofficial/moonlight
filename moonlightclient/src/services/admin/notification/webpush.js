@@ -1,34 +1,39 @@
-import fs from 'fs';
-import path from 'path';
+import connectDB from '@/db/mongodb/db';
+import Notification from '@/db/mongodb/notification';
 
-const filePath = path.join(process.cwd(), 'notifications.json');
-
-export function getAll() {
-  if (!fs.existsSync(filePath)) return [];
-  return JSON.parse(fs.readFileSync(filePath));
+export async function getAll() {
+  await connectDB();
+  return Notification.find().sort({ createdAt: -1 }).limit(200).lean();
 }
 
-export function addNotification(notification) {
-  const all = getAll();
-  all.unshift({
+export async function addNotification(notification) {
+  await connectDB();
+  const doc = await Notification.create({
     id: Date.now().toString(),
     read: false,
     delivered: false,
-    createdAt: new Date().toISOString(),
+    createdAt: new Date(),
     ...notification,
   });
-  fs.writeFileSync(filePath, JSON.stringify(all.slice(0, 200))); // keep last 200
-  return all[0];
+  return doc.toObject();
 }
 
-export function markDelivered(id) {
-  const all = getAll();
-  const updated = all.map((n) => (n.id === id ? { ...n, delivered: true } : n));
-  fs.writeFileSync(filePath, JSON.stringify(updated));
+export async function markDelivered(id) {
+  await connectDB();
+  await Notification.findOneAndUpdate({ id }, { delivered: true });
 }
 
-export function markAllRead() {
-  const all = getAll();
-  const updated = all.map((n) => ({ ...n, read: true }));
-  fs.writeFileSync(filePath, JSON.stringify(updated));
+export async function markAllRead() {
+  await connectDB();
+  await Notification.updateMany({}, { read: true });
+}
+
+export async function deleteAll() {
+  await connectDB();
+  await Notification.deleteMany({});
+}
+
+export async function deleteSingle(id) {
+  await connectDB();
+  await Notification.deleteOne({ _id:id });
 }

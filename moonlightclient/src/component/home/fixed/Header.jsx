@@ -67,7 +67,7 @@ const SOCIALS = [
 export default function Header() {
   const handelCall = (link) => {
     if (link === "machine") {
-      window.location.href = "/home/machines";
+      window.location.href = "/getway";
     } else if (link === "about") {
       window.location.href = "/about";
     } else if (link === "num") {
@@ -124,7 +124,7 @@ export default function Header() {
               Blog
             </a>
           </nav>
-          <button className="hd-shop-btn" onClick={(e) => handelCall("machine")}>Shop</button>
+          <button className="hd-shop-btn" onClick={(e) => handelCall("machine")}>Login</button>
           <button className="hd-shop-btn cal" onClick={(e) => handelCall("num")}>
             Call
           </button>

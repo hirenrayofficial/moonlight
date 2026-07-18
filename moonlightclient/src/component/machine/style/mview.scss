@@ -11,37 +11,26 @@
   --accent: #f2b705;
   --accent-ink: #15140f;
 
-  background: rgba(0, 0, 0, 0);
   color: var(--ink);
   font-family: "Work Sans", sans-serif;
-  min-height: 100vh;
-  width: 100%;
+  margin: 0 auto;
 }
 .pd-root * {
   box-sizing: border-box;
 }
-
 .pd-mono {
   font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.03em;
 }
 
-/* ---------- breadcrumb ---------- */
 .pd-crumb {
-  padding: 16px 32px;
+  padding: 16px 0;
   border-bottom: 1px solid var(--line-strong);
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-faint);
-}
-.pd-crumb span.current {
-  color: var(--ink);
-}
-@media (max-width: 720px) {
-  .pd-crumb {
-    padding: 14px 20px;
-  }
+  margin-bottom: 24px;
 }
 
 /* ---------- main grid ---------- */
@@ -49,6 +38,8 @@
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 40px;
+  margin-bottom: 40px;
 }
 @media (max-width: 900px) {
   .pd-main {
@@ -56,21 +47,33 @@
   }
 }
 
+/* specs section - full width below main */
+.pd-specs-section {
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+}
+.pd-specs-section .pd-specs-title:first-child {
+  margin-top: 0;
+}
+
 /* gallery */
 .pd-gallery {
-  padding: 32px;
+  padding-right: 32px;
   border-right: 1px solid var(--line-strong);
 }
 @media (max-width: 900px) {
   .pd-gallery {
     border-right: none;
     border-bottom: 1px solid var(--line-strong);
-    padding: 24px 20px;
+    padding-right: 0;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
   }
 }
 .pd-image-main {
   width: 100%;
-  aspect-ratio: 1 / 0.6;
+  aspect-ratio: 1 / 0.8;
   object-fit: cover;
   background: #f0efe8;
   border: 1px solid var(--line-strong);
@@ -80,7 +83,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: var(--line-strong);
+  // background: var(--line-strong);
   border: 1px solid var(--line-strong);
   border-top: none;
 }
@@ -110,13 +113,13 @@
   outline-offset: -2px;
 }
 
-/* info / spec sheet */
+/* info */
 .pd-info {
-  padding: 40px 40px 32px;
+  padding-left: 32px;
 }
 @media (max-width: 900px) {
   .pd-info {
-    padding: 32px 20px;
+    padding-left: 0;
   }
 }
 
@@ -151,13 +154,11 @@
   color: var(--ink-faint);
   margin-bottom: 20px;
 }
-
 .pd-price {
   font-size: 28px;
   font-weight: 600;
   margin-bottom: 20px;
 }
-
 .pd-desc {
   font-size: 15px;
   line-height: 1.65;
@@ -172,34 +173,10 @@
   gap: 12px;
   margin-bottom: 28px;
 }
-.pd-qty {
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--line-strong);
-}
-.pd-qty button {
-  background: transparent;
-  border: none;
-  width: 36px;
-  height: 100%;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 15px;
-  cursor: pointer;
-  color: var(--ink);
-}
-.pd-qty button:hover {
-  background: var(--line);
-}
-.pd-qty span {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 13px;
-  width: 34px;
-  text-align: center;
-}
 .pd-add-btn {
   flex: 1;
   font-family: "IBM Plex Mono", monospace;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -207,14 +184,24 @@
   color: var(--bg);
   border: 1px solid var(--ink);
   cursor: pointer;
-  
+}
+.pd-add-btna {
+  flex: 1;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  // background: var(--ink);
+  color: var(--bg);
+  // border: 1px solid var(--ink);
+  cursor: pointer;
 }
 .pd-add-btn:hover {
   background: var(--accent);
   color: var(--accent-ink);
   border-color: var(--accent);
 }
-.pd-qty button:focus-visible,
 .pd-add-btn:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
@@ -226,15 +213,14 @@
   margin-bottom: 28px;
 }
 
-/* spec sheet */
 .pd-specs-title {
-  font-size: 10.5px;
+  font-size: 16.5px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-faint);
   border-top: 1px solid var(--line-strong);
   padding-top: 16px;
-  margin-bottom: 4px;
+  margin-bottom: 12px;
 }
 .pd-spec-row {
   display: flex;
@@ -257,33 +243,25 @@
 
 /* ---------- related ---------- */
 .pd-related-head {
-  padding: 28px 32px 0;
   font-size: 10.5px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-faint);
+  margin-bottom: 16px;
 }
-@media (max-width: 720px) {
-  .pd-related-head {
-    padding: 24px 20px 0;
-  }
-}
-
 .pd-related {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--line-strong);
   border: 1px solid var(--line-strong);
-  margin: 20px 32px 40px;
+  margin-bottom: 40px;
 }
 @media (max-width: 720px) {
   .pd-related {
     grid-template-columns: repeat(2, 1fr);
-    margin: 16px 20px 32px;
   }
 }
-
 .pd-related-card {
   background: var(--paper);
 }
@@ -308,4 +286,96 @@
   font-size: 12.5px;
   font-weight: 600;
   color: var(--ink);
+}
+
+/* ---------- error state ---------- */
+.pd-error {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 13px;
+  border: 1px dashed var(--line-strong);
+  background: var(--paper);
+}
+
+/* ==========================================================================
+   Loading skeleton — mirrors the real layout exactly (gallery, thumbs,
+   info block, related grid) so nothing shifts once data lands, only a
+   shimmer sweep in place of a static "Loading…" string.
+   ========================================================================== */
+.pd-skel-block,
+.pd-skel-line {
+  position: relative;
+  overflow: hidden;
+  background: var(--line);
+}
+.pd-skel-block::after,
+.pd-skel-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  animation: pd-shimmer 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pd-skel-block::after,
+  .pd-skel-line::after {
+    animation: none;
+  }
+}
+@keyframes pd-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.pd-skel-line {
+  height: 12px;
+  margin-bottom: 12px;
+}
+.pd-skel-eyebrow {
+  width: 160px;
+  height: 24px;
+  margin-bottom: 20px;
+}
+.pd-skel-title {
+  width: 70%;
+  height: 30px;
+  margin-bottom: 14px;
+}
+.pd-skel-sku {
+  width: 100px;
+  margin-bottom: 20px;
+}
+.pd-skel-price {
+  width: 120px;
+  height: 26px;
+  margin-bottom: 20px;
+}
+.pd-skel-desc {
+  width: 100%;
+}
+.pd-skel-desc.short {
+  width: 60%;
+  margin-bottom: 28px;
+}
+.pd-skel-btn {
+  width: 100%;
+  height: 44px;
+  margin-bottom: 28px;
+}
+.pd-skel-line-name {
+  width: 80%;
+  height: 11px;
+}
+.pd-skel-line-price {
+  width: 40%;
+  height: 12px;
+  margin-bottom: 0;
 }
