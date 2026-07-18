@@ -5,7 +5,7 @@ export const getNotification = async () => {
     const res = await axios.get('/api/admin/notifications', {
         headers: {
             'Content-Type': 'application/json',
-            'x-admin-secret': process.env.ADMIN_SECRET || "admin545sdfsdfssad",
+            'x-admin-secret': process.env.NEXT_APP_ADMIN_SECRET ,
         },
     });
 
@@ -19,7 +19,7 @@ export const markAllRead = async () => {
     const res = await axios.post('/api/admin/notifications', {}, {
         headers: {
             'Content-Type': 'application/json',
-            'x-admin-secret': process.env.ADMIN_SECRET || "admin545sdfsdfssad",
+            'x-admin-secret': process.env.NEXT_APP_ADMIN_SECRET,
         },
     });
 
@@ -33,7 +33,7 @@ export const deleteFucntion = async (option, id) => {
     const res = await axios.delete('/api/admin/notifications', {
         headers: {
             'Content-Type': 'application/json',
-            'x-admin-secret': process.env.ADMIN_SECRET || "admin545sdfsdfssad",
+            'x-admin-secret': process.env.NEXT_APP_ADMIN_SECRET,
         },
         data: { option, id }
     });

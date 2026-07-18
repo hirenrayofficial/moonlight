@@ -54,6 +54,7 @@ export default function AdminLogin() {
   const [formRenderedAt, setFormRenderedAt] = useState(null);
 
   const [hpField, setHpField] = useState(""); // honeypot — must stay empty
+  const [redirecting, setRedirecting] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
@@ -72,12 +73,14 @@ export default function AdminLogin() {
     setError("");
     setSubmitting(true);
 
-    setTimeout(async() => {
-      setSubmitting(false);
-      const valid = await axios.post("/api/getway/checkuser",{
-        username,password
-      })
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 700));
+      const res = await axios.post("/api/getway/checkuser", {
+        username,
+        password,
+      });
 
+      const valid = res?.data?.success || res?.data?.valid;
       if (valid) {
         setStep("code");
         return;
@@ -94,7 +97,15 @@ export default function AdminLogin() {
           `Invalid username or password. ${remaining} attempt${remaining === 1 ? "" : "s"} left.`,
         );
       }
-    }, 700);
+    } catch (err) {
+      console.error("Credentials check failed:", err);
+      setError(
+        err?.response?.data?.message ||
+          "Unable to verify credentials. Please try again later.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function handleCodeChange(i, val) {
@@ -111,7 +122,7 @@ export default function AdminLogin() {
     }
   }
 
-  function handleCodeSubmit(e) {
+  async function handleCodeSubmit(e) {
     e.preventDefault();
     if (submitting) return;
     setError("");
@@ -120,20 +131,34 @@ export default function AdminLogin() {
       setError("Enter all 6 digits.");
       return;
     }
+
     setSubmitting(true);
-    setTimeout( async()  => {
-      setSubmitting(false);
-      const res = await axios.post("/api/getway/checkcode",{
-        username,password,code:joined
-      })
-      if (res) {
-        handleSubmit()
-      } else {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      const res = await axios.post("/api/getway/checkcode", {
+        username,
+        password,
+        code: joined,
+      });
+
+      const valid = res?.data?.success || res?.data?.valid;
+      if (!valid) {
         setError("Incorrect code. Check your authenticator app and try again.");
         setCode(["", "", "", "", "", ""]);
         codeRefs.current[0]?.focus();
+        return;
       }
-    }, 600);
+
+      await handleSubmit();
+    } catch (err) {
+      console.error("Code verification failed:", err);
+      setError(
+        err?.response?.data?.message ||
+          "Unable to verify code. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   // Starts the session the instant this page loads — before any
@@ -151,9 +176,20 @@ export default function AdminLogin() {
       .finally(() => setLoading(false));
   }, []);
 
-  async function handleSubmit() {
+  if (loading) {
+    return (
+      <div className="lg-root">
+        <div className="lg-form-side">
+          <div className="lg-card lg-loading-card">
+            <div className="lg-loading-message">Starting secure login session…</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    setError(null);
+  async function handleSubmit() {
+    setError("");
     setSubmitting(true);
 
     try {
@@ -170,14 +206,18 @@ export default function AdminLogin() {
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         setError(data.error || "Login failed.");
         return;
       }
 
-      router.push(data.redirect || "/admin");
-    } catch {
+      setStep("success");
+      setRedirecting(true);
+      setTimeout(() => {
+        router.push(data.redirect || "/admin");
+      }, 300);
+    } catch (err) {
+      console.error("Login request failed:", err);
       setError("Network error. Please try again.");
     } finally {
       setSubmitting(false);
@@ -297,17 +337,19 @@ export default function AdminLogin() {
               <button
                 className="lg-submit-btn"
                 type="submit"
-                disabled={locked || submitting}
+                disabled={locked || submitting || loading || redirecting}
               >
                 {submitting && <span className="lg-spinner" />}
                 {locked
                   ? `Locked — ${lockRemaining}s`
-                  : submitting
-                    ? "Verifying…"
-                    : "Continue"}
+                  : redirecting
+                    ? "Redirecting…"
+                    : submitting
+                      ? "Verifying…"
+                      : "Continue"}
               </button>
 
-              <p className="lg-meta lg-mono">Demo: admin / stockroom2026</p>
+              
             </form>
           )}
 
@@ -341,10 +383,14 @@ export default function AdminLogin() {
               <button
                 className="lg-submit-btn"
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || loading || redirecting}
               >
                 {submitting && <span className="lg-spinner" />}
-                {submitting ? "Verifying…" : "Verify and sign in"}
+                {redirecting
+                  ? "Redirecting…"
+                  : submitting
+                    ? "Verifying…"
+                    : "Verify and sign in"}
               </button>
 
               <p className="lg-meta lg-mono">Demo code: {DEMO_CODE}</p>

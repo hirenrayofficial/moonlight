@@ -11,26 +11,28 @@ export async function POST(req) {
     const { username, password ,code} = body
     console.log(body)
 
-    if (!username, !password) {
-        return NextResponse.json({ message: "invalied field" }, { status: 400 })
+    if (!username || !password) {
+        return NextResponse.json({ success: false, message: "Invalid field" }, { status: 400 })
     }
-    const checkUser = await User.findOne({ username: username })
+
+    const checkUser = await User.findOne({ username });
     console.log(checkUser)
     if (!checkUser) {
-        return NextResponse.json({ message: 'username not valied' }, { status: 500 })
+        return NextResponse.json({ success: false, message: 'Username not valid' }, { status: 404 })
     }
-
-
 
     const isMatch = await bcrypt.compare(password, checkUser.password);
-    if (!isMatch) return fail('wrong_password');
-
-    await connectDB()
-    const checkCode = await Code.findOne({email:checkUser.email,code:code})
-    if(!checkCode){
-        return NextResponse.json({ message: "Code not match", }, { status: 500 })
+    if (!isMatch) {
+        return NextResponse.json({ success: false, message: 'Wrong password' }, { status: 401 });
     }
-    return NextResponse.json({ message: "Code send Your mail", }, { status: 200 })
+
+    await connectDB();
+    const checkCode = await Code.findOne({ email: checkUser.email, code });
+    if (!checkCode) {
+        return NextResponse.json({ success: false, message: "Code does not match" }, { status: 401 });
+    }
+
+    return NextResponse.json({ success: true, valid: true, message: "Code verified" }, { status: 200 });
 }
 
 

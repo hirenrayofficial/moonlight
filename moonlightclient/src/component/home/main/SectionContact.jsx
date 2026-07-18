@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import './contact.scss'
+import axios from "axios";
 /**
  * STOCKROOM — contact page
  * Form on the left, a manifest-style info panel on the right — same
@@ -18,23 +19,46 @@ function useContactForm() {
     topic: TOPICS[0],
     message: "",
   });
-  const [status, setStatus] = useState("idle"); // idle | submitted
+  const [status, setStatus] = useState("idle"); // idle | submitting | submitted | error
+  const [errorMessage, setErrorMessage] = useState("");
 
   function update(field, value) {
     setValues((v) => ({ ...v, [field]: value }));
   }
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!values.name.trim() || !values.email.trim() || !values.message.trim()) return;
-    setStatus("submitted");
-  }
+    if (!values.name.trim() || !values.email.trim() || !values.message.trim()) {
+      setErrorMessage("Please fill in name, email, and message.");
+      return;
+    }
 
-  return { values, update, status, handleSubmit };
+    setStatus("submitting");
+    setErrorMessage("");
+
+    try {
+      const response = await axios.post("/api/home/enquery", values);
+
+      if (response?.data?.success) {
+        setStatus("submitted");
+      } else {
+        setStatus("error");
+        setErrorMessage(response?.data?.message || "Unable to send enquiry. Please try again.");
+      }
+    } catch (error) {
+      console.error("Enquiry submission failed:", error);
+      setStatus("error");
+      setErrorMessage(
+        error?.response?.data?.message || "There was a problem sending your enquiry. Please try again later."
+      );
+    }
+  };
+
+  return { values, update, status, errorMessage, handleSubmit };
 }
 
 export default function ContactPage() {
-  const { values, update, status, handleSubmit } = useContactForm();
+  const { values, update, status, errorMessage, handleSubmit } = useContactForm();
 
   return (
     <div className="ct-root">
@@ -132,7 +156,12 @@ export default function ContactPage() {
                 />
               </div>
 
-              <button className="ct-submit-btn" type="submit">Send message</button>
+              {status === "error" && (
+                <p className="ct-error ct-mono">{errorMessage || "Failed to submit enquiry."}</p>
+              )}
+              <button className="ct-submit-btn" type="submit" disabled={status === "submitting"}>
+                {status === "submitting" ? "Sending…" : "Send message"}
+              </button>
             </form>
           )}
         </div>

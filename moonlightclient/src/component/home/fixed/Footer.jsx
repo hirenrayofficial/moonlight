@@ -12,15 +12,48 @@ import './footer.scss'
 const LINK_COLUMNS = [
   {
     title: "Catalog",
-    links: ["Manually", "Automatic", "Accessories", "All products"],
+    links: [{
+      name: "Machines",
+      href: "/home/machines"
+    }, {
+      name: "Accessories",
+      href: "/home/accessories"
+    }, {
+      name: "Spare parts",
+      href: "/home/spare-parts" 
+    }],
   },
   {
     title: "Company",
-    links: ["About", "Warehouse tour", "Careers", "Wholesale"],
+    links: [{
+      name: "About",
+      href: "/home/about"
+    }, {
+      name: "Blog",
+      href: "/home/blog"
+    }, {
+      name: "Contact",
+      href: "/home/contact"
+    },{
+      name: "Privacy",
+      href: "/home/privacy"
+    }],
   },
   {
     title: "Support",
-    links: ["Shipping", "Returns", "Track an order", "Contact"],
+    links: [{
+      name: "Shipping",
+      href: "/home/shipping"
+    }, {
+      name: "Returns",
+      href: "/home/returns"
+    }, {
+      name: "Track an order",
+      href: "/home/track-order"
+    }, {
+      name: "Contact",
+      href: "/home/contact"
+    }],
   },
 ];
 
@@ -83,7 +116,8 @@ export default function Footer() {
               <div className="ft-col-title ft-mono">{col.title}</div>
               <div className="ft-col-links">
                 {col.links.map((l) => (
-                  <a className="ft-col-link" href="#" key={l}>{l}</a>
+                  <a className="ft-col-link ft-mono" href={l.href} key={l.name}>{l.name}</a>
+
                 ))}
               </div>
             </div>
@@ -120,8 +154,8 @@ export default function Footer() {
             {SOCIALS.map((s) => (
               <a className="ft-bottom-link ft-mono" href="#" key={s}>{s}</a>
             ))}
-            <a className="ft-bottom-link ft-mono" href="#">Privacy</a>
-            <a className="ft-bottom-link ft-mono" href="#">Terms</a>
+            <a className="ft-bottom-link ft-mono" href="/home/privacy">Privacy</a>
+            <a className="ft-bottom-link ft-mono" href="/home/privacy">Terms</a>
           </div>
         </div>
       </div>

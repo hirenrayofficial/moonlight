@@ -12,42 +12,40 @@ export async function POST(req) {
     const { username, password } = body
     console.log(body)
 
-    if (!username, !password) {
-        return NextResponse.json({ message: "invalied field" }, { status: 400 })
+    if (!username || !password) {
+        return NextResponse.json({ success: false, message: "Invalid field" }, { status: 400 })
     }
-    const checkUser =await  User.findOne({ username:username })
+
+    const checkUser = await User.findOne({ username });
     console.log(checkUser)
     if (!checkUser) {
-        return NextResponse.json({ message: 'username not valied' },{status: 500})
+        return NextResponse.json({ success: false, message: 'Username not valid' }, { status: 404 })
     }
 
-
-
-  const isMatch = await bcrypt.compare(password, checkUser.password);
-  if (!isMatch) return fail('wrong_password');
-
-    // if (!matchPass) {
-    //     return NextResponse.json({ message: "Password not match" },{status:500})
-    // }
-    //genrate code //
-    const code = await genrateCode()
-    if(!code){
-        return NextResponse.json({ message: "Code not genrate" },{status:500})
+    const isMatch = await bcrypt.compare(password, checkUser.password);
+    if (!isMatch) {
+        return NextResponse.json({ success: false, message: 'Wrong password' }, { status: 401 });
     }
-    await connectDB()
-    const savedCode =  new Code({
-        email:checkUser.email,
-        code:code,
-        createdAt: Date.now()
-    })
-    await savedCode.save()
-    // console.log(savedCode.code)
 
-    const emaildens = await codeSend({email:savedCode.email,code:savedCode.code})
-    if(!emaildens){
-        return NextResponse.json({ message: "Code  genrate Unsuccesfull" },{status:500})
+    const code = await genrateCode();
+    if (!code) {
+        return NextResponse.json({ success: false, message: "Code not generated" }, { status: 500 });
     }
-    return NextResponse.json({message: "Code send Your mail",},{status:200})
+
+    await connectDB();
+    const savedCode = new Code({
+        email: checkUser.email,
+        code,
+        createdAt: Date.now(),
+    });
+    await savedCode.save();
+
+    const emaildens = await codeSend({ email: savedCode.email, code: savedCode.code });
+    if (!emaildens) {
+        return NextResponse.json({ success: false, message: "Code generation unsuccessful" }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, valid: true, message: "Code sent to your mail" }, { status: 200 });
 }
 
 

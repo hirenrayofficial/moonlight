@@ -117,10 +117,10 @@ export default function Header() {
             <a className="hd-nav-link" href="/">
               Home
             </a>
-            <a className="hd-nav-link" href="/machines">
+            <a className="hd-nav-link" href="/home/machines">
               Machines
             </a>
-            <a className="hd-nav-link" href="/blog">
+            <a className="hd-nav-link" href="/home/blog">
               Blog
             </a>
           </nav>

@@ -8,13 +8,13 @@ export const codeSend = async({email,code})=>{
             port: process.env.SMTP_PORT || 587,
             secure: false, // true for 465, false for other ports
             auth: {
-                user: process.env.SMTP_USER ||  "ifyouthinkiamher@gmail.com",
-                pass: process.env.SMTP_PASS || "hjuw wjls rbsf mkpz ",
+                user: process.env.NEXT_APP_SMPT_USER,
+                pass: process.env.NEXT_APP_SMPT_PASS,
             },
         });
 
         const mailOptions = {
-            from: process.env.SMTP_FROM,
+            from: process.env.NEXT_APP_SMPT_USER,
             to: email,
             subject: 'Your Verification Code',
             text: `Your verification code is: ${code}`,

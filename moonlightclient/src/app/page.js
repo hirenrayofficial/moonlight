@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import Hero from './home/Hero'
-
+import CookiesConsent from '@/component/privacy/cookiesConsont/CookiesConsont'
 
 export default function page() {
   const [csrfToken, setCsrfToken] = useState(null);
@@ -30,7 +30,7 @@ export default function page() {
   return (
     <div>
       <Hero />
-
+      <CookiesConsent csrfToken={csrfToken} formRenderedAt={formRenderedAt} error={error} />
     </div>
   )
 }

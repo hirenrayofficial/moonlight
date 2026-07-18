@@ -1,0 +1,232 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+.ab-root {
+  --bg: #faf9f5;
+  --paper: #ffffff;
+  --ink: #15140f;
+  --ink-dim: #5a594e;
+  --ink-faint: #9b9a8c;
+  --line: #d9d6c9;
+  --line-strong: #b8b5a4;
+  --accent: #f2b705;
+  --accent-ink: #15140f;
+
+  color: var(--ink);
+  font-family: "Work Sans", sans-serif;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.ab-mono {
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.03em;
+}
+
+.ab-crumb {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-strong);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 32px;
+}
+
+/* ---------- intro ---------- */
+.ab-intro {
+  max-width: 68ch;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line-strong);
+  margin-bottom: 0;
+}
+
+.ab-eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+}
+
+.ab-title {
+  font-family: "Archivo Black", sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(28px, 4.5vw, 46px);
+  line-height: 1.02;
+  margin: 0 0 16px 0;
+}
+
+.ab-subhead {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-dim);
+  margin: 0;
+}
+
+/* ---------- stats ---------- */
+.ab-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--line-strong);
+}
+@media (max-width: 720px) {
+  .ab-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.ab-stat-cell {
+  padding: 28px 24px;
+  border-right: 1px solid var(--line-strong);
+}
+.ab-stat-cell:last-child {
+  border-right: none;
+}
+@media (max-width: 720px) {
+  .ab-stat-cell:nth-child(2n) {
+    border-right: none;
+  }
+  .ab-stat-cell:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line-strong);
+  }
+}
+
+.ab-stat-value {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.ab-stat-label {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ---------- generic section ---------- */
+.ab-section {
+  padding: 48px 0;
+  border-bottom: 1px solid var(--line-strong);
+}
+.ab-section-head {
+  max-width: 60ch;
+  margin-bottom: 28px;
+}
+.ab-section-title {
+  font-family: "Archivo Black", sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(20px, 2.6vw, 28px);
+  line-height: 1.1;
+  margin: 4px 0 0 0;
+}
+
+/* ---------- values ---------- */
+.ab-values-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line-strong);
+  border: 1px solid var(--line-strong);
+}
+@media (max-width: 720px) {
+  .ab-values-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.ab-value-card {
+  background: var(--paper);
+  padding: 24px;
+}
+.ab-value-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+.ab-value-desc {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink-dim);
+  margin: 0;
+}
+
+/* ---------- timeline ---------- */
+.ab-timeline {
+  border-top: 1px solid var(--line-strong);
+}
+.ab-timeline-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+}
+.ab-timeline-row:last-child {
+  border-bottom: none;
+}
+@media (max-width: 560px) {
+  .ab-timeline-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+.ab-timeline-year {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.ab-timeline-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.ab-timeline-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  margin: 0;
+  max-width: 60ch;
+}
+
+/* ---------- cta ---------- */
+.ab-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 40px 0 0;
+}
+.ab-cta-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.ab-cta-desc {
+  font-size: 13.5px;
+  color: var(--ink-dim);
+  margin: 0;
+}
+.ab-cta-btn {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  padding: 14px 26px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.ab-cta-btn:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.ab-cta-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
