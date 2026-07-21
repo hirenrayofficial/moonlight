@@ -230,8 +230,8 @@ export default function AdminLogin() {
 
       <div className="lg-side">
         <div className="lg-brand">
-          <div className="lg-brand-mark">S</div>
-          <span className="lg-brand-name">Stockroom Admin</span>
+          <div className="lg-brand-mark">M</div>
+          <span className="lg-brand-name">Admin Panel</span>
         </div>
 
         <div>
@@ -251,8 +251,8 @@ export default function AdminLogin() {
             </span>
           </div>
           <div className="lg-status-row">
-            <span className="lg-status-label lg-mono">Last login</span>
-            <span className="lg-status-value lg-mono">Today, 8:41 AM</span>
+            {/* <span className="lg-status-label lg-mono">Last login</span> */}
+            {/* <span className="lg-status-value lg-mono">Today, 8:41 AM</span> */}
           </div>
           <div className="lg-status-row">
             <span className="lg-status-label lg-mono">2FA</span>
@@ -265,7 +265,7 @@ export default function AdminLogin() {
         <div className="lg-card">
           <div className="lg-mobile-brand">
             <div className="lg-brand-mark">S</div>
-            <span className="lg-brand-name">Stockroom Admin</span>
+            <span className="lg-brand-name"> Admin Panel</span>
           </div>
 
           {step === "credentials" && (
