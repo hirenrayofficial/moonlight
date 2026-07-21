@@ -24,12 +24,7 @@ const geistMono = Geist_Mono({
 //   subsets: ["latin"],
 // });
 
-const myfont = localFont({
-  src: [
-    { path: "./geist-mono-latin-300-normal.ttf", weight: '400', style: "normal" },
-  ],
-  variable: "--font-myfont",
-});
+
 
 export const metadata = {
   title: "Areca Leaf & Disposable Plates Manufacturer in India | Moonlight Machinery",
@@ -40,7 +35,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${myfont.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable}  h-full antialiased`}
     >
       {/* <header>
    

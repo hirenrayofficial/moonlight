@@ -94,8 +94,7 @@ export default function Testimonials() {
   return (
     <section className="tm-root">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
+ 
         .tm-root {
           --bg: #faf9f5;
           --paper: #ffffff;

@@ -178,7 +178,7 @@ export default function AdminLogin() {
 
   if (loading) {
     return (
-      <div className="lg-root">
+      <div className="w-full flex justify-center h-[100vh] text-white bg-[#15140f]">
         <div className="lg-form-side">
           <div className="lg-card lg-loading-card">
             <div className="lg-loading-message">Starting secure login session…</div>
@@ -358,7 +358,7 @@ export default function AdminLogin() {
               <div className="lg-form-eyebrow lg-mono">Step 2 of 2</div>
               <h2 className="lg-form-title">Verify it's you</h2>
               <p className="lg-code-desc">
-                Enter the 6-digit code from your authenticator app.
+                6-digit code send you email.
               </p>
 
               {error && <div className="lg-error lg-mono">{error}</div>}
@@ -393,7 +393,7 @@ export default function AdminLogin() {
                     : "Verify and sign in"}
               </button>
 
-              <p className="lg-meta lg-mono">Demo code: {DEMO_CODE}</p>
+              {/* <p className="lg-meta lg-mono">Demo code: {DEMO_CODE}</p> */}
 
               <button
                 type="button"

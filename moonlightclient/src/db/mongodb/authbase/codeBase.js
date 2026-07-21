@@ -9,7 +9,7 @@ const attemptSchema = new mongoose.Schema({
         require:true,
         uniqe:true
     },
-    createdAt: { type: Date }
+    createdAt: { type: Date ,expires:60}
 })
 
 const Code = mongoose.model("acccesCode",attemptSchema)

@@ -6,7 +6,7 @@ import Dashboard from "./Dashboard";
 import DeviceInfo from "./currentDeviceacces/CurrentDevice";
 import ProductAdmin, { SearchBox } from "./product/ProductAdmin";
 import Notification from "@/component/admin/notification/Notification";
-
+import axios from "axios";
 
 /**
  * STOCKROOM ADMIN — dashboard
@@ -123,22 +123,22 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [view, setView] = useState("dashboard"); // dashboard | inventory
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
-  const [query, setQuery] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
+  // const [query, setQuery] = useState("");
+  // const [categoryFilter, setCategoryFilter] = useState("All");
 
   const [notifications, setNotifications] = useState([
     makeNotif("system", "Dashboard initialized."),
   ]);
-  const [notifOpen, setNotifOpen] = useState(false);
+  // const [notifOpen, setNotifOpen] = useState(false);
   const [menusOpen, setMenusOpen] = useState(false);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [draft, setDraft] = useState(emptyDraft);
+  // const [modalOpen, setModalOpen] = useState(false);
+  // const [editingId, setEditingId] = useState(null);
+  // const [draft, setDraft] = useState(emptyDraft);
 
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  // const unreadCount = notifications.filter((n) => !n.read).length;
 
   function pushNotif(type, message) {
     setNotifications((prev) =>
@@ -146,47 +146,47 @@ export default function AdminDashboard() {
     );
   }
 
-  function markAllRead() {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-  }
+  // function markAllRead() {
+  //   setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  // }
 
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const matchesQuery =
-        p.name.toLowerCase().includes(query.toLowerCase()) ||
-        p.sku.toLowerCase().includes(query.toLowerCase());
-      const matchesCategory =
-        categoryFilter === "All" || p.category === categoryFilter;
-      return matchesQuery && matchesCategory;
-    });
-  }, [products, query, categoryFilter]);
+  // const filtered = useMemo(() => {
+  //   return products.filter((p) => {
+  //     const matchesQuery =
+  //       p.name.toLowerCase().includes(query.toLowerCase()) ||
+  //       p.sku.toLowerCase().includes(query.toLowerCase());
+  //     const matchesCategory =
+  //       categoryFilter === "All" || p.category === categoryFilter;
+  //     return matchesQuery && matchesCategory;
+  //   });
+  // }, [products, query, categoryFilter]);
 
-  const stats = useMemo(() => {
-    const totalProducts = products.length;
-    const lowStock = products.filter((p) => stockStatus(p) === "low").length;
-    const outOfStock = products.filter((p) => stockStatus(p) === "out").length;
-    const stockValue = products.reduce((sum, p) => sum + p.price * p.stock, 0);
-    return { totalProducts, lowStock, outOfStock, stockValue };
-  }, [products]);
+  // const stats = useMemo(() => {
+  //   const totalProducts = products.length;
+  //   const lowStock = products.filter((p) => stockStatus(p) === "low").length;
+  //   const outOfStock = products.filter((p) => stockStatus(p) === "out").length;
+  //   const stockValue = products.reduce((sum, p) => sum + p.price * p.stock, 0);
+  //   return { totalProducts, lowStock, outOfStock, stockValue };
+  // }, [products]);
 
-  function openAddModal() {
-    setEditingId(null);
-    setDraft(emptyDraft);
-    setModalOpen(true);
-  }
+  // function openAddModal() {
+  //   setEditingId(null);
+  //   setDraft(emptyDraft);
+  //   setModalOpen(true);
+  // }
 
-  function openEditModal(p) {
-    setEditingId(p.id);
-    setDraft({
-      name: p.name,
-      sku: p.sku,
-      category: p.category,
-      price: String(p.price),
-      stock: String(p.stock),
-      threshold: String(p.threshold),
-    });
-    setModalOpen(true);
-  }
+  // function openEditModal(p) {
+  //   setEditingId(p.id);
+  //   setDraft({
+  //     name: p.name,
+  //     sku: p.sku,
+  //     category: p.category,
+  //     price: String(p.price),
+  //     stock: String(p.stock),
+  //     threshold: String(p.threshold),
+  //   });
+  //   setModalOpen(true);
+  // }
 
   // function closeModal() {
   //   setModalOpen(false);
@@ -194,73 +194,73 @@ export default function AdminDashboard() {
   //   setDraft(emptyDraft);
   // }
 
-  function saveDraft(e) {
-    e.preventDefault();
-    const parsed = {
-      name: draft.name.trim(),
-      sku: draft.sku.trim() || `SR-${Math.floor(1000 + Math.random() * 9000)}`,
-      category: draft.category,
-      price: parseFloat(draft.price) || 0,
-      stock: parseInt(draft.stock, 10) || 0,
-      threshold: parseInt(draft.threshold, 10) || 10,
-    };
-    if (!parsed.name) return;
+  // function saveDraft(e) {
+  //   e.preventDefault();
+  //   const parsed = {
+  //     name: draft.name.trim(),
+  //     sku: draft.sku.trim() || `SR-${Math.floor(1000 + Math.random() * 9000)}`,
+  //     category: draft.category,
+  //     price: parseFloat(draft.price) || 0,
+  //     stock: parseInt(draft.stock, 10) || 0,
+  //     threshold: parseInt(draft.threshold, 10) || 10,
+  //   };
+  //   if (!parsed.name) return;
 
-    if (editingId) {
-      setProducts((prev) =>
-        prev.map((p) => {
-          if (p.id !== editingId) return p;
-          const updated = { ...p, ...parsed };
-          if (stockStatus(updated) === "low" && stockStatus(p) !== "low") {
-            pushNotif(
-              "low-stock",
-              `${updated.name} is running low (${updated.stock} left).`,
-            );
-          }
-          if (stockStatus(updated) === "out" && stockStatus(p) !== "out") {
-            pushNotif("out-of-stock", `${updated.name} is now out of stock.`);
-          }
-          return updated;
-        }),
-      );
-      pushNotif("system", `Updated ${parsed.name}.`);
-    } else {
-      const newProduct = { id: `p${Date.now()}`, ...parsed };
-      setProducts((prev) => [newProduct, ...prev]);
-      pushNotif("system", `Added ${parsed.name} to inventory.`);
-      if (stockStatus(newProduct) === "low") {
-        pushNotif(
-          "low-stock",
-          `${newProduct.name} started below its stock threshold.`,
-        );
-      }
-    }
-    // closeModal();
-  }
+  //   if (editingId) {
+  //     setProducts((prev) =>
+  //       prev.map((p) => {
+  //         if (p.id !== editingId) return p;
+  //         const updated = { ...p, ...parsed };
+  //         if (stockStatus(updated) === "low" && stockStatus(p) !== "low") {
+  //           pushNotif(
+  //             "low-stock",
+  //             `${updated.name} is running low (${updated.stock} left).`,
+  //           );
+  //         }
+  //         if (stockStatus(updated) === "out" && stockStatus(p) !== "out") {
+  //           pushNotif("out-of-stock", `${updated.name} is now out of stock.`);
+  //         }
+  //         return updated;
+  //       }),
+  //     );
+  //     pushNotif("system", `Updated ${parsed.name}.`);
+  //   } else {
+  //     const newProduct = { id: `p${Date.now()}`, ...parsed };
+  //     setProducts((prev) => [newProduct, ...prev]);
+  //     pushNotif("system", `Added ${parsed.name} to inventory.`);
+  //     if (stockStatus(newProduct) === "low") {
+  //       pushNotif(
+  //         "low-stock",
+  //         `${newProduct.name} started below its stock threshold.`,
+  //       );
+  //     }
+  //   }
+  //   // closeModal();
+  // }
 
-  function adjustStock(id, delta) {
-    setProducts((prev) =>
-      prev.map((p) => {
-        if (p.id !== id) return p;
-        const newStock = Math.max(0, p.stock + delta);
-        const updated = { ...p, stock: newStock };
-        if (stockStatus(updated) === "low" && stockStatus(p) === "ok") {
-          pushNotif(
-            "low-stock",
-            `${updated.name} is running low (${newStock} left).`,
-          );
-        }
-        if (stockStatus(updated) === "out" && stockStatus(p) !== "out") {
-          pushNotif("out-of-stock", `${updated.name} is now out of stock.`);
-        }
-        return updated;
-      }),
-    );
-  }
+  // function adjustStock(id, delta) {
+  //   setProducts((prev) =>
+  //     prev.map((p) => {
+  //       if (p.id !== id) return p;
+  //       const newStock = Math.max(0, p.stock + delta);
+  //       const updated = { ...p, stock: newStock };
+  //       if (stockStatus(updated) === "low" && stockStatus(p) === "ok") {
+  //         pushNotif(
+  //           "low-stock",
+  //           `${updated.name} is running low (${newStock} left).`,
+  //         );
+  //       }
+  //       if (stockStatus(updated) === "out" && stockStatus(p) !== "out") {
+  //         pushNotif("out-of-stock", `${updated.name} is now out of stock.`);
+  //       }
+  //       return updated;
+  //     }),
+  //   );
+  // }
 
-  function confirmDelete(id) {
-    setConfirmDeleteId(id);
-  }
+  // function confirmDelete(id) {
+  //   setConfirmDeleteId(id);
+  // }
 
   function performDelete() {
     const p = products.find((pr) => pr.id === confirmDeleteId);
@@ -269,6 +269,13 @@ export default function AdminDashboard() {
     setConfirmDeleteId(null);
   }
 
+  const handelLogout = async ()=>{
+    const res = await axios.post("/api/admin/logout")
+    if(!res){
+      return alert("server error")
+    }
+    router.push("/")
+  }
 
   return (
     <div className="ad-root">
@@ -303,9 +310,9 @@ export default function AdminDashboard() {
           >
             Device Info
           </button>
-
         </nav>
         <div className="ad-sidebar-foot ad-mono">v1.0 · admin</div>
+        <div className="ad-logout ad-mono" onClick={(e)=> handelLogout()}>Logout</div>
       </aside>
 
       {/* ---------- main ---------- */}
@@ -313,10 +320,10 @@ export default function AdminDashboard() {
         <div className="ad-topbar">
           {/* <SearchBox searchQuery={query} setSearchQuery={setQuery} /> */}
           <div>
-                              <h1 className="ad-page-title">Dashboard</h1>
-        <p className="ad-page-sub">
-          Live snapshot of inventory and today's orders.
-        </p>
+            <h1 className="ad-page-title">Dashboard</h1>
+            <p className="ad-page-sub">
+              Live snapshot of inventory and today's orders.
+            </p>
           </div>
           <div className="ad-topbar-right">
             <div className="ad-user" onClick={(e) => setMenusOpen((o) => !o)}>
@@ -364,8 +371,8 @@ export default function AdminDashboard() {
             />
           )}
           {view === "products" && <ProductAdmin compact />}
-          {view === "notification" && <Notification  />}
-          {view === "device" && <DeviceInfo  />}
+          {view === "notification" && <Notification />}
+          {view === "device" && <DeviceInfo />}
         </div>
       </div>
 

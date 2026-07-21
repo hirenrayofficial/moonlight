@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import './footer.scss'
+import "./footer.scss";
 /**
  * STOCKROOM — footer
  * Same system as the rest: hairline rules, mono labels, sharp corners.
@@ -12,48 +12,62 @@ import './footer.scss'
 const LINK_COLUMNS = [
   {
     title: "Catalog",
-    links: [{
-      name: "Machines",
-      href: "/home/machines"
-    }, {
-      name: "Accessories",
-      href: "/home/accessories"
-    }, {
-      name: "Spare parts",
-      href: "/home/spare-parts" 
-    }],
+    links: [
+      {
+        name: "Machines",
+        href: "/home/machines",
+      },
+      {
+        name: "Accessories",
+        href: "/home/accessories",
+      },
+      {
+        name: "Spare parts",
+        href: "/home/spare-parts",
+      },
+    ],
   },
   {
     title: "Company",
-    links: [{
-      name: "About",
-      href: "/home/about"
-    }, {
-      name: "Blog",
-      href: "/home/blog"
-    }, {
-      name: "Contact",
-      href: "/home/contact"
-    },{
-      name: "Privacy",
-      href: "/home/privacy"
-    }],
+    links: [
+      {
+        name: "About",
+        href: "/home/about",
+      },
+      {
+        name: "Blog",
+        href: "/home/blog",
+      },
+      {
+        name: "Contact",
+        href: "/home/contact",
+      },
+      {
+        name: "Privacy",
+        href: "/home/privacy",
+      },
+    ],
   },
   {
     title: "Support",
-    links: [{
-      name: "Shipping",
-      href: "/home/shipping"
-    }, {
-      name: "Returns",
-      href: "/home/returns"
-    }, {
-      name: "Track an order",
-      href: "/home/track-order"
-    }, {
-      name: "Contact",
-      href: "/home/contact"
-    }],
+    links: [
+      {
+        name: "Shipping",
+        href: "/home/shipping",
+      },
+      {
+        name: "Returns",
+        href: "/home/returns",
+      },
+      {
+        name: "Track an order",
+        href: "/home/track-order",
+      },
+      {
+        name: "Contact",
+        href: "/home/contact",
+      },
+    ],
   },
 ];
 
@@ -78,13 +92,13 @@ export default function Footer() {
 
   return (
     <footer className="ft-root">
-
-
       <div className="ft-inner">
         <div className="ft-manifest">
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Warehouse</div>
-            <div className="ft-manifest-value">Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201</div>
+            <div className="ft-manifest-value">
+              Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201
+            </div>
           </div>
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Hours</div>
@@ -103,11 +117,20 @@ export default function Footer() {
         <div className="ft-grid">
           <div className="ft-brand-col">
             <div className="ft-brand">
-              <div className="ft-brand-mark"><Image width={200} height={200} alt="Moonlight Machinery" src="/logo.png" /></div>
+              <div className="ft-brand-mark">
+                <Image
+                  width={200}
+                  height={200}
+                  alt="Moonlight Machinery"
+                  src="/logo.png"
+                />
+              </div>
               <span className="ft-brand-name">MoonLight Machinery</span>
             </div>
             <p className="ft-tagline">
-              100% Natural Areca Leaf Plates Crafted from fallen leaves, these plates are naturally elegant, heat-resistant, and entirely compostable.
+              100% Natural Areca Leaf Plates Crafted from fallen leaves, these
+              plates are naturally elegant, heat-resistant, and entirely
+              compostable.
             </p>
           </div>
 
@@ -116,8 +139,9 @@ export default function Footer() {
               <div className="ft-col-title ft-mono">{col.title}</div>
               <div className="ft-col-links">
                 {col.links.map((l) => (
-                  <a className="ft-col-link ft-mono" href={l.href} key={l.name}>{l.name}</a>
-
+                  <a className="ft-col-link ft-mono" href={l.href} key={l.name}>
+                    {l.name}
+                  </a>
                 ))}
               </div>
             </div>
@@ -141,7 +165,9 @@ export default function Footer() {
                   onChange={(e) => setEmail(e.target.value)}
                   aria-label="Email address"
                 />
-                <button className="ft-sub-btn" type="submit">Notify me</button>
+                <button className="ft-sub-btn" type="submit">
+                  Notify me
+                </button>
               </form>
             )}
             <p className="ft-sub-note ft-mono">No spam. Unsubscribe anytime.</p>
@@ -149,13 +175,31 @@ export default function Footer() {
         </div>
 
         <div className="ft-bottom">
-          <a href="iam.hirenray.rest" className="ft-copyright ft-mono cursor-pointer">© {year} Rtech Agency.</a>
+          <a
+            href="iam.hirenray.rest"
+            className="ft-copyright ft-mono cursor-pointer"
+          >
+            © {year} Rtech Agency.
+          </a>
           <div className="ft-bottom-links">
-            {SOCIALS.map((s) => (
-              <a className="ft-bottom-link ft-mono" href="#" key={s}>{s}</a>
-            ))}
-            <a className="ft-bottom-link ft-mono" href="/home/privacy">Privacy</a>
-            <a className="ft-bottom-link ft-mono" href="/home/privacy">Terms</a>
+            <a
+              className="ft-bottom-link ft-mono"
+              href="https://instagram.com/moonlightmachinery"
+            >
+              Instagram
+            </a>
+            <a
+              className="ft-bottom-link ft-mono"
+              href="https://youtube.com/@moonlightmachinery"
+            >
+              Youtube
+            </a>
+            <a className="ft-bottom-link ft-mono" href="/home/privacy">
+              Privacy
+            </a>
+            <a className="ft-bottom-link ft-mono" href="/home/privacy">
+              Terms
+            </a>
           </div>
         </div>
       </div>

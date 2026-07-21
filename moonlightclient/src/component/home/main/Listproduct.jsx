@@ -119,7 +119,7 @@ export default function ProductShowcase({ view }) {
         )}
         {view && (
           <div className="pl-footer">
-            <button className="pl-view-all">View full catalog</button>
+            <button className="pl-view-all"onClick={(e)=> window.location.href = "/home/machines"} >View full catalog</button>
           </div>
         )}
       </div>

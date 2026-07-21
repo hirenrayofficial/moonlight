@@ -65,8 +65,7 @@ export default function UnderMaintenance() {
   return (
     <div className="mt-root">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
+ 
         .mt-root {
           --bg: #faf9f5;
           --paper: #ffffff;

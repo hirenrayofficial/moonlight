@@ -121,7 +121,6 @@ export default function CookieConsent({ onConsentChange, privacyHref = "/privacy
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
         .ck-wrap {
           --bg: #15140f;
@@ -144,7 +143,7 @@ export default function CookieConsent({ onConsentChange, privacyHref = "/privacy
           z-index: 200;
           background: var(--panel);
           border-top: 1px solid var(--line-strong);
-          padding: 20px 24px;
+          padding: 20px 32px;
         }
         @media (max-width: 720px) { .ck-banner { padding: 16px; } }
 
@@ -304,7 +303,7 @@ export default function CookieConsent({ onConsentChange, privacyHref = "/privacy
                 </p>
               </div>
               <div className="ck-actions">
-                <button className="ck-btn" onClick={() => setPanelOpen(true)}>Customize</button>
+                {/* <button className="ck-btn" onClick={() => setPanelOpen(true)}>Customize</button> */}
                 <button className="ck-btn" onClick={rejectNonEssential}>Reject non-essential</button>
                 <button className="ck-btn primary" onClick={acceptAll}>Accept all</button>
               </div>
@@ -312,11 +311,11 @@ export default function CookieConsent({ onConsentChange, privacyHref = "/privacy
           </div>
         )}
 
-        {hasDecided && !visible && (
+        {/* {hasDecided && !visible && (
           <button className="ck-reopen ck-mono" onClick={reopen}>
             Cookie settings
           </button>
-        )}
+        )} */}
 
         {panelOpen && (
           <div className="ck-overlay" onClick={() => setPanelOpen(false)}>

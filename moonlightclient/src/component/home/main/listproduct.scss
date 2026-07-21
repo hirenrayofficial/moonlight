@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
 .pl-root {
   --bg: #faf9f5;
@@ -101,9 +101,9 @@
 .pl-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
+  gap: 4px;
   // background: var(--line-strong);
-  border: 1px solid var(--line-strong);
+  // border: 1px solid var(--line-strong);
 }
 @media (max-width: 900px) {
   .pl-grid {
@@ -120,6 +120,8 @@
   background: var(--paper);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+      border: 1px solid var(--line-strong);
 }
 
 .pl-image-wrap {
@@ -131,6 +133,7 @@
   object-fit: cover;
   display: block;
   background: #f0efe8;
+
 }
 
 .pl-tag {
