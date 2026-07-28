@@ -9,7 +9,12 @@ const attemptSchema = new mongoose.Schema({
         require:true,
         uniqe:true
     },
-    createdAt: { type: Date ,expires:60}
+    crf:{
+        type:String,
+        require:true,
+        uniqe:true,
+    },
+    createdAt: { type: Date ,expires:180}
 })
 
 const Code = mongoose.model("acccesCode",attemptSchema)

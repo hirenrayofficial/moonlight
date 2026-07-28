@@ -8,7 +8,7 @@ import connectDB from "@/db/mongodb/db";
 
 export async function POST(req) {
     const body = await req.json()
-    const { username, password ,code} = body
+    const { username, password ,code,csrf_token} = body
     console.log(body)
 
     if (!username || !password) {
@@ -27,7 +27,7 @@ export async function POST(req) {
     }
 
     await connectDB();
-    const checkCode = await Code.findOne({ email: checkUser.email, code });
+    const checkCode = await Code.findOne({ email: checkUser.email, code,crf:csrf_token });
     if (!checkCode) {
         return NextResponse.json({ success: false, message: "Code does not match" }, { status: 401 });
     }

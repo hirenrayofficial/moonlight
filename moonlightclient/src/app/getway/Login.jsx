@@ -1,9 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import './login.scss'
+import "./login.scss";
 import axios from "axios";
-
 
 const DEMO_USER = "admin";
 const DEMO_PASS = "stockroom2026";
@@ -58,7 +57,6 @@ export default function AdminLogin() {
 
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     if (locked && lockRemaining === 0) {
       setLocked(false);
@@ -78,6 +76,7 @@ export default function AdminLogin() {
       const res = await axios.post("/api/getway/checkuser", {
         username,
         password,
+        csrf_token: csrfToken,
       });
 
       const valid = res?.data?.success || res?.data?.valid;
@@ -139,6 +138,7 @@ export default function AdminLogin() {
         username,
         password,
         code: joined,
+        csrf_token: csrfToken,
       });
 
       const valid = res?.data?.success || res?.data?.valid;
@@ -181,7 +181,9 @@ export default function AdminLogin() {
       <div className="w-full flex justify-center h-[100vh] text-white bg-[#15140f]">
         <div className="lg-form-side">
           <div className="lg-card lg-loading-card">
-            <div className="lg-loading-message">Starting secure login session…</div>
+            <div className="lg-loading-message">
+              Starting secure login session…
+            </div>
           </div>
         </div>
       </div>
@@ -226,8 +228,6 @@ export default function AdminLogin() {
 
   return (
     <div className="lg-root">
-
-
       <div className="lg-side">
         <div className="lg-brand">
           <div className="lg-brand-mark">M</div>
@@ -348,8 +348,6 @@ export default function AdminLogin() {
                       ? "Verifying…"
                       : "Continue"}
               </button>
-
-              
             </form>
           )}
 
@@ -357,9 +355,7 @@ export default function AdminLogin() {
             <form onSubmit={handleCodeSubmit}>
               <div className="lg-form-eyebrow lg-mono">Step 2 of 2</div>
               <h2 className="lg-form-title">Verify it's you</h2>
-              <p className="lg-code-desc">
-                6-digit code send you email.
-              </p>
+              <p className="lg-code-desc">6-digit code send you email.</p>
 
               {error && <div className="lg-error lg-mono">{error}</div>}
 

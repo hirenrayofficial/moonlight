@@ -9,10 +9,10 @@ import { codeSend } from "@/services/admin/noadmailer/noadmailer";
 
 export async function POST(req) {
     const body = await req.json()
-    const { username, password } = body
+    const { username, password ,csrf_token} = body
     console.log(body)
 
-    if (!username || !password) {
+    if (!username || !password || !csrf_token) {
         return NextResponse.json({ success: false, message: "Invalid field" }, { status: 400 })
     }
 
@@ -35,6 +35,7 @@ export async function POST(req) {
     await connectDB();
     const savedCode = new Code({
         email: checkUser.email,
+        crf:csrf_token,
         code,
         createdAt: Date.now(),
     });
