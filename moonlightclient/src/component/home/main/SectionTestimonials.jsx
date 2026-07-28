@@ -107,7 +107,7 @@ export default function Testimonials() {
           --accent-ink: #15140f;
 
           color: var(--ink);
-          font-family: 'Work Sans', sans-serif;
+          // font-family: 'Work Sans', sans-serif;
           width: 100%;
           padding: 56px 32px 64px;
           border-top: 1px solid var(--line-strong);
@@ -115,7 +115,7 @@ export default function Testimonials() {
         .tm-root * { box-sizing: border-box; }
         @media (max-width: 720px) { .tm-root { padding: 40px 20px 48px; } }
 
-        .tm-mono { font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; }
+        // .tm-mono { font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; }
         .tm-inner { max-width: 1200px; margin: 0 auto; }
 
         /* ---------- summary ---------- */
@@ -159,7 +159,7 @@ export default function Testimonials() {
           margin-bottom: 20px;
         }
         .tm-title {
-          font-family: 'Archivo Black', sans-serif;
+          // font-family: 'Archivo Black', sans-serif;
           text-transform: uppercase;
           font-size: clamp(22px, 2.8vw, 30px);
           line-height: 1;

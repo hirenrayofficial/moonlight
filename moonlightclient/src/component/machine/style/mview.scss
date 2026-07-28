@@ -11,14 +11,14 @@
   --accent-ink: #15140f;
 
   color: var(--ink);
-  font-family: "Work Sans", sans-serif;
+  // font-family: "Work Sans", sans-serif;
   margin: 0 auto;
 }
 .pd-root * {
   box-sizing: border-box;
 }
 .pd-mono {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.03em;
 }
 
@@ -142,7 +142,7 @@
 }
 
 .pd-name {
-  font-family: "Archivo Black", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
   font-size: clamp(26px, 3.2vw, 34px);
   line-height: 1.05;
@@ -174,7 +174,7 @@
 }
 .pd-add-btn {
   flex: 1;
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -186,7 +186,7 @@
 }
 .pd-add-btna {
   flex: 1;
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;

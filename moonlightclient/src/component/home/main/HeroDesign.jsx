@@ -20,9 +20,9 @@ export default function HeroDesign() {
         <div className="hero-l w-full md:max-w-[650px] flex flex-col gap-6 py-10">
           <h1
             className="text-3xl sm:text-4xl lg:text-6xl leading-tight text-[#252323]"
-            style={{ fontFamily: "'DM Serif Text',system-ui" }}
+            
           >
-            Turning Your<p style={{fontFamily: "'DM text',serif"}} className="m-0 p-0 text-[#E8794A]">Vision</p>Into Market-Ready 
+            Turning Your<p  className="m-0 p-0 text-[#E8794A]">Vision</p>Into Market-Ready 
           </h1>
 
           <h2 className="text-sm md:text-xl lg:text-md text-[#70798c] font-normal leading-relaxed">
@@ -31,7 +31,7 @@ export default function HeroDesign() {
             through our product.
           </h2>
 
-          <div style={{fontFamily: "'Sniglet', system-ui ",}} className="click-option flex flex-wrap gap-4 font-bold text-sm md:text-md lg:text-md">
+          <div  className="click-option flex flex-wrap gap-4 font-bold text-sm md:text-md lg:text-md">
             <button className="bg-[#E8794A] cursor-pointer p-3 px-6 rounded-4xl text-[#f5f1ed] hover:opacity-90 transition-opacity">
               Consult now
             </button>

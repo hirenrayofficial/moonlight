@@ -14,7 +14,7 @@
 
   background: var(--bg);
   color: var(--ink);
-  font-family: "Work Sans", sans-serif;
+  // font-family: "Work Sans", sans-serif;
   min-height: 100vh;
   width: 100%;
 }
@@ -22,7 +22,7 @@
   box-sizing: border-box;
 }
 .ct-mono {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.03em;
 }
 
@@ -61,7 +61,7 @@
   margin-bottom: 10px;
 }
 .ct-title {
-  font-family: "Archivo Black", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
   font-size: clamp(28px, 4vw, 44px);
   line-height: 1;
@@ -130,7 +130,7 @@
   background: var(--paper);
   border: 1px solid var(--line-strong);
   padding: 11px 12px;
-  font-family: "Work Sans", sans-serif;
+  // font-family: "Work Sans", sans-serif;
   font-size: 13.5px;
   color: var(--ink);
 }
@@ -154,7 +154,7 @@
 }
 
 .ct-submit-btn {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace/;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;

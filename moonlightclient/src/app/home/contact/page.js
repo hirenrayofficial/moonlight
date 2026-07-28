@@ -4,6 +4,7 @@ import "./contact.scss";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
+import { MessageCircle, PhoneIcon } from "lucide-react";
 
 /**
  * MOONLIGHT MACHINERY — contact page
@@ -100,11 +101,11 @@ export default function Contact() {
                 </p>
 
                 <div className="ct-quick-row">
-                    <button className="ct-quick-btn" onClick={callNow}>
-                        ☎️ Call now
+                    <button className="ct-quick-btn flex items-center gap-2" onClick={callNow}>
+                        <PhoneIcon width={25} /> Call now
                     </button>
-                    <button className="ct-quick-btn whatsapp" onClick={openWhatsApp}>
-                        💬 WhatsApp us
+                    <button className="ct-quick-btn whatsapp flex items-center gap-2" onClick={openWhatsApp}>
+                        <MessageCircle width={25} /> WhatsApp us
                     </button>
                 </div>
             </div>

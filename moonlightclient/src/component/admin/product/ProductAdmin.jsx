@@ -6,6 +6,7 @@ import {
   createProduct,
   deleteProduct,
   findProducts,
+  sliderUpdate,
   updateProduct,
 } from "@/services/admin/apiService/Product";
 import { imgUpload } from "@/services/admin/imgbb/imgbbuploader";
@@ -412,7 +413,9 @@ export default function ProductAdmin({ compact = false }) {
             return next;
           });
           // revoke object URL to free memory
-          try { URL.revokeObjectURL(preview); } catch (e) {}
+          try {
+            URL.revokeObjectURL(preview);
+          } catch (e) {}
         }
       }),
     );
@@ -471,6 +474,17 @@ export default function ProductAdmin({ compact = false }) {
     if (!window.confirm("Delete this product permanently?")) return;
     try {
       const response = await deleteProduct(productId);
+      if (!response?.success) {
+        throw new Error(response?.error || "Delete failed.");
+      }
+      await queryClient.invalidateQueries(["products"]);
+    } catch (error) {
+      window.alert(error?.message || "Could not delete product.");
+    }
+  };
+  const handelSlider = async (productId,sld_active) => {
+    try {
+      const response = await sliderUpdate(productId,sld_active);
       if (!response?.success) {
         throw new Error(response?.error || "Delete failed.");
       }
@@ -564,6 +578,22 @@ export default function ProductAdmin({ compact = false }) {
                   {product.threshold ?? 0}
                 </div>
                 <div className="ad-product-actions">
+                  {product.slider ? (
+                    <button
+                      className="ad-btn-secondary bg-red-700 text-white"
+                      onClick={() => handelSlider(product.id, false)}
+                    >
+                      Remove slider
+                    </button>
+                  ) : (
+                    <button
+                      className="ad-btn-secondary "
+                      onClick={() => handelSlider(product.id, true)}
+                    >
+                      Add slider
+                    </button>
+                  )}
+
                   <button
                     className="ad-btn-secondary"
                     onClick={() => openEdit(product)}
@@ -697,7 +727,9 @@ export default function ProductAdmin({ compact = false }) {
                 </p>
               </div>
               {Object.keys(uploading).length > 0 && (
-                <div className="ad-uploading-note">Uploading {Object.keys(uploading).length} image(s)…</div>
+                <div className="ad-uploading-note">
+                  Uploading {Object.keys(uploading).length} image(s)…
+                </div>
               )}
               {draft.images?.length > 0 && (
                 <div className="ad-image-grid">

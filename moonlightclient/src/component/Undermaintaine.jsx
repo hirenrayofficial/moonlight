@@ -80,7 +80,7 @@ export default function UnderMaintenance() {
 
           background: var(--bg);
           color: var(--ink);
-          font-family: 'Work Sans', sans-serif;
+          // font-family: 'Work Sans', sans-serif;
           min-height: 100vh;
           width: 100%;
           display: flex;
@@ -89,7 +89,7 @@ export default function UnderMaintenance() {
           padding: 32px 20px;
         }
         .mt-root * { box-sizing: border-box; }
-        .mt-mono { font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; }
+        // .mt-mono { font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; }
 
         .mt-card {
           width: 100%;
@@ -125,7 +125,7 @@ export default function UnderMaintenance() {
         }
 
         .mt-title {
-          font-family: 'Archivo Black', sans-serif;
+          // font-family: 'Archivo Black', sans-serif;
           text-transform: uppercase;
           font-size: clamp(24px, 4vw, 32px);
           line-height: 1.05;
@@ -164,7 +164,7 @@ export default function UnderMaintenance() {
 
         .mt-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
         .mt-btn {
-          font-family: 'IBM Plex Mono', monospace;
+          // font-family: 'IBM Plex Mono', monospace;
           font-size: 12px;
           font-weight: 600;
           letter-spacing: 0.05em;

@@ -30,6 +30,8 @@ export default function Inventory({
     router.push("/admin/add");
   };
 
+
+
   // 1. Safely handle undefined/loading states with a fallback array []
   // 2. Use categoryFilter (the prop) instead of local 'active' state
 // 1. Safe fallback to an empty array if data or data.products doesn't exist yet
@@ -50,6 +52,7 @@ const visible =
     return <div className="p-4 text-center text-red-500">Error loading data.</div>;
   }
 
+  
   return (
     <div>
       <>
@@ -151,6 +154,20 @@ const visible =
                           </svg>
                         </button>
                         <button
+                          className="ad-icon-btn danger"
+                          onClick={() => confirmDelete(p.id)}
+                          aria-label="Delete product"
+                        >
+                          <svg width="13" height="13" viewBox="0 0 13 13">
+                            <path
+                              d="M2 3.5H11M5 3.5V2H8V3.5M3.5 3.5L4 11H9L9.5 3.5"
+                              stroke="currentColor"
+                              strokeWidth="1.2"
+                              fill="none"
+                            />
+                          </svg>
+                        </button>
+                                                <button
                           className="ad-icon-btn danger"
                           onClick={() => confirmDelete(p.id)}
                           aria-label="Delete product"

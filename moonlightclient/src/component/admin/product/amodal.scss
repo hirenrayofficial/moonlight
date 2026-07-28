@@ -20,7 +20,7 @@
   margin: 0 auto;
   padding: 0 24px 24px;
   color: var(--ink);
-  font-family: "Work Sans", sans-serif;
+  font-family: "Work Sans",/ sans-serif;
 
   * {
     box-sizing: border-box;
@@ -189,7 +189,7 @@
   color: var(--ink);
   padding: 10px 12px;
   font-size: 13px;
-  font-family: "Work Sans", sans-serif;
+  // font-family: "Work Sans", sans-serif;
 }
 .ad-input:focus,
 .ad-select:focus {
@@ -361,7 +361,7 @@
 }
 .ad-btn-primary {
   flex: 1;
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -382,12 +382,12 @@
   cursor: not-allowed;
 }
 .ad-btn-secondary {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: transparent;
+  // background: transparent;
   color: var(--ink-dim);
   border: 1px solid var(--line-strong);
   padding: 12px 16px;
@@ -508,12 +508,12 @@
 }
 .ad-product-price {
   font-weight: 600;
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
 }
 .ad-product-stock {
   font-size: 12px;
   color: var(--ink-faint);
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
 }
 .ad-product-actions {
   display: flex;

@@ -12,7 +12,7 @@
   --accent-ink: #15140f;
 
   color: var(--ink);
-  font-family: "Work Sans", sans-serif;
+  // font-family: "Work Sans", sans-serif;
 
   * {
     box-sizing: border-box;
@@ -20,7 +20,7 @@
 }
 
 .ab-mono {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mon", monospace;
   letter-spacing: 0.03em;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .ab-title {
-  font-family: "Archivo Black", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
   font-size: clamp(28px, 4.5vw, 46px);
   line-height: 1.02;
@@ -115,7 +115,7 @@
   margin-bottom: 28px;
 }
 .ab-section-title {
-  font-family: "Archivo Black", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
   font-size: clamp(20px, 2.6vw, 28px);
   line-height: 1.1;
@@ -209,7 +209,7 @@
   margin: 0;
 }
 .ab-cta-btn {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;

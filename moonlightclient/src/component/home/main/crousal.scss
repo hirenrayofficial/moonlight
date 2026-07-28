@@ -27,7 +27,7 @@
 }
 
 .cb-mono {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.03em;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .cb-title {
-  font-family: "Archivo Black", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
   color: #fff;
   font-size: clamp(26px, 4.6vw, 52px);
@@ -159,7 +159,7 @@
 }
 
 .cb-desc {
-  font-family: "Work Sans", sans-serif;
+  // font-family: "Work Sans", sans-serif;
   color: rgba(255, 255, 255, 0.78);
   font-size: 15px;
   line-height: 1.6;
@@ -184,7 +184,7 @@
   font-weight: 600;
 }
 .cb-cta-btn {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;

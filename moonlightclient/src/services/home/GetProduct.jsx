@@ -26,3 +26,12 @@ export const getRelatedItem = async (type) => {
   //   console.log(res.data.item)
   return res.data.item;
 };
+
+export const slider = async () => {
+  const res = await axios.get("/api/home/product/slider");
+  if (!res) {
+    return;
+  }
+  //   console.log(res.data.item)
+  return res.data.itema;
+};

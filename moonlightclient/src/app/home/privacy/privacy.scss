@@ -13,7 +13,7 @@
 
   background: var(--bg);
   color: var(--ink);
-  font-family: "Work Sans", sans-serif;
+  // font-family: "Work Sans", sans-serif;
   min-height: 100vh;
   width: 100%;
 }
@@ -22,7 +22,7 @@
   padding-top: 26px;
 }
 .pv-mono {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.03em;
 }
 
@@ -46,7 +46,7 @@
   margin-bottom: 10px;
 }
 .pv-title {
-  font-family: "Archivo Black", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
   font-size: clamp(28px, 4vw, 42px);
   line-height: 1;
@@ -137,7 +137,7 @@
 }
 
 .pv-section-title {
-  font-family: "Archivo Black", sans-serif;
+  // font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
   font-size: 18px;
   margin: 0 0 14px 0;
@@ -169,7 +169,7 @@
   background: rgba(242, 183, 5, 0.15);
   color: var(--ink);
   padding: 1px 5px;
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   font-size: 0.9em;
 }
 

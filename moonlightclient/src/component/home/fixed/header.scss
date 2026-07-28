@@ -13,7 +13,7 @@
   width: 100%;
   background: var(--bg);
   border-bottom: 1px solid var(--line-strong);
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
 }
 .hd-root * {
   box-sizing: border-box;
@@ -152,7 +152,7 @@ color: var(--ink);
   outline-offset: 2px;
 }
 .hd-shop-btn {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;

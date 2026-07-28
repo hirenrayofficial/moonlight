@@ -110,6 +110,9 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    slider:{
+      type:Boolean,
+    }
   },
   {
     // Automatically adds createdAt and updatedAt timestamps
