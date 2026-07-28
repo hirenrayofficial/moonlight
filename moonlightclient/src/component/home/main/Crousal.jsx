@@ -129,7 +129,7 @@ export default function BannerCarousel() {
         <p className="cb-desc">{data[index]?.desc}</p>
         <div className="cb-cta-row">
           <span className="cb-price cb-mono">{data[index]?.price}</span>
-          <button className="cb-cta-btn" onClick={handelClick(data[index]?.slug)}>
+          <button className="cb-cta-btn" onClick={()=>handelClick(data[index]?.slug)}>
             {data[index]?.cta || "Buy Now"}
           </button>
         </div>
