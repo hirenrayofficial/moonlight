@@ -61,7 +61,9 @@
   justify-content: center;
   padding: 4px;
   color: var(--ink-dim);
-  transition: color 0.15s ease, background 0.15s ease;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
 }
 .hd-social-link:hover {
   color: var(--accent-ink);
@@ -92,29 +94,47 @@
   }
 }
 .hd-brand {
-display: flex;
-align-items: center;
-gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+/* FIX: this previously had no overflow/sizing rule for the <Image>
+   inside it, and the JSX passed width={50} height={200} — a 1:4 aspect
+   ratio inside a 50x50 box, so the logo rendered 4x too tall and blew
+   out of the header. `overflow: hidden` plus a dedicated
+   `.hd-brand-logo { object-fit: contain }` class keeps the real logo's
+   proportions inside the fixed box no matter what its native
+   dimensions are. Also dropped the leftover `color: var(--bg)` rule,
+   which was only relevant when this div held a text initial ("M")
+   instead of an actual image. */
 .hd-brand-mark {
-width: 50px;
-height: 50px;
-// background: var(--ink);
-color: var(--bg);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 12px;
-font-weight: 600;
-// flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
 }
+.hd-brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .hd-brand-name {
-font-weight: 600;
-font-size: 14px;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-color: var(--ink);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
+.hd-brand-tagline {
+  font-size: 10px;
+  color: var(--ink-dim);
+}
+
 .hd-links {
   display: flex;
   align-items: center;

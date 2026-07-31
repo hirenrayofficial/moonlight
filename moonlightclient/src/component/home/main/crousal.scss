@@ -13,7 +13,7 @@
   min-height: 460px;
   max-height: 760px;
   overflow: hidden;
-  background: #0e0d0a;
+  background: transparent;
   outline: none;
 }
 .cb-root * {
@@ -175,7 +175,7 @@
 .cb-cta-row {
   display: flex;
   align-items: center;
-  gap: 20px;
+  // gap: 20px;
   flex-wrap: wrap;
 }
 .cb-price {
@@ -189,15 +189,15 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: #fff;
+  background: var(--accent);
   color: var(--ink);
-  border: 1px solid #fff;
+  // border: 1px solid #fff;
   padding: 13px 22px;
   cursor: pointer;
 }
 .cb-cta-btn:hover {
-  background: transparent;
-  color: #fff;
+  background: white;
+  color: black;
 }
 .cb-cta-btn:focus-visible {
   outline: 2px solid var(--accent);

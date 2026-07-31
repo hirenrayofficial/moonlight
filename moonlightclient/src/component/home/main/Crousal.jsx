@@ -79,7 +79,7 @@ export default function BannerCarousel() {
 
   // Render fallback if data is still loading or empty
   if (!data || data.length === 0) {
-    return <div className="cb-root w-full py-16 text-center">Loading carousel...</div>;
+    return <div className="cb-root w-full py-16 text-center text-black">Loading carousel...</div>;
   }
 
   return (

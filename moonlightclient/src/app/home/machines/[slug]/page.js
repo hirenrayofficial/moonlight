@@ -7,7 +7,7 @@ export default function page() {
     const searchPrams = useParams()
     const slug = searchPrams.slug
   return (
-    <div className='w-full flex justify-center'>
+    <div className='w-full flex justify-center p-2'>
       <Mview slug={slug}/>
     </div>
   )

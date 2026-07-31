@@ -7,6 +7,7 @@ import ProductShowcase from '@/component/home/main/Listproduct'
 import HowItWorks from '@/component/home/main/Howworks'
 import BannerCarousel from '@/component/home/main/Crousal'
 import Header from '@/component/home/fixed/Header'
+import TrustSection from '@/component/home/main/TrustSection'
 
 export default function Hero() {
   return (
@@ -23,7 +24,8 @@ export default function Hero() {
       {/* <SectionServices /> */}
       {/* <ProductPA /> */}
       {/* <StackScroll /> */}
-      <SectionTestimonials />
+      <TrustSection/>
+      {/* <SectionTestimonials /> */}
       <SectionContact />
       <Footer/>
     </div>

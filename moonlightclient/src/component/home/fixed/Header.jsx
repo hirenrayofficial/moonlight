@@ -15,8 +15,22 @@ const SOCIALS = [
     url: "https://instagram.com/moonlightmachinery",
     icon: (
       <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-        <rect x="2" y="2" width="16" height="16" rx="1" stroke="currentColor" strokeWidth="1.6" />
-        <circle cx="10" cy="10" r="3.6" stroke="currentColor" strokeWidth="1.6" />
+        <rect
+          x="2"
+          y="2"
+          width="16"
+          height="16"
+          rx="1"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        />
+        <circle
+          cx="10"
+          cy="10"
+          r="3.6"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        />
         <circle cx="14.6" cy="5.4" r="0.9" fill="currentColor" />
       </svg>
     ),
@@ -26,7 +40,15 @@ const SOCIALS = [
     url: "https://youtube.com/@moonlightmachinery6670?si=1W37CtkGFkI7vX7A",
     icon: (
       <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-        <rect x="1.5" y="4.5" width="17" height="11" rx="1" stroke="currentColor" strokeWidth="1.6" />
+        <rect
+          x="1.5"
+          y="4.5"
+          width="17"
+          height="11"
+          rx="1"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        />
         <path d="M8.2 7.6L12.4 10L8.2 12.4V7.6Z" fill="currentColor" />
       </svg>
     ),
@@ -36,8 +58,22 @@ const SOCIALS = [
     url: "https://facebook.com/profile.php?id=100068148668790",
     icon: (
       <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-        <rect x="2" y="2" width="16" height="16" rx="1" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M12 6.5H10.5C9.7 6.5 9 7.2 9 8V10H12L11.6 12H9V17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        <rect
+          x="2"
+          y="2"
+          width="16"
+          height="16"
+          rx="1"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        />
+        <path
+          d="M12 6.5H10.5C9.7 6.5 9 7.2 9 8V10H12L11.6 12H9V17"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
   },
@@ -46,7 +82,12 @@ const SOCIALS = [
     url: "https://wa.me/918178445596",
     icon: (
       <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-        <path d="M4 16.5L5 13.2C4.2 11.9 3.9 10.4 4.3 9C5 6.2 7.7 4.3 10.6 4.8C13.1 5.2 15 7.5 14.9 10.1C14.8 13 12.3 15.3 9.4 15.1C8.4 15 7.5 14.7 6.7 14.1L4 16.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+        <path
+          d="M4 16.5L5 13.2C4.2 11.9 3.9 10.4 4.3 9C5 6.2 7.7 4.3 10.6 4.8C13.1 5.2 15 7.5 14.9 10.1C14.8 13 12.3 15.3 9.4 15.1C8.4 15 7.5 14.7 6.7 14.1L4 16.5Z"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
   },
@@ -76,10 +117,16 @@ export default function Header() {
     } else return;
   };
 
+  const handelHome =()=>{
+    window.location.href = "/"
+  }
+
   return (
     <header className="hd-root">
       <div className="hd-topbar">
-        <span className="hd-topbar-msg">Genuine machine parts, shipped pan-India</span>
+        <span className="hd-topbar-msg">
+          Genuine machine , shipped pan-India
+        </span>
         <div className="hd-social">
           {SOCIALS.map((s) => (
             <a
@@ -96,22 +143,26 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="hd-inner">
+      <div onClick={(e)=>handelCall()} className="hd-inner cursor-pointer">
         <div className="hd-brand">
-          <div className="hd-brand-mark ">
+          <div className="hd-brand-mark">
             <Image
               width={50}
-              height={200}
-              alt="Moonlight Machinery "
+              height={50}
+              alt="Moonlight Machinery"
               src="/logo.png"
-              loading="lazy"
-              // className="h-50"
+              priority
+              className="hd-brand-logo"
             />
           </div>
-          <span className="hd-brand-name hidden sm:flex md:flex">
-            Moonlight Machinery
+          <span className="hidden sm:grid md:grid leading-4">
+            <span className="hd-brand-name">Moonlight Machinery</span>
+            <span className="hd-brand-tagline">
+              Best disposable paper plates making machine in India
+            </span>
           </span>
         </div>
+
         <div className="hd-links">
           <nav className="hd-nav">
             <a className="hd-nav-link" href="/">
@@ -124,8 +175,16 @@ export default function Header() {
               Blog
             </a>
           </nav>
-          <button className="hd-shop-btn" onClick={(e) => handelCall("machine")}>Login</button>
-          <button className="hd-shop-btn cal" onClick={(e) => handelCall("num")}>
+          <button
+            className="hd-shop-btn"
+            onClick={(e) => handelCall("machine")}
+          >
+            Login
+          </button>
+          <button
+            className="hd-shop-btn cal"
+            onClick={(e) => handelCall("num")}
+          >
             Call
           </button>
         </div>

@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
                 {/* <SocialSection/> */}
                 <Header />
             </header>
-            <body ><Queryprovider>  {children}</Queryprovider></body>
+            <body  ><Queryprovider>  {children}</Queryprovider></body>
             <footer>
                 <Footer />
             </footer>

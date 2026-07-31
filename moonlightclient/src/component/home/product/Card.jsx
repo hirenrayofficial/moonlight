@@ -20,7 +20,7 @@ export default function Card({ product }) {
                   {p?.tag}
                 </span>
               )}
-              <Image width={500} height={500} alt={p?.slug} className="pl-image" src={p?.images?.[0]} loading="lazy" />
+              <Image width={500} height={500} alt={p?.name} className="pl-image" src={p?.images?.[0]} loading="lazy" />
 
               
             </div>

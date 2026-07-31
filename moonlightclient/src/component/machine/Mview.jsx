@@ -245,9 +245,9 @@ Please provide more information about this product.
             </button>
           </div>
 
-          <p className="pd-meta pd-mono">
+          {/* <p className="pd-meta pd-mono">
             Ships from stock — most orders same day. Flat $6 shipping.
-          </p>
+          </p> */}
         </div>
       </section>
 

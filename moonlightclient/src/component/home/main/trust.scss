@@ -1,0 +1,323 @@
+.tr-root {
+  --bg: #faf9f5;
+  --paper: #ffffff;
+  --ink: #15140f;
+  --ink-dim: #5a594e;
+  --ink-faint: #9b9a8c;
+  --line: #d9d6c9;
+  --line-strong: #b8b5a4;
+  --accent: #f2b705;
+  --accent-ink: #15140f;
+  --star: #f2b705;
+
+  background: var(--bg);
+  color: var(--ink);
+  /* default system font stack — no @import, no custom typeface */
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  width: 100%;
+  padding: 56px 32px 64px;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 720px) {
+    padding: 40px 20px 48px;
+  }
+}
+
+.tr-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---------- head ---------- */
+.tr-head {
+  margin-bottom: 28px;
+}
+.tr-eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+}
+.tr-title {
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  max-width: 26ch;
+}
+
+/* ---------- stars ---------- */
+.tr-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+.tr-star {
+  color: var(--line-strong);
+}
+.tr-star.filled {
+  color: var(--star);
+}
+
+/* ---------- rating summary ---------- */
+.tr-summary {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  padding: 28px 32px;
+  margin-bottom: 36px;
+}
+@media (max-width: 720px) {
+  .tr-summary {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px 20px;
+  }
+}
+
+.tr-summary-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 140px;
+}
+.tr-summary-score {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+}
+.tr-summary-count {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+
+.tr-summary-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+.tr-bd-row {
+  display: grid;
+  grid-template-columns: 34px 1fr 36px;
+  align-items: center;
+  gap: 10px;
+}
+.tr-bd-label {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.tr-bd-track {
+  height: 6px;
+  background: var(--line);
+  position: relative;
+}
+.tr-bd-fill {
+  height: 100%;
+  background: var(--star);
+}
+.tr-bd-pct {
+  font-size: 12px;
+  color: var(--ink-faint);
+  text-align: right;
+}
+
+/* ---------- review cards ---------- */
+.tr-reviews-grid {
+  width: fit-content;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line-strong);
+  border: 1px solid var(--line-strong);
+  margin-bottom: 48px;
+}
+@media (max-width: 1000px) {
+  .tr-reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .tr-reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tr-review-card {
+  background: var(--paper);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  min-width: 0; /* required so ellipsis/clamp on children works inside a flex column */
+}
+
+/* 3-line clamp instead of single-line truncate — a whole sentence cut to
+   3-4 words reads broken for review content, this keeps enough context
+   and still stops the card from growing to fit a long review. */
+.tr-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.tr-review-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tr-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+.tr-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.tr-review-name {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.tr-review-location {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+
+.tr-review-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  flex: 1;
+  margin: 0;
+}
+.tr-review-date {
+  font-size: 11px;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+/* ---------- delivery photos ---------- */
+.tr-delivery-head {
+  margin-bottom: 20px;
+}
+.tr-delivery-title {
+  font-size: clamp(18px, 2.4vw, 24px);
+  font-weight: 700;
+  margin: 0;
+}
+
+.tr-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media (max-width: 900px) {
+  .tr-photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .tr-photo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tr-photo-card {
+  position: relative;
+  border: 1px solid var(--line-strong);
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: left;
+}
+.tr-photo-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s ease;
+}
+.tr-photo-card:hover .tr-photo-img {
+  transform: scale(1.04);
+}
+.tr-photo-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent, rgba(21, 20, 15, 0.82));
+  color: #fff;
+  font-size: 12px;
+  padding: 22px 12px 10px;
+}
+.tr-photo-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- lightbox ---------- */
+.tr-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.tr-lightbox-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.tr-lightbox-caption {
+  color: #fff;
+  font-size: 13px;
+  margin-top: 14px;
+  text-align: center;
+}
+.tr-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.tr-lightbox-close:hover {
+  border-color: #fff;
+}
