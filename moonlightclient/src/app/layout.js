@@ -10,6 +10,7 @@ import '@fontsource/dm-serif-text';
 import Footer from "@/component/home/fixed/Footer";
 import Queryprovider from "@/services/provider/Queryprovider";
 import SocialSection from "@/component/home/fixed/Socailsection";
+import Script from 'next/script';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
