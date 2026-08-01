@@ -1,15 +1,13 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/component/home/fixed/Header";
-import localFont from 'next/font/local'
+
 import '@fontsource-variable/unbounded/wght.css';
 import '@fontsource/gugi';
 import '@fontsource/kalam';
 import '@fontsource/sniglet';
 import '@fontsource/dm-serif-text';
-import Footer from "@/component/home/fixed/Footer";
 import Queryprovider from "@/services/provider/Queryprovider";
-import SocialSection from "@/component/home/fixed/Socailsection";
+
 import Script from 'next/script';
 const geistSans = Geist({
   variable: "--font-geist-sans",
