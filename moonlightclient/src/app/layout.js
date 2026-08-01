@@ -28,6 +28,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Areca Leaf & Disposable Plates Manufacturer in India | Moonlight Machinery",
   description: "Leading manufacturer of eco-friendly areca leaf plates & disposable paper plates in India. 100% biodegradable, bulk orders, PAN-India & export shipping. Get a quote today.",
+  alternates: {
+    canonical: 'www.moonlightmachinery.com',
+  },
 };
 
 export default function RootLayout({ children }) {
