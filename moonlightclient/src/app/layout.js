@@ -39,6 +39,7 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable}  h-full antialiased`}
     >
       <header>
+        <meta name="google-site-verification" content="dIX2GPKVpfk8ZfH7slDv4gi69yJSFUftjATSqnlFGxU" />
         <Script
           id="google-tag-manager"
           strategy="beforeInteractive"
