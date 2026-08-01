@@ -43,6 +43,13 @@ const TIMELINE = [
   { year: "2019", title: "Pan-India dispatch", desc: "Expanded logistics to ship and install machines across 19 states." },
   { year: "2024", title: "Full-automatic range launched", desc: "Introduced hydraulic and full-automatic lines alongside the original manual machines." },
 ];
+export const metadata = {
+  title: "About US | Moonlight Machinery",
+  description: "Leading manufacturer of eco-friendly areca leaf plates & disposable paper plates in India. 100% biodegradable, bulk orders, PAN-India & export shipping. Get a quote today.",
+  alternates: {
+    canonical: 'www.moonlightmachinery.com/home/about',
+  },
+};
 
 export default function About() {
   const pathname = usePathname();

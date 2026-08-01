@@ -13,7 +13,13 @@ import { MessageCircle, PhoneIcon } from "lucide-react";
  * how most machinery enquiries actually happen, then a fuller form
  * underneath for people who'd rather write everything out at once.
  */
-
+export const metadata = {
+  title: "Contact US | Moonlight Machinery",
+  description: "Leading manufacturer of eco-friendly areca leaf plates & disposable paper plates in India. 100% biodegradable, bulk orders, PAN-India & export shipping. Get a quote today.",
+  alternates: {
+    canonical: 'www.moonlightmachinery.com/home/contact',
+  },
+};
 const MACHINE_INTEREST = [
     "Paper Plate Making Machine",
     "Lamination Machine",
