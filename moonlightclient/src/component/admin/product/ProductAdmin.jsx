@@ -40,6 +40,9 @@ const emptyDraft = {
   subCategory: "",
   machineType: "",
   description: "",
+  pageTitle: "",
+  metaDescription: "",
+  metaKeywords: "",
   specifications: {
     productionCapacity: "",
     motor: "",
@@ -270,6 +273,9 @@ export default function ProductAdmin({ compact = false }) {
       subCategory: product.subCategory || "",
       machineType: product.machineType || "",
       description: product.description || "",
+      pageTitle: product.pageTitle || "",
+      metaDescription: product.metaDescription || "",
+      metaKeywords: product.metaKeywords || "",
       specifications: {
         productionCapacity: product.specifications?.productionCapacity || "",
         motor: product.specifications?.motor || "",
@@ -711,6 +717,36 @@ export default function ProductAdmin({ compact = false }) {
                   rows={3}
                   value={draft.description}
                   onChange={(e) => setField("description", e.target.value)}
+                />
+              </div>
+
+              <div className="ad-section-label">SEO</div>
+              <div className="ad-field">
+                <label className="ad-label">Page title</label>
+                <input
+                  className="ad-input"
+                  placeholder="Enter page title"
+                  value={draft.pageTitle}
+                  onChange={(e) => setField("pageTitle", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Meta description</label>
+                <textarea
+                  className="ad-input ad-textarea"
+                  rows={3}
+                  placeholder="Enter a short meta description"
+                  value={draft.metaDescription}
+                  onChange={(e) => setField("metaDescription", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Meta keywords</label>
+                <input
+                  className="ad-input"
+                  placeholder="machine, paper plate, india"
+                  value={draft.metaKeywords}
+                  onChange={(e) => setField("metaKeywords", e.target.value)}
                 />
               </div>
 

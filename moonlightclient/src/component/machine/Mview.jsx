@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import "./style/mview.scss";
 import { usePathname } from "next/navigation";
@@ -79,6 +79,13 @@ export default function Mview({ slug }) {
   });
 
   const product = data?.[0];
+  const seoTitle =
+    product?.pageTitle?.trim() ||
+    `${product?.name || "Product"} | Moonlight`;
+  const seoDescription =
+    product?.metaDescription?.trim() ||
+    product?.description?.trim() ||
+    "Discover premium machine solutions and industrial equipment from Moonlight.";
 
   // Always call the hook, but control execution with 'enabled'
   const { data: relatedData, isLoading: isRelatedLoading } = useQuery({
@@ -90,9 +97,33 @@ export default function Mview({ slug }) {
 
   // Reset the active thumbnail whenever a different product loads, so we
   // never end up pointing at an index that belongs to the previous item.
-  React.useEffect(() => {
+  useEffect(() => {
     setActiveImage(0);
   }, [slug]);
+
+  useEffect(() => {
+    const prevTitle = document.title;
+    const descriptionTag = document.querySelector('meta[name="description"]');
+    const prevDescription = descriptionTag?.getAttribute("content") || "";
+
+    document.title = seoTitle;
+
+    if (descriptionTag) {
+      descriptionTag.setAttribute("content", seoDescription);
+    } else {
+      const meta = document.createElement("meta");
+      meta.name = "description";
+      meta.content = seoDescription;
+      document.head.appendChild(meta);
+    }
+
+    return () => {
+      document.title = prevTitle;
+      if (descriptionTag) {
+        descriptionTag.setAttribute("content", prevDescription);
+      }
+    };
+  }, [seoTitle, seoDescription]);
 
   function handleEnquiry() {
     // Call the business phone number

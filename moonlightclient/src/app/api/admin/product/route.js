@@ -58,7 +58,6 @@ export async function POST(req) {
     // Parse and validate request
     const body = await req.json();
     const { rawPayload } = body;
-    console.log(rawPayload)
 
     if (!rawPayload) {
       return NextResponse.json(
@@ -91,7 +90,7 @@ export async function POST(req) {
     }
 
 
-    const newProduct = new Product(rawPayload)
+    const newProduct = new Product(sanitizedData)
 
     await newProduct.save();
 

@@ -33,6 +33,18 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    pageTitle: {
+      type: String,
+      default: '',
+    },
+    metaDescription: {
+      type: String,
+      default: '',
+    },
+    metaKeywords: {
+      type: String,
+      default: '',
+    },
     specifications: {
       productionCapacity: { type: String, default: '' },
       motor: { type: String, default: '' },
