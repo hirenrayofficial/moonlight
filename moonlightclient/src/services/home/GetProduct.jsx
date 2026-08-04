@@ -1,38 +1,53 @@
 import axios from "axios";
-const url = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+// Works in browser (relative URL is fine) AND on the server
+// (needs an absolute URL — axios can't resolve relative paths
+// when there's no `window`/document origin to resolve against).
+function getBaseUrl() {
+  if (typeof window !== "undefined") return ""; // relative works in browser
+  return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+}
 
 export const getItem = async () => {
-  const res = await axios.get("/api/home/product");
-  if (!res) {
-    return;
+  try {
+    const res = await axios.get(`${getBaseUrl()}/api/home/product`);
+    return res?.data?.item;
+  } catch (err) {
+    console.error("getItem failed:", err.message);
+    return null;
   }
-  //   console.log(res.data.item)
-  return res.data.item;
 };
+
 export const getspcItem = async (slug) => {
-  const res = await axios.post(`${url}/api/home/product?slug=${slug}`);
-  console.log(slug)
-  if (!res) {
-    return;
+  try {
+    const res = await axios.post(
+      `${getBaseUrl()}/api/home/product?slug=${slug}`
+    );
+    return res?.data?.item;
+  } catch (err) {
+    console.error("getspcItem failed for slug:", slug, err.message);
+    return null; // caller already handles falsy -> notFound()
   }
-  //   console.log(res.data.item)
-  return res.data.item;
 };
+
 export const getRelatedItem = async (type) => {
-  const res = await axios.post(`/api/home/productrelated?type=${type}`);
-  console.log(type)
-  if (!res) {
-    return;
+  try {
+    const res = await axios.post(
+      `${getBaseUrl()}/api/home/productrelated?type=${type}`
+    );
+    return res?.data?.item;
+  } catch (err) {
+    console.error("getRelatedItem failed for type:", type, err.message);
+    return null;
   }
-  //   console.log(res.data.item)
-  return res.data.item;
 };
 
 export const slider = async () => {
-  const res = await axios.get("/api/home/product/slider");
-  if (!res) {
-    return;
+  try {
+    const res = await axios.get(`${getBaseUrl()}/api/home/product/slider`);
+    return res?.data?.item; // note: original had a typo `res.data.itema`
+  } catch (err) {
+    console.error("slider failed:", err.message);
+    return null;
   }
-  //   console.log(res.data.item)
-  return res.data.itema;
 };
