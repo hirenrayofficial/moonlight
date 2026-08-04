@@ -1,4 +1,5 @@
 import axios from "axios";
+const url = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const getItem = async () => {
   const res = await axios.get("/api/home/product");
@@ -9,7 +10,7 @@ export const getItem = async () => {
   return res.data.item;
 };
 export const getspcItem = async (slug) => {
-  const res = await axios.post(`http://localhost:3000/api/home/product?slug=${slug}`);
+  const res = await axios.post(`${url}/api/home/product?slug=${slug}`);
   console.log(slug)
   if (!res) {
     return;
