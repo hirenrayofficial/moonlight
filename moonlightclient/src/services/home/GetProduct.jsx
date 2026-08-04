@@ -1,11 +1,19 @@
 import axios from "axios";
 
-// Works in browser (relative URL is fine) AND on the server
-// (needs an absolute URL — axios can't resolve relative paths
-// when there's no `window`/document origin to resolve against).
+// Works in browser (relative URL is fine) AND on the server.
+// Server-side code needs an absolute URL when using axios.
 function getBaseUrl() {
-  if (typeof window !== "undefined") return ""; // relative works in browser
-  return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  if (typeof window !== "undefined") return "";
+
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+  }
+
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`;
+  }
+
+  return "http://localhost:3000";
 }
 
 export const getItem = async () => {

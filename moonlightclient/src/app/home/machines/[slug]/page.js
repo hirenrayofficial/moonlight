@@ -11,7 +11,11 @@ import Script from "next/script";
 
 
 export async function generateMetadata({ params }) {
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const SITE_URL =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`
+      : "http://localhost:3000");
   const { slug } = await params;
   const data = await getspcItem(slug);
   const product = data?.[0];
@@ -61,7 +65,11 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const SITE_URL =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`
+      : "http://localhost:3000");
   const { slug } = await params;
   const data = await getspcItem(slug);
   const product = data?.[0];
