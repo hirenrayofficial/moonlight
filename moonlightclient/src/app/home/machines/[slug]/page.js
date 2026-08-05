@@ -36,7 +36,7 @@ export async function generateMetadata({ params }) {
   }
 
   const url = `${SITE_URL}/home/machines/${slug}`;
-  const title = product.pageTitle?.trim() || `${product.name} Price in India | Moonlight Machinery`;
+  const title = product.pageTitle?.trim() 
   const description =
     product.metaDescription?.trim() ||
     (product.description
@@ -46,6 +46,7 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
+    keywords: product.metaKeywords ,
     alternates: { canonical: url },
     openGraph: { title, description, url, images: product.images?.[0] ? [{ url: product.images[0] }] : [] },
   };
