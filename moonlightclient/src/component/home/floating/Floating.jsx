@@ -30,7 +30,7 @@ const SOCIALS = [
   {
     key: "facebook",
     label: "Facebook",
-    href: "https://facebook.com/moonlightmachinery",
+    href: "https://facebook.com/profile.php?id=100068148668790",
     Icon: FaFacebook,
     color: "#3b82f6",
   },
