@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getRelatedItem, getspcItem } from "@/services/home/GetProduct";
 import Link from "next/link";
 import { MessageCircleMore, PhoneCall } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 
 function money(n) {
   return (n || 0).toLocaleString("en-US", {
@@ -117,7 +118,7 @@ Please provide more information about this product.
   }
 
   const crumb = (
-    <div className="pd-crumb pd-mono hidden md:flex">
+    <div className="pd-crumb  hidden md:flex">
       {segments.map((segment, index) => {
         const href = `/${segments.slice(0, index + 1).join("/")}`;
         return (
@@ -140,7 +141,7 @@ Please provide more information about this product.
           <GallerySkeleton />
           <InfoSkeleton />
         </section>
-        <div className="pd-related-head pd-mono">Also in stock</div>
+        <div className="pd-related-head ">Also in stock</div>
         <RelatedSkeleton />
       </div>
     );
@@ -150,7 +151,7 @@ Please provide more information about this product.
     return (
       <div className="pd-root py-32 w-full max-w-[1200px]">
         {crumb}
-        <div className="pd-error pd-mono">
+        <div className="pd-error ">
           Couldn't load this product
           {error?.message ? ` — ${error.message}` : ""}.
         </div>
@@ -162,7 +163,7 @@ Please provide more information about this product.
     return (
       <div className="pd-root py-32 w-full max-w-[1200px]">
         {crumb}
-        <div className="pd-error pd-mono">Product not found.</div>
+        <div className="pd-error ">Product not found.</div>
       </div>
     );
   }
@@ -208,19 +209,19 @@ Please provide more information about this product.
         </div>
 
         <div className="pd-info p-8 md:p-0">
-          <div className="pd-eyebrow pd-mono">
+          <div className="pd-eyebrow ">
             <span className="pd-dot" aria-hidden="true" />
             In stock — {product.stock} available
           </div>
 
           <h1 className="pd-name">{product.name}</h1>
-          <div className="pd-sku pd-mono">SKU {product.sku}</div>
+          <div className="pd-sku ">SKU {product.sku}</div>
 
-          <div className="pd-price pd-mono">
+          <div className="pd-price ">
             ₹{money(product.pricing?.basePrice || 0)}
           </div>
           {product.pricing?.otherExpenses && (
-            <div className="pd-delivery-cost pd-mono">
+            <div className="pd-delivery-cost ">
               + ₹{money(product.pricing?.otherExpenses || 0)} Other Expenses
             </div>
           )}
@@ -236,22 +237,22 @@ Please provide more information about this product.
               <PhoneCall width={15} /> Call Now
             </button>
             <button
-              className="pd-add-btna py-2 flex items-center justify-center gap-4 bg-green-600"
+              className="pd-add-btna py-2 flex items-center justify-center gap-4 bg-green-600 "
               onClick={handleWhatsApp}
               title="Send WhatsApp message"
             >
-              <MessageCircleMore width={15} /> WhatsApp
+              <FaWhatsapp size={24} /> WhatsApp
             </button>
           </div>
         </div>
       </section>
 
       <section className="pd-specs-section">
-        <div className="pd-specs-title pd-mono">Specification</div>
+        <div className="pd-specs-title ">Specification</div>
 
         {product.specifications?.productionCapacity && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Production Capacity</span>
+            <span className="pd-spec-label ">Production Capacity</span>
             <span className="pd-spec-value">
               {product.specifications?.productionCapacity}
             </span>
@@ -259,7 +260,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.motor && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Motor</span>
+            <span className="pd-spec-label ">Motor</span>
             <span className="pd-spec-value">
               {product.specifications?.motor}
             </span>
@@ -267,7 +268,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.totalPower && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Total Power</span>
+            <span className="pd-spec-label ">Total Power</span>
             <span className="pd-spec-value">
               {product.specifications?.totalPower}
             </span>
@@ -275,7 +276,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.voltage && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Voltage</span>
+            <span className="pd-spec-label ">Voltage</span>
             <span className="pd-spec-value">
               {product.specifications?.voltage}
             </span>
@@ -283,7 +284,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.phase && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Phase</span>
+            <span className="pd-spec-label ">Phase</span>
             <span className="pd-spec-value">
               {product.specifications?.phase}
             </span>
@@ -291,7 +292,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.weight && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Weight</span>
+            <span className="pd-spec-label ">Weight</span>
             <span className="pd-spec-value">
               {product.specifications?.weight}
             </span>
@@ -299,7 +300,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.rawMaterial && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Raw Material</span>
+            <span className="pd-spec-label ">Raw Material</span>
             <span className="pd-spec-value">
               {product.specifications?.rawMaterial}
             </span>
@@ -307,7 +308,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.dimensions && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Dimensions</span>
+            <span className="pd-spec-label ">Dimensions</span>
             <span className="pd-spec-value">
               {product.specifications?.dimensions?.length} x{" "}
               {product.specifications?.dimensions?.width} x{" "}
@@ -318,7 +319,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.plateSizeRange && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Plate Size Range</span>
+            <span className="pd-spec-label ">Plate Size Range</span>
             <span className="pd-spec-value">
               {product.specifications?.plateSizeRange}
             </span>
@@ -326,7 +327,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.rollerSize && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Roller Size</span>
+            <span className="pd-spec-label ">Roller Size</span>
             <span className="pd-spec-value">
               {product.specifications?.rollerSize}
             </span>
@@ -334,7 +335,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.drive && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Drive</span>
+            <span className="pd-spec-label ">Drive</span>
             <span className="pd-spec-value">
               {product.specifications?.drive}
             </span>
@@ -342,7 +343,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.paperCupSizeRange && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Paper Cup Size Range</span>
+            <span className="pd-spec-label ">Paper Cup Size Range</span>
             <span className="pd-spec-value">
               {product.specifications?.paperCupSizeRange}
             </span>
@@ -350,7 +351,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.electricityBillEstimate && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">
+            <span className="pd-spec-label ">
               Electricity Bill Estimate
             </span>
             <span className="pd-spec-value">
@@ -359,16 +360,16 @@ Please provide more information about this product.
           </div>
         )}
 
-        <div className="pd-specs-title pd-mono">Delivery</div>
+        <div className="pd-specs-title ">Delivery</div>
         {product.deliveryTime && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Delivery</span>
+            <span className="pd-spec-label ">Delivery</span>
             <span className="pd-spec-value">{product.deliveryTime}</span>
           </div>
         )}
         {product.isReturnable !== undefined && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Returnable</span>
+            <span className="pd-spec-label ">Returnable</span>
             <span className="pd-spec-value">
               {product.isReturnable ? "Yes" : "No"}
             </span>
@@ -376,13 +377,13 @@ Please provide more information about this product.
         )}
         {product.mainMarket && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label pd-mono">Market</span>
+            <span className="pd-spec-label ">Market</span>
             <span className="pd-spec-value">{product.mainMarket}</span>
           </div>
         )}
       </section>
 
-      <div className="pd-related-head pd-mono">Also in stock</div>
+      <div className="pd-related-head ">Also in stock</div>
       {isRelatedLoading ? (
         <RelatedSkeleton />
       ) : (
@@ -402,8 +403,8 @@ Please provide more information about this product.
                   <div className="pd-related-image pd-image-placeholder" />
                 )}
                 <div className="pd-related-info">
-                  <div className="pd-related-name">{p?.name}</div>
-                  <div className="pd-related-price pd-mono">
+                  <div className="text-md">{p?.name.slice(0,32)}...</div>
+                  <div className="text-lg font-bold">
                     ₹{money(p?.pricing?.basePrice || 0)}
                   </div>
                 </div>

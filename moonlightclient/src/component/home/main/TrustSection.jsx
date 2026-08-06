@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import "./trust.scss";
+import { motion, AnimatePresence } from "framer-motion";
 
 /**
  * MOONLIGHT MACHINERY — trust section
@@ -84,9 +85,30 @@ const DELIVERY_PHOTOS = [
   { src: "/images/delivery-6.jpg", caption: "Loaded and ready to ship" },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.15 },
+  },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
 function Stars({ rating, size = 14 }) {
   return (
-    <span className="tr-stars" aria-label={`${rating} out of 5 stars`}>
+    <motion.span
+      className="tr-stars"
+      aria-label={`${rating} out of 5 stars`}
+      variants={staggerItem}
+    >
       {[1, 2, 3, 4, 5].map((n) => (
         <svg
           key={n}
@@ -103,7 +125,7 @@ function Stars({ rating, size = 14 }) {
           />
         </svg>
       ))}
-    </span>
+    </motion.span>
   );
 }
 
@@ -113,12 +135,18 @@ export default function TrustSection() {
   return (
     <section className="tr-root">
       <div className="tr-inner">
-        <div className="tr-head">
+        <motion.div
+          className="tr-head"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUp}
+        >
           <span className="tr-eyebrow">Why people trust us</span>
-          <h2 className="tr-title">
+          <h2 className="tr-title uppercase">
             Reviewed by the people who bought the machine
           </h2>
-        </div>
+        </motion.div>
 
         {/* ---------- rating summary ---------- */}
         <div className="tr-summary">
@@ -132,7 +160,13 @@ export default function TrustSection() {
               reviews
             </div>
           </div>
-          <div className="tr-summary-right">
+          <motion.div
+            className="tr-summary-right"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             {RATING_SUMMARY.breakdown.map((b) => (
               <div className="tr-bd-row" key={b.stars}>
                 <span className="tr-bd-label">{b.stars}★</span>
@@ -142,11 +176,17 @@ export default function TrustSection() {
                 <span className="tr-bd-pct">{b.pct}%</span>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* ---------- individual reviews ---------- */}
-        <div className="tr-reviews-grid">
+        <motion.div
+          className="tr-reviews-grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={staggerContainer}
+        >
           {GOOGLE_REVIEWS.map((r) => (
             <div className="tr-review-card" key={r.name}>
               <div className="tr-review-top">
@@ -174,7 +214,7 @@ export default function TrustSection() {
               <div className="tr-review-date">{r.date} · Google review</div>
             </div>
           ))}
-        </div>
+        </motion.div>
 
         {/* ---------- delivery photos ---------- */}
         {/* <div className="tr-delivery-head">

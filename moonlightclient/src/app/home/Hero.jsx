@@ -11,7 +11,7 @@ import TrustSection from '@/component/home/main/TrustSection'
 
 export default function Hero() {
   return (
-    <div className=' w-full flex flex-col  mx-auto justify-center items-center flex flex-col gap-10'>
+    <div className=' w-full flex flex-col mt-[100px]  mx-auto justify-center items-center flex flex-col gap-10'>
      <Header/>
      <BannerCarousel/>
       {/* <UtilitarianHero /> */}

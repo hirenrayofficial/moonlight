@@ -1,17 +1,47 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15, // delay between each card
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { y: 50, opacity: 0 },
+  visible: { y: 0, opacity: 1 },
+};
 
 export default function Card({ product }) {
-  console.log(product)
-  const handelViewitem = (slug)=>{
+  console.log(product);
+  const handelViewitem = (slug) => {
     // alert(slug)
-    window.location.href = `/home/machines/${slug}` 
-  }
+    window.location.href = `/home/machines/${slug}`;
+  };
+
   return (
     <div>
-      <div className="pl-grid">
+      <motion.div
+        className="pl-grid"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={containerVariants}
+      >
         {product?.map((p) => (
-          <div className="pl-card" key={p?.name} onClick={(e)=>handelViewitem(p.slug)}>
+          <motion.div
+            className="pl-card"
+            key={p?.name}
+            variants={cardVariants}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            onClick={(e) => handelViewitem(p.slug)}
+          >
             <div className="pl-image-wrap">
               {p.tag && (
                 <span
@@ -20,19 +50,27 @@ export default function Card({ product }) {
                   {p?.tag}
                 </span>
               )}
-              <Image width={500} height={500} alt={p?.name} className="pl-image" src={p?.images?.[0]} loading="lazy" />
-
-              
+              <Image
+                width={500}
+                height={500}
+                alt={p?.name}
+                className="pl-image"
+                src={p?.images?.[0]}
+                loading="lazy"
+              />
             </div>
-            
             <div className="pl-info">
-              <div className="pl-name">{p?.name.slice(0, 32) }...</div>
-              <div className="pl-price pl-mono">₹{p?.pricing.basePrice || "5000"}</div>
+              <div className="text-md font-bold text-gray-700">
+                {p?.name.slice(0, 32)}...
+              </div>
+              <div className="text-lg font-bold">
+                ₹{p?.pricing.basePrice || "5000"}
+              </div>
             </div>
             {/* <button className="pl-quick-add" onClick={(e)=>handelViewitem(p.slug)}>View Details</button> */}
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

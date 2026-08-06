@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./crousal.scss";
 import { useQuery } from "@tanstack/react-query";
 import { slider } from "@/services/home/GetProduct";
+import { motion, AnimatePresence } from "framer-motion";
 
 /**
  * STOCKROOM — cinematic banner carousel
@@ -31,7 +32,7 @@ export default function BannerCarousel() {
       if (dataLength === 0) return;
       setIndex(((i % dataLength) + dataLength) % dataLength);
     },
-    [dataLength]
+    [dataLength],
   );
 
   const next = useCallback(() => goTo(index + 1), [goTo, index]);
@@ -63,7 +64,7 @@ export default function BannerCarousel() {
   function handleTouchStart(e) {
     touchStartX.current = e.touches[0].clientX;
   }
-  
+
   function handleTouchEnd(e) {
     if (touchStartX.current === null) return;
     const delta = e.changedTouches[0].clientX - touchStartX.current;
@@ -74,17 +75,21 @@ export default function BannerCarousel() {
   }
 
   const handelClick = (slug) => {
-    window.location.href = "/home/machines/"+ slug;
+    window.location.href = "/home/machines/" + slug;
   };
 
   // Render fallback if data is still loading or empty
   if (!data || data.length === 0) {
-    return <div className="cb-root w-full py-16 text-center text-black">Loading carousel...</div>;
+    return (
+      <div className="cb-root w-full py-16 text-center text-black">
+        Loading carousel...
+      </div>
+    );
   }
 
   return (
-    <div
-      className={`cb-root ${paused ? "cb-paused" : ""} w-full py-16`}
+    <motion.div
+      className={`cb-root ${paused ? "cb-paused" : ""} w-full py-16 md:mt-12`}
       ref={trackRef}
       tabIndex={0}
       role="region"
@@ -96,6 +101,9 @@ export default function BannerCarousel() {
       onBlur={() => setPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      initial={{ y: 50, opacity: 1 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4 }}
     >
       <div className="cb-progress-row">
         {data.map((_, i) => (
@@ -129,7 +137,10 @@ export default function BannerCarousel() {
         <p className="cb-desc">{data[index]?.desc}</p>
         <div className="cb-cta-row">
           <span className="cb-price cb-mono">{data[index]?.price}</span>
-          <button className="cb-cta-btn" onClick={()=>handelClick(data[index]?.slug)}>
+          <button
+            className="cb-cta-btn"
+            onClick={() => handelClick(data[index]?.slug)}
+          >
             {data[index]?.cta || "Buy Now"}
           </button>
         </div>
@@ -164,6 +175,6 @@ export default function BannerCarousel() {
         {String(index + 1).padStart(2, "0")} /{" "}
         {String(data.length).padStart(2, "0")}
       </div>
-    </div>
+    </motion.div>
   );
 }

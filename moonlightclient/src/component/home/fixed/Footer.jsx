@@ -2,6 +2,8 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import "./footer.scss";
+import { motion, AnimatePresence } from "framer-motion";
+
 /**
  * STOCKROOM — footer
  * Same system as the rest: hairline rules, mono labels, sharp corners.
@@ -91,7 +93,12 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="ft-root">
+    <motion.footer
+      className="ft-root"
+      initial={{ y: 50, opacity: 1 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       <div className="ft-inner">
         <div className="ft-manifest">
           <div className="ft-manifest-cell">
@@ -176,7 +183,7 @@ export default function Footer() {
 
         <div className="ft-bottom">
           <a
-            href="iam.hirenray.rest"
+            href="https://iam.hirenray.rest"
             className="ft-copyright ft-mono cursor-pointer"
           >
             © {year} Rtech Agency.
@@ -190,7 +197,7 @@ export default function Footer() {
             </a>
             <a
               className="ft-bottom-link ft-mono"
-              href="https://youtube.com/@moonlightmachinery"
+              href="https://youtube.com/@moonlightmachinery6670?si=1W37CtkGFkI7vX7A"
             >
               Youtube
             </a>
@@ -203,6 +210,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

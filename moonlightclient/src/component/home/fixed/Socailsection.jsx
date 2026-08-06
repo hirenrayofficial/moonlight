@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import "./social.scss";
+import { FaInstagram, FaYoutube } from "react-icons/fa";
 
 /**
  * MOONLIGHT MACHINERY — social section
@@ -13,24 +14,13 @@ const SOCIALS = [
     name: "Instagram",
     handle: "@moonlightmachinery",
     url: "https://instagram.com/moonlightmachinery",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <rect x="2" y="2" width="16" height="16" rx="1" stroke="currentColor" strokeWidth="1.4" />
-        <circle cx="10" cy="10" r="3.6" stroke="currentColor" strokeWidth="1.4" />
-        <circle cx="14.6" cy="5.4" r="0.9" fill="currentColor" />
-      </svg>
-    ),
+    icon: <FaInstagram/>,
   },
   {
     name: "YouTube",
     handle: "Moonlight Machinery",
     url: "https://www.youtube.com/channel/UCCGAoZpF0h1MD-iwWThGEZg",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <rect x="1.5" y="4.5" width="17" height="11" rx="1" stroke="currentColor" strokeWidth="1.4" />
-        <path d="M8.2 7.6L12.4 10L8.2 12.4V7.6Z" fill="currentColor" />
-      </svg>
-    ),
+    icon: <FaYoutube/>,
   },
   {
     name: "Facebook",

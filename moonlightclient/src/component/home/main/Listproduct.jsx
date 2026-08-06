@@ -6,6 +6,8 @@ import { getItem } from "@/services/home/GetProduct";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+
 /**
  * STOCKROOM — product list / showcase section
  * A landing-page catalog block: filterable grid, hairline dividers,
@@ -81,11 +83,15 @@ export default function ProductShowcase({ view }) {
           })}
         </div>
         <div className="pl-head">
-          <div>
-            {/* <div className="pl-eyebrow pl-mono">Product No. 014</div> */}
-            <h2 className="pl-title">In the warehouse now</h2>
-          </div>
-
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.2 }}
+  transition={{ duration: 0.6, ease: "easeOut" }}
+>
+  {/* <div className="pl-eyebrow pl-mono">Product No. 014</div> */}
+  <h2 className="pl-title">In the warehouse now</h2>
+</motion.div>
           <div
             className="pl-tabs"
             role="tablist"
