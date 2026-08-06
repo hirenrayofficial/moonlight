@@ -6,19 +6,30 @@ export async function PUT(req) {
 
     const { searchParams } = new URL(req.url);
     const productId = searchParams.get('id');
-    const slider = searchParams.get("slider_active")
-    // const { productId, slider } = body;
-    if (!productId || !slider) {
+    const sliderActive = searchParams.get("slider_active");
+    const sliderImage = searchParams.get("slider_image") || undefined;
+
+    if (!productId || sliderActive === null) {
         return NextResponse.json(
             { success: false, error: 'Invalid request: productId and payload required' },
             { status: 400 }
         );
     }
+
+    const slider = sliderActive === "true" || sliderActive === "1";
     await connectDB();
+
+    const updatePayload = {
+      slider,
+    };
+
+    if (sliderImage !== undefined) {
+      updatePayload.slider_image = sliderImage;
+    }
 
     const updatedProduct = await Product.findByIdAndUpdate(
         productId,
-        { $set: { slider: slider } },
+        { $set: updatePayload },
         { new: true, runValidators: true }
     );
     if (!updatedProduct) {

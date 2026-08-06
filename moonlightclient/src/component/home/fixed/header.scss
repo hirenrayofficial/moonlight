@@ -96,7 +96,7 @@
 .hd-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 2px;
 }
 
 /* FIX: this previously had no overflow/sizing rule for the <Image>
@@ -137,6 +137,12 @@
 .hd-links {
   display: flex;
   align-items: center;
+  gap: 16px;
+}
+.hd-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .hd-nav {
   display: none;
@@ -199,4 +205,46 @@
 .hd-shop-btn:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
+}
+
+.button-links {
+  display: flex;
+  // justify-content: center;
+  gap: 10px;
+  padding: 1px 8px 8px;
+  // border-top: 1px solid var(--line-strong);
+  // background: rgba(250, 249, 245, 0.95);
+}
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.button-link:hover {
+  transform: translateY(-1px);
+  background: var(--accent);
+}
+
+.button-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .button-links {
+    display: none;
+  }
 }

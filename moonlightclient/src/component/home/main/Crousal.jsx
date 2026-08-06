@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./crousal.scss";
 import { useQuery } from "@tanstack/react-query";
 import { slider } from "@/services/home/GetProduct";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowLeftIcon, ChevronLeft, ChevronRight } from "lucide-react";
 
 /**
@@ -21,7 +21,7 @@ export default function BannerCarousel() {
   const trackRef = useRef(null);
 
   // 1. Fetch data first so it's available for callbacks
-  const { data = [] } = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: ["itema"],
     queryFn: slider,
   });
@@ -79,11 +79,36 @@ export default function BannerCarousel() {
     window.location.href = "/home/machines/" + slug;
   };
 
-  // Render fallback if data is still loading or empty
-  if (!data || data.length === 0) {
+  function LoadingSkeleton() {
+    return (
+      <motion.div
+        className="cb-root cb-skeleton w-full py-16 md:mt-12"
+        initial={{ opacity: 0.85 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="cb-skeleton-slide" />
+        <div className="cb-skeleton-content">
+          <div className="cb-skeleton-line cb-skeleton-title" />
+          <div className="cb-skeleton-line cb-skeleton-desc" />
+          <div className="cb-skeleton-line cb-skeleton-desc short" />
+          <div className="cb-skeleton-row">
+            <div className="cb-skeleton-pill" />
+            <div className="cb-skeleton-button" />
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (!data || dataLength === 0) {
     return (
       <div className="cb-root w-full py-16 text-center text-black">
-        Loading carousel...
+        No carousel slides available.
       </div>
     );
   }
@@ -122,16 +147,19 @@ export default function BannerCarousel() {
         ))}
       </div>
 
-      {data.map((s, i) => (
-        <div
-          className={`cb-slide ${i === index ? "active" : ""}`}
-          key={s.id || s.title || i}
-          aria-hidden={i !== index}
-        >
-          <img className="cb-slide-image" src={s.images[0]} alt="" />
-          <div className="cb-slide-scrim" />
-        </div>
-      ))}
+      {data.map((s, i) => {
+        const slideImage = s.slider_image || s.images?.[0] || "";
+        return (
+          <div
+            className={`cb-slide ${i === index ? "active" : ""}`}
+            key={s.id || s.title || i}
+            aria-hidden={i !== index}
+          >
+            <img className="cb-slide-image" src={slideImage} alt={s.name || "Slider image"} />
+            <div className="cb-slide-scrim" />
+          </div>
+        );
+      })}
 
       <div className="cb-content w-full max-w-[1200px]">
         <h2 className="cb-title">{data[index]?.name}</h2>

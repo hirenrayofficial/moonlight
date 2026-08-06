@@ -2,8 +2,14 @@
 import Image from "next/image";
 import React from "react";
 import "./header.scss";
-import { FaFacebook, FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaPhone,
+  FaWhatsapp,
+  FaYoutube,
+} from "react-icons/fa";
+import { color, motion } from "framer-motion";
 import Link from "next/link";
 
 /**
@@ -34,37 +40,32 @@ const SOCIALS = [
     url: "https://wa.me/918178445596",
     icon: <FaWhatsapp />,
   },
-  // {
-  //   name: "LinkedIn",
-  //   url: "https://linkedin.com/company/moonlightmachinery",
-  //   icon: (
-  //     <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-  //       <rect x="2" y="2" width="16" height="16" rx="1" stroke="currentColor" strokeWidth="1.6" />
-  //       <circle cx="6.3" cy="6.5" r="0.9" fill="currentColor" />
-  //       <path d="M6.3 9V14.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-  //       <path d="M9.3 14.5V11C9.3 9.8 10.1 9 11.2 9C12.3 9 13 9.8 13 11V14.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-  //     </svg>
-  //   ),
-  // },
+];
+
+const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Machines", href: "/home/machines" },
+  { label: "Blog", href: "/home/blog" },
+];
+
+const MOBILE_ACTIONS = [
+  {
+    label: "WhatsApp",
+    href: "https://wa.me/918178445596",
+    icon: <FaWhatsapp />,
+    color: "green-500",
+    bg: "transparent",
+  },
+  {
+    label: "Call",
+    href: "tel:+918178445596",
+    icon: <FaPhone />,
+    color: "orange-500",
+    bg: "transparent",
+  },
 ];
 
 export default function Header() {
-  const handelCall = (link) => {
-    console.log(link);
-    if (link === "about") {
-      window.location.href = "/about";
-    } else if (link === "num") {
-      const phoneNumber = "+918178445596"; // replace with your actual number
-      window.location.href = `tel:${phoneNumber}`;
-    } else return;
-  };
-  const handelLogin = () => {
-    window.location.href = "/getway";
-  };
-  const handelHome = () => {
-    window.location.href = "/";
-  };
-
   return (
     <motion.header
       className="hd-root"
@@ -92,19 +93,19 @@ export default function Header() {
         </div>
       </div>
 
-      <div  className="hd-inner cursor-pointer">
+      <div className="hd-inner cursor-pointer">
         <div className="hd-brand" onClick={(e) => handelHome()}>
-          <div className="hd-brand-mark w-[50px] h-[50px] md:w-[80px] md:h-[80px]">
+          <div className="hd-brand-mark w-12.5 h-12.5 md:w-20 md:h-20">
             <Image
               width={500}
               height={70}
               alt="Moonlight Machinery"
               src="/logo.png"
               priority
-              className="hd-brand-logo w-[50px] h-[50px] md:w-[80px] md:h-[80px]"
+              className="hd-brand-logo w-12.5 h-12.5 md:w-20 md:h-20"
             />
           </div>
-          <span className="grid leading-6">
+          <span className="grid leading-tight ">
             <span className="hd-brand-name text-[16px] md:text-[20px]">
               Moonlight Machinery
             </span>
@@ -114,29 +115,40 @@ export default function Header() {
           </span>
         </div>
 
-        <div className="hd-links gap-2 md:gap-[32px]">
+        <div className="hd-links gap-2 md:gap-8">
           <nav className="hd-nav">
-            <a className="hd-nav-link" href="/">
-              Home
-            </a>
-            <a className="hd-nav-link" href="/home/machines">
-              Machines
-            </a>
-            <a className="hd-nav-link" href="/home/blog">
-              Blog
-            </a>
+            {NAV_LINKS.map((item) => (
+              <Link key={item.href} className="hd-nav-link" href={item.href}>
+                {item.label}
+              </Link>
+            ))}
           </nav>
-          <Link className="hd-shop-btn" href={"/getway"}>
-            Login
-          </Link>
-          <button
-            className="hd-shop-btn cal"
-            onClick={(e) => handelCall("num")}
-          >
-            Call
-          </button>
+          <div className="hd-actions">
+            <Link className="hd-shop-btn" href="/getway">
+              Login
+            </Link>
+            <a className="hd-shop-btn cal" href="tel:+918178445596">
+              Call
+            </a>
+          </div>
         </div>
       </div>
+      {/* <div className="button-links sm:hidden">
+        {MOBILE_ACTIONS.map((item) => (
+          <a
+            key={item.label}
+            className={`button-link bg-${item.bg} text-${item.color}`}
+            href={item.href}
+            target={item.href.startsWith("http") ? "_blank" : undefined}
+            rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+          >
+            <span className={`button-icon`} >
+              {item.icon}
+            </span>
+            {item.label}
+          </a>
+        ))}
+      </div> */}
     </motion.header>
   );
 }

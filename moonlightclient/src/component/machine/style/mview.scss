@@ -140,6 +140,21 @@
   display: block;
   background: #f0efe8;
 }
+.pd-thumb-video {
+  display: grid;
+  place-items: center;
+  background: rgba(5, 127, 242, 0.1);
+  color: var(--ink);
+}
+.pd-thumb-video-label {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0 6px;
+  border: 1px solid rgba(5, 127, 242, 0.35);
+  border-radius: 999px;
+}
 .pd-thumb.active::after {
   content: "";
   position: absolute;
@@ -266,10 +281,12 @@
   gap: 16px;
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
-  font-size: 13px;
+  font-size: 18px;
+  font-style: bold;
 }
 .pd-spec-row:last-child {
   border-bottom: none;
+  
 }
 .pd-spec-label {
   color: var(--ink-faint);

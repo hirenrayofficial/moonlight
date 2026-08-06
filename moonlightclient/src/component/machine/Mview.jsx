@@ -10,6 +10,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Video from "@/component/home/main/Video";
 
 function money(n) {
   return (n || 0).toLocaleString("en-US", {
@@ -96,14 +97,23 @@ export default function Mview({ slug, initialProduct }) {
 
   const infoVariants = {
     hidden: { opacity: 0, x: 30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.2 } },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.6,
+        delay: 0.2,
+        when: "beforeChildren",
+        staggerChildren: 0.08,
+      },
+    },
   };
 
   const specsVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
-  
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["item", slug],
     queryFn: () => getspcItem(slug),
@@ -149,7 +159,7 @@ Please provide more information about this product.
     const encodedMessage = encodeURIComponent(productDetails);
     const whatsappUrl = `https://wa.me/${businessPhone.replace(
       /[^\d+]/g,
-      ""
+      "",
     )}?text=${encodedMessage}`;
     window.open(whatsappUrl, "_blank");
   }
@@ -225,17 +235,45 @@ Please provide more information about this product.
 
   const images = product.images || [];
 
+  const hasVideoSlide = !!product.video && !!product.video_link;
+
+  // derive a thumbnail for YouTube links so the video appears in thumbs
+  function extractYouTubeId(url) {
+    if (!url) return null;
+    const patterns = [
+      /youtube\.com\/watch\?v=([^&]+)/,
+      /youtube\.com\/embed\/([^?&]+)/,
+      /youtu\.be\/([^?&]+)/,
+      /youtube\.com\/shorts\/([^?&]+)/,
+    ];
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    return null;
+  }
+
+  const videoThumb = (() => {
+    const id = extractYouTubeId(product.video_link);
+    return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
+  })();
+
+  const mediaItems = [...images];
+  if (hasVideoSlide) {
+    mediaItems.push({ type: "video", thumb: videoThumb });
+  }
+
   function showPreviousImage() {
-    if (!images.length) return;
+    if (!mediaItems.length) return;
     setActiveImage((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      prevIndex === 0 ? mediaItems.length - 1 : prevIndex - 1,
     );
   }
 
   function showNextImage() {
-    if (!images.length) return;
+    if (!mediaItems.length) return;
     setActiveImage((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      prevIndex === mediaItems.length - 1 ? 0 : prevIndex + 1,
     );
   }
 
@@ -276,14 +314,20 @@ Please provide more information about this product.
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Image
-                width={400}
-                height={400}
-                className="pd-image-main"
-                src={images[activeImage] || images[0]}
-                alt={product.name || "Product image"}
-                priority
-              />
+              {mediaItems[activeImage]?.type === "video" ? (
+                <div className="pd-video-wrapper">
+                  <Video link={product.video_link} />
+                </div>
+              ) : (
+                <Image
+                  width={400}
+                  height={400}
+                  className="pd-image-main"
+                  src={mediaItems[activeImage] || mediaItems[0] || images[0]}
+                  alt={product.name || "Product image"}
+                  priority
+                />
+              )}
             </motion.div>
             <motion.button
               type="button"
@@ -303,69 +347,107 @@ Please provide more information about this product.
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {images.map((src, i) => (
-              <motion.button
-                key={src + i}
-                className={`pd-thumb ${i === activeImage ? "active" : ""}`}
-                onClick={() => setActiveImage(i)}
-                aria-label={`Show image ${i + 1}`}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Image
-                  src={src}
-                  alt={
-                    product.name
-                      ? `${product.name} thumbnail ${i + 1}`
-                      : "Product thumbnail"
+            {mediaItems.map((item, i) => {
+              const isVideoThumb = item?.type === "video";
+              return (
+                <motion.button
+                  key={isVideoThumb ? `video-${i}` : item + i}
+                  className={`pd-thumb ${i === activeImage ? "active" : ""} ${
+                    isVideoThumb ? "pd-thumb-video" : ""
+                  }`}
+                  onClick={() => setActiveImage(i)}
+                  aria-label={
+                    isVideoThumb
+                      ? "Show product video"
+                      : `Show image ${i + 1}`
                   }
-                  width={80}
-                  height={80}
-                  className="pd-thumb-image"
-                />
-              </motion.button>
-            ))}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {isVideoThumb ? (
+                    <div className="pd-thumb-video-label">Video</div>
+                  ) : (
+                    <Image
+                      src={item}
+                      alt={
+                        product.name
+                          ? `${product.name} thumbnail ${i + 1}`
+                          : "Product thumbnail"
+                      }
+                      width={80}
+                      height={80}
+                      className="pd-thumb-image"
+                    />
+                  )}
+                </motion.button>
+              );
+            })}
           </motion.div>
         </motion.div>
 
-        <div className="pd-info p-8 md:p-0">
-          <div className="pd-eyebrow ">
+        <motion.div
+          className="pd-info p-8 md:p-0"
+          variants={infoVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.div
+            className="pd-eyebrow "
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <span className="pd-dot" aria-hidden="true" />
             In stock — {product.stock} available
-          </div>
+          </motion.div>
 
-          <h1 className="pd-name">{product.name}</h1>
-          <div className="pd-sku ">SKU {product.sku}</div>
+          <motion.h1 className="pd-name" variants={itemVariants}>
+            {product.name}
+          </motion.h1>
+          <motion.div className="pd-sku " variants={itemVariants}>
+            SKU {product.sku}
+          </motion.div>
 
-          <div className="pd-price ">
+          <motion.div className="pd-price " variants={itemVariants}>
             ₹{money(product.pricing?.basePrice || 0)}
-          </div>
+          </motion.div>
           {product.pricing?.otherExpenses && (
-            <div className="pd-delivery-cost ">
+            <motion.div className="pd-delivery-cost " variants={itemVariants}>
               + ₹{money(product.pricing?.otherExpenses || 0)} Other Expenses
-            </div>
+            </motion.div>
           )}
 
-          <p className="pd-desc">{product.description}</p>
+          <motion.p className="pd-desc" variants={itemVariants}>
+            {product.description}
+          </motion.p>
 
-          <div className="pd-buy-row">
-            <button
+          <motion.div className="pd-buy-row" variants={itemVariants}>
+            <motion.button
+              type="button"
               className="pd-add-btn py-2 flex items-center justify-center gap-4"
               onClick={handleEnquiry}
               title="Call us"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <PhoneCall width={15} /> Call Now
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              type="button"
               className="pd-add-btna py-2 flex items-center justify-center gap-4 bg-green-600 "
               onClick={handleWhatsApp}
               title="Send WhatsApp message"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <FaWhatsapp size={24} /> WhatsApp
-            </button>
-          </div>
-        </div>
+            </motion.button>
+          </motion.div>
+        </motion.div>
+
+        {/* video is now integrated as the final gallery slide */}
       </motion.section>
 
       <motion.section
@@ -478,9 +560,7 @@ Please provide more information about this product.
         )}
         {product.specifications?.electricityBillEstimate && (
           <div className="pd-spec-row">
-            <span className="pd-spec-label ">
-              Electricity Bill Estimate
-            </span>
+            <span className="pd-spec-label ">Electricity Bill Estimate</span>
             <span className="pd-spec-value">
               {product.specifications?.electricityBillEstimate}
             </span>
@@ -537,23 +617,23 @@ Please provide more information about this product.
                   whileHover={{ y: -8 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                {p?.images?.[0] ? (
-                  <Image
-                    className="pd-related-image"
-                    src={p.images[0]}
-                    alt={p?.name || "Related product"}
-                    width={160}
-                    height={120}
-                  />
-                ) : (
-                  <div className="pd-related-image pd-image-placeholder" />
-                )}
-                <div className="pd-related-info">
-                  <div className="text-md">{p?.name.slice(0,32)}...</div>
-                  <div className="text-lg font-bold">
-                    ₹{money(p?.pricing?.basePrice || 0)}
+                  {p?.images?.[0] ? (
+                    <Image
+                      className="pd-related-image"
+                      src={p.images[0]}
+                      alt={p?.name || "Related product"}
+                      width={160}
+                      height={120}
+                    />
+                  ) : (
+                    <div className="pd-related-image pd-image-placeholder" />
+                  )}
+                  <div className="pd-related-info">
+                    <div className="text-md">{p?.name.slice(0, 32)}...</div>
+                    <div className="text-lg font-bold">
+                      ₹{money(p?.pricing?.basePrice || 0)}
+                    </div>
                   </div>
-                </div>
                 </motion.div>
               </Link>
             </motion.div>

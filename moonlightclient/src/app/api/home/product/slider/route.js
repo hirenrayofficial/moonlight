@@ -14,7 +14,8 @@ export async function GET(req) {
             pricing: 1,
             images: 1,
             description: 1,
-            slider: 1
+            slider: 1,
+            slider_image: 1,
         });
 
         return NextResponse.json({ 

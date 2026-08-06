@@ -78,6 +78,10 @@ const emptyDraft = {
   status: "active",
   stock: "",
   threshold: "",
+  slider: false,
+  slider_image: "",
+  video: false,
+  video_link: "",
 };
 
 function makeId() {
@@ -141,6 +145,10 @@ function buildPayload(draft) {
     stock: toNumber(draft.stock) ?? 0,
     threshold: toNumber(draft.threshold) ?? 0,
     images: draft.images || [],
+    slider: draft.slider || false,
+    slider_image: draft.slider_image || "",
+    video: draft.video || false,
+    video_link: draft.video_link || "",
   };
 }
 
@@ -225,6 +233,7 @@ export default function ProductAdmin({ compact = false }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [uploading, setUploading] = useState({});
+  const [sliderUploading, setSliderUploading] = useState(false);
 
   const {
     data: queryData,
@@ -317,10 +326,22 @@ export default function ProductAdmin({ compact = false }) {
       status: product.status || "active",
       stock: product.stock ?? "",
       threshold: product.threshold ?? "",
+      slider: product.slider || false,
+      slider_image: product.slider_image || "",
+      video: product.video || false,
+      video_link: product.video_link || "",
     });
     setErrors({});
     setSubmitError("");
     setModalOpen(true);
+  };
+
+  const openSliderEditor = (product) => {
+    openEdit({
+      ...product,
+      slider: true,
+      slider_image: product.slider_image || "",
+    });
   };
 
   const closeModal = () => {
@@ -440,6 +461,20 @@ export default function ProductAdmin({ compact = false }) {
     }));
   };
 
+  const handleSliderImageUpload = async (file) => {
+    if (!file) return;
+    setSliderUploading(true);
+    try {
+      const url = await imgUpload(file);
+      setField("slider_image", url);
+      setField("slider", true);
+    } catch (error) {
+      window.alert(error?.message || "Failed to upload slider image.");
+    } finally {
+      setSliderUploading(false);
+    }
+  };
+
   const saveDraft = async (event) => {
     event.preventDefault();
     if (isSubmitting) return;
@@ -488,9 +523,9 @@ export default function ProductAdmin({ compact = false }) {
       window.alert(error?.message || "Could not delete product.");
     }
   };
-  const handelSlider = async (productId,sld_active) => {
+  const handelSlider = async (productId, sld_active) => {
     try {
-      const response = await sliderUpdate(productId,sld_active);
+      const response = await sliderUpdate(productId, sld_active);
       if (!response?.success) {
         throw new Error(response?.error || "Delete failed.");
       }
@@ -585,16 +620,24 @@ export default function ProductAdmin({ compact = false }) {
                 </div>
                 <div className="ad-product-actions">
                   {product.slider ? (
-                    <button
-                      className="ad-btn-secondary bg-red-700 text-white"
-                      onClick={() => handelSlider(product.id, false)}
-                    >
-                      Remove slider
-                    </button>
+                    <>
+                      <button
+                        className="ad-btn-secondary bg-red-700 text-white"
+                        onClick={() => handelSlider(product.id, false)}
+                      >
+                        Remove slider
+                      </button>
+                      <button
+                        className="ad-btn-secondary"
+                        onClick={() => openSliderEditor(product)}
+                      >
+                        Edit slider
+                      </button>
+                    </>
                   ) : (
                     <button
-                      className="ad-btn-secondary "
-                      onClick={() => handelSlider(product.id, true)}
+                      className="ad-btn-secondary"
+                      onClick={() => openSliderEditor(product)}
                     >
                       Add slider
                     </button>
@@ -787,6 +830,47 @@ export default function ProductAdmin({ compact = false }) {
                   ))}
                 </div>
               )}
+
+              <div className="ad-section-label">Carousel slider</div>
+              <div className="ad-row2">
+                <div className="ad-field ad-field-checkbox">
+                  <label className="ad-label">
+                    <input
+                      type="checkbox"
+                      checked={draft.slider}
+                      onChange={(e) => setField("slider", e.target.checked)}
+                    />
+                    Show in carousel
+                  </label>
+                </div>
+              </div>
+              <div className="ad-section-label">Video</div>
+              <div className="ad-row2">
+                <div className="ad-field ad-field-checkbox">
+                  <label className="ad-label">
+                    <input
+                      type="checkbox"
+                      checked={draft.video}
+                      onChange={(e) => setField("video", e.target.checked)}
+                    />
+                    Show product video
+                  </label>
+                </div>
+              </div>
+
+              <div className="ad-field">
+                <label className="ad-label">Video link</label>
+                <input
+                  type="url"
+                  className="ad-input"
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  value={draft.video_link}
+                  onChange={(e) => setField("video_link", e.target.value)}
+                />
+                <div className="ad-helper-text">
+                  Paste a YouTube link or direct video URL.
+                </div>
+              </div>
 
               <div className="ad-section-label">Specifications</div>
               <div className="ad-row2">

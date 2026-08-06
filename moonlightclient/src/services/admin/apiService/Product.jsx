@@ -37,8 +37,18 @@ export async function updateProduct(productId, productData) {
 export async function deleteProduct(productId) {
   return await request(() => axios.delete(`${PRODUCT_ENDPOINT}?id=${productId}`));
 }
-export async function sliderUpdate(productId,sld_status) {
-  return await request(() => axios.put(`${PRODUCT_ENDPOINT}/slider?id=${productId}&slider_active=${sld_status}`));
+export async function sliderUpdate(productId, sld_status, sliderImage) {
+  const query = new URLSearchParams({
+    id: productId,
+    slider_active: String(sld_status),
+  });
+  if (sliderImage) {
+    query.set("slider_image", sliderImage);
+  }
+
+  return await request(() =>
+    axios.put(`${PRODUCT_ENDPOINT}/slider?${query.toString()}`),
+  );
 }
 
 

@@ -24,6 +24,89 @@
   box-sizing: border-box;
 }
 
+.cb-skeleton {
+  position: relative;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 35%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.08));
+  overflow: hidden;
+}
+
+.cb-skeleton-slide {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.06) 100%);
+  background-size: 200% 100%;
+  animation: cb-skeleton-shimmer 1.8s linear infinite;
+}
+
+.cb-skeleton-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 0 180px 56px;
+  display: grid;
+  gap: 14px;
+}
+
+.cb-skeleton-line,
+.cb-skeleton-pill,
+.cb-skeleton-button {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  animation: cb-pulse 1.4s ease-in-out infinite alternate;
+}
+
+.cb-skeleton-title {
+  width: clamp(220px, 35vw, 360px);
+  height: 42px;
+}
+
+.cb-skeleton-desc {
+  width: min(52ch, 100%);
+  height: 16px;
+}
+
+.cb-skeleton-desc.short {
+  width: 45%;
+}
+
+.cb-skeleton-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.cb-skeleton-pill {
+  width: 96px;
+  height: 24px;
+}
+
+.cb-skeleton-button {
+  width: 160px;
+  height: 44px;
+}
+
+@keyframes cb-pulse {
+  from {
+    opacity: 0.65;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cb-skeleton-shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
 /* Compact Mobile Banner Rules */
 @media (max-width: 720px) {
   .cb-root {

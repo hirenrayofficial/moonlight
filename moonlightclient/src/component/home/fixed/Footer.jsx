@@ -20,10 +20,6 @@ const LINK_COLUMNS = [
         href: "/home/machines",
       },
       {
-        name: "Accessories",
-        href: "/home/accessories",
-      },
-      {
         name: "Spare parts",
         href: "/home/spare-parts",
       },

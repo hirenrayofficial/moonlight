@@ -31,7 +31,7 @@
 }
 @media (max-width: 720px) {
   .ft-inner {
-    padding: 40px 20px 0;
+    padding: 10px 10px 0;
   }
 }
 
@@ -53,13 +53,7 @@
   grid-template-columns: repeat(4, 1fr);
   width: 100%;
 
-  @media (max-width: 720px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
-  @media (max-width: 420px) {
-    grid-template-columns: 1fr;
-  }
 }
 
 .ft-manifest-cell {
@@ -123,21 +117,21 @@
 .ft-grid {
   display: grid;
   grid-template-columns: 1.3fr repeat(3, 0.8fr) 1.3fr;
-  gap: 32px;
+  gap: 18px;
   padding-bottom: 48px;
   border-bottom: 1px solid var(--line-strong);
 }
 @media (max-width: 900px) {
   .ft-grid {
-    grid-template-columns: 1fr 1fr;
-    row-gap: 36px;
+    grid-template-columns: 2fr 1fr;
+    row-gap: 18px;
   }
 }
-@media (max-width: 560px) {
-  .ft-grid {
-    grid-template-columns: 1fr;
-  }
-}
+// @media (max-width: 560px) {
+//   .ft-grid {
+//     grid-template-columns: 1fr;
+//   }
+// }
 
 .ft-brand-col {
   grid-column: span 1;
@@ -172,7 +166,7 @@
 }
 .ft-brand-name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -180,7 +174,7 @@
   font-size: 13px;
   line-height: 1.6;
   color: var(--ink-dim);
-  max-width: 34ch;
+  max-width: 30ch;
 }
 
 .ft-col-title {

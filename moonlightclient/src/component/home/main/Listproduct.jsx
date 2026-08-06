@@ -65,24 +65,8 @@ export default function ProductShowcase({ view }) {
     active === "All" ? safeData : safeData.filter((p) => p.category === active);
 
   return (
-    <section className="pl-root">
+    <section className="pl-root mt-16">
       <div className="pl-inner">
-        <div className="pl-eyebrow pl-mono flex">
-          <Link href="/">Home</Link>
-          {segments.map((segment, index) => {
-            // Build the path up to this segment
-            const href = `/${segments.slice(0, index + 1).join("/")}`;
-
-            return (
-              <div key={href} className="flex gap-2">
-                <span>/</span>
-                <Link href={href} className="capitalize bold text-gray-500">
-                  {segment.replace(/-/g, " ")}
-                </Link>
-              </div>
-            );
-          })}
-        </div>
         <div className="pl-head">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
