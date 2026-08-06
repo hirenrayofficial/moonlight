@@ -1,4 +1,4 @@
-// @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+/* ---------- Carousel Root ---------- */
 
 .cb-root {
   --ink: #ffffff;
@@ -9,22 +9,63 @@
 
   position: relative;
   width: 100%;
-  height: 86vh;
-  min-height: 460px;
-  max-height: 760px;
+  
+  /* Desktop Size */
+  height: 600px;
+  max-width: 1920px;
+  margin: 0 auto;
+
   overflow: hidden;
   background: transparent;
   outline: none;
 }
+
 .cb-root * {
   box-sizing: border-box;
 }
+
+/* Compact Mobile Banner Rules */
 @media (max-width: 720px) {
   .cb-root {
-    height: 78vh;
-    min-height: 520px;
+    /* Option A: Fixed Height (uncomment if you prefer exact pixels) */
+    /* height: 280px; */
+
+    /* Option B: Fixed Aspect Ratio (16:9 ratio, stays small on all phones) */
+    height: auto;
+    aspect-ratio: 16 / 9;
+    min-height: unset;
+    max-height: 320px;
+  }
+
+  /* Compact content alignment on mobile */
+  .cb-content {
+    padding: 0 16px 20px;
+  }
+
+  .cb-title {
+    
+    margin-bottom: 8px;
+  }
+
+  // .cb-cta-btn {
+  //   padding: 8px 14px;
+  //   font-size: 11px;
+  // }
+
+  .cb-progress-row {
+    top: 12px;
   }
 }
+
+/* Full-Screen Mobile Optimization */
+// @media (max-width: 720px) {
+//   .cb-root {
+//     height: 100vh;           /* Covers 100% of the mobile screen height */
+//     height: 100dvh;          /* Supports modern mobile dynamic viewport height */
+//     min-height: 100vh;
+//     max-height: none;
+//   }
+// }
 
 .cb-mono {
   // font-family: "IBM Plex Mono", monospace;
@@ -50,7 +91,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;         /* Fills entire dimensions while preserving image aspect ratio */
+  object-position: center;   /* Keeps key subject centered */
   transform: scale(1.04);
   transition: transform 6s ease;
 }
@@ -153,7 +195,7 @@
   // font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
   color: #fff;
-  font-size: clamp(26px, 4.6vw, 52px);
+  font-size: clamp(16px, 4.6vw, 52px);
   line-height: 1.02;
   margin: 0 0 14px 0;
 }
@@ -192,7 +234,7 @@
   background: var(--accent);
   color: var(--ink);
   // border: 1px solid #fff;
-  padding: 13px 22px;
+  // padding: 8px 16px;
   cursor: pointer;
 }
 .cb-cta-btn:hover {
@@ -250,15 +292,17 @@
 
 /* ---------- slide counter ---------- */
 .cb-counter {
+
   position: absolute;
   bottom: 24px;
-  right: 24px;
+  // right: 50px;
   z-index: 3;
   color: rgba(255, 255, 255, 0.75);
   font-size: 12px;
+
 }
-@media (max-width: 720px) {
-  .cb-counter {
-    display: none;
-  }
-}
+// @media (max-width: 720px) {
+//   .cb-counter {
+//     display: none;
+//   }
+// }

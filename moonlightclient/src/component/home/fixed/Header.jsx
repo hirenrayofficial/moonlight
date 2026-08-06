@@ -4,6 +4,7 @@ import React from "react";
 import "./header.scss";
 import { FaFacebook, FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 /**
  * MOONLIGHT — utilitarian header
@@ -49,16 +50,17 @@ const SOCIALS = [
 
 export default function Header() {
   const handelCall = (link) => {
-    if (link === "machine") {
-      window.location.href = "/getway";
-    } else if (link === "about") {
+    console.log(link);
+    if (link === "about") {
       window.location.href = "/about";
     } else if (link === "num") {
       const phoneNumber = "+918178445596"; // replace with your actual number
       window.location.href = `tel:${phoneNumber}`;
     } else return;
   };
-
+  const handelLogin = () => {
+    window.location.href = "/getway";
+  };
   const handelHome = () => {
     window.location.href = "/";
   };
@@ -90,8 +92,8 @@ export default function Header() {
         </div>
       </div>
 
-      <div onClick={(e) => handelCall()} className="hd-inner cursor-pointer">
-        <div className="hd-brand">
+      <div  className="hd-inner cursor-pointer">
+        <div className="hd-brand" onClick={(e) => handelHome()}>
           <div className="hd-brand-mark w-[50px] h-[50px] md:w-[80px] md:h-[80px]">
             <Image
               width={500}
@@ -102,15 +104,17 @@ export default function Header() {
               className="hd-brand-logo w-[50px] h-[50px] md:w-[80px] md:h-[80px]"
             />
           </div>
-          <span className="hidden sm:grid md:grid leading-6">
-            <span className="hd-brand-name">Moonlight Machinery</span>
-            <span className="hd-brand-tagline">
+          <span className="grid leading-6">
+            <span className="hd-brand-name text-[16px] md:text-[20px]">
+              Moonlight Machinery
+            </span>
+            <span className="hd-brand-tagline hidden md:block text-[12px] md:text-[14px]">
               Best disposable paper plates making machine in India
             </span>
           </span>
         </div>
 
-        <div className="hd-links">
+        <div className="hd-links gap-2 md:gap-[32px]">
           <nav className="hd-nav">
             <a className="hd-nav-link" href="/">
               Home
@@ -122,12 +126,9 @@ export default function Header() {
               Blog
             </a>
           </nav>
-          <button
-            className="hd-shop-btn"
-            onClick={(e) => handelCall("machine")}
-          >
+          <Link className="hd-shop-btn" href={"/getway"}>
             Login
-          </button>
+          </Link>
           <button
             className="hd-shop-btn cal"
             onClick={(e) => handelCall("num")}

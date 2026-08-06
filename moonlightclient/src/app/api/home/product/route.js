@@ -21,7 +21,6 @@ export async function POST(req) {
     const slug = nextUrl.searchParams.get("slug");
 
     const res = await Product.find({ slug: slug })
-    // console.log(res);
 
     return NextResponse.json({ message: "Product get successful", item: res });
 }

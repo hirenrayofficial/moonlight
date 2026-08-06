@@ -7,8 +7,9 @@ import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getRelatedItem, getspcItem } from "@/services/home/GetProduct";
 import Link from "next/link";
-import { MessageCircleMore, PhoneCall } from "lucide-react";
+import { ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 function money(n) {
   return (n || 0).toLocaleString("en-US", {
@@ -66,6 +67,42 @@ export default function Mview({ slug, initialProduct }) {
   const pathname = usePathname();
   const segments = pathname.split("/").filter((segment) => segment !== "");
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
+  };
+
+  const galleryVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+  };
+
+  const infoVariants = {
+    hidden: { opacity: 0, x: 30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.2 } },
+  };
+
+  const specsVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
   
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["item", slug],
@@ -136,13 +173,19 @@ Please provide more information about this product.
   if (isLoading) {
     return (
       <div className="pd-root py-32 w-full max-w-[1200px]">
-        {crumb}
-        <section className="pd-main">
-          <GallerySkeleton />
-          <InfoSkeleton />
-        </section>
-        <div className="pd-related-head ">Also in stock</div>
-        <RelatedSkeleton />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          {crumb}
+          <section className="pd-main">
+            <GallerySkeleton />
+            <InfoSkeleton />
+          </section>
+          <div className="pd-related-head ">Also in stock</div>
+          <RelatedSkeleton />
+        </motion.div>
       </div>
     );
   }
@@ -151,10 +194,15 @@ Please provide more information about this product.
     return (
       <div className="pd-root py-32 w-full max-w-[1200px]">
         {crumb}
-        <div className="pd-error ">
+        <motion.div
+          className="pd-error "
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
           Couldn't load this product
           {error?.message ? ` — ${error.message}` : ""}.
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -163,34 +211,107 @@ Please provide more information about this product.
     return (
       <div className="pd-root py-32 w-full max-w-[1200px]">
         {crumb}
-        <div className="pd-error ">Product not found.</div>
+        <motion.div
+          className="pd-error "
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          Product not found.
+        </motion.div>
       </div>
     );
   }
 
   const images = product.images || [];
 
+  function showPreviousImage() {
+    if (!images.length) return;
+    setActiveImage((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  }
+
+  function showNextImage() {
+    if (!images.length) return;
+    setActiveImage((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  }
+
   return (
     <div className="pd-root py-32 w-full max-w-[1200px]">
-      {crumb}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        {crumb}
+      </motion.div>
 
-      <section className="pd-main">
-        <div className="pd-gallery">
-          <Image
-            width={400}
-            height={400}
-            className="pd-image-main"
-            src={images[activeImage] || images[0]}
-            alt={product.name || "Product image"}
-            priority
-          />
-          <div className="pd-thumbs">
+      <motion.section
+        className="pd-main"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={containerVariants}
+      >
+        <motion.div className="pd-gallery" variants={galleryVariants}>
+          <motion.div className="pd-image-wrapper" variants={imageVariants}>
+            <motion.button
+              type="button"
+              className="pd-image-nav pd-image-nav-prev"
+              onClick={showPreviousImage}
+              aria-label="Previous image"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronLeft size={24} />
+            </motion.button>
+            <motion.div
+              key={activeImage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Image
+                width={400}
+                height={400}
+                className="pd-image-main"
+                src={images[activeImage] || images[0]}
+                alt={product.name || "Product image"}
+                priority
+              />
+            </motion.div>
+            <motion.button
+              type="button"
+              className="pd-image-nav pd-image-nav-next"
+              onClick={showNextImage}
+              aria-label="Next image"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight size={24} />
+            </motion.button>
+          </motion.div>
+          <motion.div
+            className="pd-thumbs"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {images.map((src, i) => (
-              <button
+              <motion.button
                 key={src + i}
                 className={`pd-thumb ${i === activeImage ? "active" : ""}`}
                 onClick={() => setActiveImage(i)}
                 aria-label={`Show image ${i + 1}`}
+                variants={itemVariants}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Image
                   src={src}
@@ -203,10 +324,10 @@ Please provide more information about this product.
                   height={80}
                   className="pd-thumb-image"
                 />
-              </button>
+              </motion.button>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         <div className="pd-info p-8 md:p-0">
           <div className="pd-eyebrow ">
@@ -245,9 +366,15 @@ Please provide more information about this product.
             </button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="pd-specs-section">
+      <motion.section
+        className="pd-specs-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={specsVariants}
+      >
         <div className="pd-specs-title ">Specification</div>
 
         {product.specifications?.productionCapacity && (
@@ -381,16 +508,35 @@ Please provide more information about this product.
             <span className="pd-spec-value">{product.mainMarket}</span>
           </div>
         )}
-      </section>
+      </motion.section>
 
-      <div className="pd-related-head ">Also in stock</div>
+      <motion.div
+        className="pd-related-head "
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        Also in stock
+      </motion.div>
       {isRelatedLoading ? (
         <RelatedSkeleton />
       ) : (
-        <div className="pd-related">
+        <motion.div
+          className="pd-related"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
           {relatedData?.map((p) => (
-            <Link href={`/home/machines/${p?.slug}`} key={p?.name}>
-              <div className="pd-related-card">
+            <motion.div key={p?.name} variants={itemVariants}>
+              <Link href={`/home/machines/${p?.slug}`}>
+                <motion.div
+                  className="pd-related-card"
+                  whileHover={{ y: -8 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                 {p?.images?.[0] ? (
                   <Image
                     className="pd-related-image"
@@ -408,10 +554,11 @@ Please provide more information about this product.
                     ₹{money(p?.pricing?.basePrice || 0)}
                   </div>
                 </div>
-              </div>
-            </Link>
+                </motion.div>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

@@ -9,14 +9,13 @@ import connectDB from "@/db/mongodb/db";
 export async function POST(req) {
     const body = await req.json()
     const { username, password ,code,csrf_token} = body
-    console.log(body)
 
     if (!username || !password) {
         return NextResponse.json({ success: false, message: "Invalid field" }, { status: 400 })
     }
 
     const checkUser = await User.findOne({ username });
-    console.log(checkUser)
+
     if (!checkUser) {
         return NextResponse.json({ success: false, message: 'Username not valid' }, { status: 404 })
     }

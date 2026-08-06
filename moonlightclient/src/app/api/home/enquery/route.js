@@ -8,7 +8,7 @@ import { sendEnquiryEmail } from "../../../../services/admin/mailer.js";
 export async function POST(request) {
     try {
         const data = await request.json();
-        console.log(data)
+
 
         // Validate required fields
         if (!data.name || (!data.email && !data.phone)) {
@@ -24,7 +24,7 @@ export async function POST(request) {
         // Send enquiry email
         await sendEnquiryEmail(data);
 
-        console.log("Enquiry received and email sent:", data);
+
 
         return new Response(JSON.stringify({
             success: true,

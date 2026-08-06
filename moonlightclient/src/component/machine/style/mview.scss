@@ -70,6 +70,10 @@
     margin-bottom: 24px;
   }
 }
+.pd-image-wrapper {
+  position: relative;
+}
+
 .pd-image-main {
   width: 100%;
   aspect-ratio: 1 / 0.8;
@@ -78,6 +82,41 @@
   border: 1px solid var(--line-strong);
   display: block;
 }
+
+.pd-image-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pd-image-nav:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.pd-image-nav:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.pd-image-nav-prev {
+  left: 12px;
+}
+
+.pd-image-nav-next {
+  right: 12px;
+}
+
 .pd-thumbs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

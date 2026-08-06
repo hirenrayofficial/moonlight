@@ -4,6 +4,7 @@ import "./crousal.scss";
 import { useQuery } from "@tanstack/react-query";
 import { slider } from "@/services/home/GetProduct";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeftIcon, ChevronLeft, ChevronRight } from "lucide-react";
 
 /**
  * STOCKROOM — cinematic banner carousel
@@ -138,7 +139,7 @@ export default function BannerCarousel() {
         <div className="cb-cta-row">
           <span className="cb-price cb-mono">{data[index]?.price}</span>
           <button
-            className="cb-cta-btn"
+            className="cb-cta-btn py-1 px-2 md:py-4 md:px-8"
             onClick={() => handelClick(data[index]?.slug)}
           >
             {data[index]?.cta || "Buy Now"}
@@ -146,34 +147,23 @@ export default function BannerCarousel() {
         </div>
       </div>
 
-      <button
-        className="cb-arrow prev"
-        onClick={prev}
-        aria-label="Previous slide"
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16">
-          <path
-            d="M10 2L4 8L10 14"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-          />
-        </svg>
-      </button>
-      <button className="cb-arrow next" onClick={next} aria-label="Next slide">
-        <svg width="16" height="16" viewBox="0 0 16 16">
-          <path
-            d="M6 2L12 8L6 14"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-          />
-        </svg>
-      </button>
-
-      <div className="cb-counter cb-mono">
-        {String(index + 1).padStart(2, "0")} /{" "}
-        {String(data.length).padStart(2, "0")}
+      <div className="cb-counter cb-mono flex right-[70px] md:right-[250px] items-center justify-center gap-8">
+        <button
+          className="cb-arrow prev"
+          onClick={prev}
+          aria-label="Previous slide"
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <button
+          className="cb-arrow next"
+          onClick={next}
+          aria-label="Next slide"
+        >
+          <ChevronRight size={16} />
+        </button>
+        {/* {String(index + 1).padStart(2, "0")} /{" "}
+        {String(data.length).padStart(2, "0")} */}
       </div>
     </motion.div>
   );

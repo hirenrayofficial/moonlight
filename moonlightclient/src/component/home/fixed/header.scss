@@ -124,7 +124,7 @@
 
 .hd-brand-name {
   font-weight: 600;
-  font-size: 22px;
+  // font-size: 22px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink);
@@ -137,7 +137,6 @@
 .hd-links {
   display: flex;
   align-items: center;
-  gap: 32px;
 }
 .hd-nav {
   display: none;

@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
  * quick-add on hover. Same system as the hero and product page.
  */
 
-const CATEGORIES = ["All",];
+const CATEGORIES = ["All"];
 const SKELETON_COUNT = 8;
 
 function SkeletonCard() {
@@ -61,7 +61,8 @@ export default function ProductShowcase({ view }) {
   // filtering undefined was throwing the moment a category tab was clicked
   // before the first fetch resolved.
   const safeData = data || [];
-  const visible = active === "All" ? safeData : safeData.filter((p) => p.category === active);
+  const visible =
+    active === "All" ? safeData : safeData.filter((p) => p.category === active);
 
   return (
     <section className="pl-root">
@@ -83,15 +84,15 @@ export default function ProductShowcase({ view }) {
           })}
         </div>
         <div className="pl-head">
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, amount: 0.2 }}
-  transition={{ duration: 0.6, ease: "easeOut" }}
->
-  {/* <div className="pl-eyebrow pl-mono">Product No. 014</div> */}
-  <h2 className="pl-title">In the warehouse now</h2>
-</motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            {/* <div className="pl-eyebrow pl-mono">Product No. 014</div> */}
+            <h2 className="pl-title">In the warehouse now</h2>
+          </motion.div>
           <div
             className="pl-tabs"
             role="tablist"
@@ -125,7 +126,12 @@ export default function ProductShowcase({ view }) {
         )}
         {view && (
           <div className="pl-footer">
-            <button className="pl-view-all"onClick={(e)=> window.location.href = "/home/machines"} >View full catalog</button>
+            <button
+              className="pl-view-all"
+              onClick={(e) => (window.location.href = "/home/machines")}
+            >
+              View full catalog
+            </button>
           </div>
         )}
       </div>

@@ -19,7 +19,6 @@ const cardVariants = {
 };
 
 export default function Card({ product }) {
-  console.log(product);
   const handelViewitem = (slug) => {
     // alert(slug)
     window.location.href = `/home/machines/${slug}`;

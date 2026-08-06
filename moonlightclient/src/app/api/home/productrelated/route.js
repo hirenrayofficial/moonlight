@@ -18,7 +18,7 @@ export async function POST(req) {
 
 
     const res = await Product.find({ machineType: type }).select("name slug images pricing tag")
-    console.log(res)
+
 
     return NextResponse.json({ message: "Product get successfull", item: res })
 }
