@@ -145,9 +145,9 @@ export default function Floating() {
             onClick={() => setOpen((v) => !v)}
             whileTap={{ scale: 0.9 }}
             animate={{ rotate: open ? 45 : 0 }}
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black shadow-lg"
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-green-500 shadow-lg"
           >
-            {open ? <X size={24} /> : <CiViewBoard size={24} />}
+            {open ? <X size={24} /> : <FaWhatsapp size={24} />}
           </motion.button>
         </div>
       )}
