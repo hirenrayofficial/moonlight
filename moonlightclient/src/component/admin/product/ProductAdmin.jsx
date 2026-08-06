@@ -843,6 +843,29 @@ export default function ProductAdmin({ compact = false }) {
                     Show in carousel
                   </label>
                 </div>
+                {draft.slider && (
+                  <div className="ad-field">
+                    <label className="ad-label">Slider image</label>
+                    <input
+                      type="file"
+                      className="ad-input"
+                      onChange={(e) => setField("sliderImage", e.target.files[0])}
+                    />
+                  </div>
+                )}
+                {/* add slider input */}
+                <div className="ad-field">
+                  <label className="ad-label">Slider image</label>
+                  <input
+                    type="file"
+                    className="ad-input"
+                    onChange={(e) => handleSliderImageUpload(e.target.files[0])}
+                  />
+                  {sliderUploading && (
+                    <div className="ad-uploading-note">Uploading slider image…</div>
+                  )}
+                </div>
+
               </div>
               <div className="ad-section-label">Video</div>
               <div className="ad-row2">
