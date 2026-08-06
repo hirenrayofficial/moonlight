@@ -8,6 +8,7 @@ import '@fontsource/sniglet';
 import '@fontsource/dm-serif-text';
 import Queryprovider from "@/services/provider/Queryprovider";
 import Script from 'next/script';
+import Floating from "@/component/home/floating/Floating";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -175,7 +176,7 @@ export default function RootLayout({ children }) {
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-
+        <Floating/>
         <Queryprovider>{children}</Queryprovider>
       </body>
     </html>

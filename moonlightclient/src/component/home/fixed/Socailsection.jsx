@@ -24,7 +24,7 @@ const SOCIALS = [
   {
     name: "YouTube",
     handle: "Moonlight Machinery",
-    url: "https://youtube.com/@moonlightmachinery",
+    url: "https://www.youtube.com/channel/UCCGAoZpF0h1MD-iwWThGEZg",
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
         <rect x="1.5" y="4.5" width="17" height="11" rx="1" stroke="currentColor" strokeWidth="1.4" />
