@@ -5,7 +5,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.moonlightmachi
 // Centralized helper using absolute URL for server-side fetching
 async function getProduct(slug) {
   if (!slug) {
-    return null; 
+    return null;
   }
   // fsdfsdfsd
 
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }) {
   }
 
   const url = `${SITE_URL}/home/machines/${slug}`;
-  const title = product.pageTitle?.trim() 
+  const title = product.pageTitle?.trim()
   const description =
     product.metaDescription?.trim() ||
     (product.description
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-    keywords: product.metaKeywords ,
+    keywords: product.metaKeywords,
     alternates: { canonical: url },
     openGraph: { title, description, url, images: product.images?.[0] ? [{ url: product.images[0] }] : [] },
   };
@@ -63,37 +63,80 @@ export default async function Page({ params }) {
   // Structured Data (JSON-LD)
   const jsonLd = product
     ? {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Product",
-            "@id": `${url}#product`,
-            name: product.name,
-            image: product.images || [],
-            description: product.description || "",
-            sku: product.sku || product.slug,
-            brand: { "@type": "Brand", name: "Moonlight Machinery" },
-            offers: {
-              "@type": "Offer",
-              url,
-              priceCurrency: "INR",
-              price: product.pricing?.basePrice || 0,
-              availability: (product.stock ?? 0) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-              itemCondition: "https://schema.org/NewCondition",
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Product",
+          "@id": `${url}#product`,
+          name: product.name,
+          image: product.images || [],
+          description: product.description || "",
+          sku: String(product.sku || product.slug).replace(/\s+/g, "-"),
+          brand: { "@type": "Brand", name: "Moonlight Machinery" },
+          offers: {
+            "@type": "Offer",
+            url,
+            priceCurrency: "INR",
+            price: product.pricing?.basePrice || 0,
+            availability:
+              (product.stock ?? 0) > 0
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock",
+            itemCondition: "https://schema.org/NewCondition",
+            hasMerchantReturnPolicy: {
+              "@type": "MerchantReturnPolicy",
+              applicableCountry: "IN",
+              returnPolicyCategory:
+                "https://schema.org/MerchantReturnFiniteReturnWindow",
+              merchantReturnDays: 7,
+              returnMethod: "https://schema.org/ReturnByMail",
+              returnFees: "https://schema.org/FreeReturn",
+            },
+            shippingDetails: {
+              "@type": "OfferShippingDetails",
+              shippingRate: {
+                "@type": "MonetaryAmount",
+                value: "0",
+                currency: "INR",
+              },
+              shippingDestination: {
+                "@type": "DefinedRegion",
+                addressCountry: "IN",
+              },
+              deliveryTime: {
+                "@type": "ShippingDeliveryTime",
+                handlingTime: {
+                  "@type": "QuantitativeValue",
+                  minValue: 0,
+                  maxValue: 1,
+                  unitCode: "DAY",
+                },
+                transitTime: {
+                  "@type": "QuantitativeValue",
+                  minValue: 3,
+                  maxValue: 10,
+                  unitCode: "DAY",
+                },
+              },
             },
           },
-          {
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-              { "@type": "ListItem", position: 2, name: "Machines", item: `${SITE_URL}/home/machines` },
-              { "@type": "ListItem", position: 3, name: product.name, item: url },
-            ],
-          },
-        ],
-      }
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Machines",
+              item: `${SITE_URL}/home/machines`,
+            },
+            { "@type": "ListItem", position: 3, name: product.name, item: url },
+          ],
+        },
+      ],
+    }
     : null;
-
   return (
     <>
       {jsonLd && (
