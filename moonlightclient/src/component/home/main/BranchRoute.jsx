@@ -41,13 +41,13 @@ const BRANCHES = [
   {
     city: "Guwahati",
     state: "Assam",
-    address: "Upcomming Opening Soon",
+    address: "Guwahati,Barpeta road , Assam ",
     phone: "+91 9883500259",
   },
   {
     city: "Gaziabad",
     state: "Uttar Pradesh",
-    address: "Upcomming Opening Soon",
+    address: "Hindon vihar, Gaziabad, Uttar Pradesh ",
     phone: "+91 9907330121",
   },
 ];
