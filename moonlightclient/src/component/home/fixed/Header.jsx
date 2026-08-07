@@ -65,6 +65,11 @@ const MOBILE_ACTIONS = [
   },
 ];
 
+
+const handelHome = ()=>{
+  window.location.href = "/"
+}
+
 export default function Header() {
   return (
     <motion.header

@@ -113,7 +113,9 @@ export default function Footer() {
           </div>
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Support</div>
-            <div className="ft-manifest-value">support@moonlightmachinery.com</div>
+            <div className="ft-manifest-value">
+              support@moonlightmachinery.com
+            </div>
           </div>
         </div>
 
@@ -131,9 +133,10 @@ export default function Footer() {
               <span className="ft-brand-name">MoonLight Machinery</span>
             </div>
             <p className="ft-tagline">
-              100% Natural Areca Leaf Plates Crafted from fallen leaves, these
-              plates are naturally elegant, heat-resistant, and entirely
-              compostable.
+              Moonlight Machinery manufactures a complete line of India-made
+              paper plate and bowl equipment—including single/double cylinder
+              hydraulic presses, dona machines, and laminators—shipping
+              pan-India for setups of all sizes.
             </p>
           </div>
 
