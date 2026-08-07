@@ -843,7 +843,7 @@ export default function ProductAdmin({ compact = false }) {
                     Show in carousel
                   </label>
                 </div>
-                {draft.slider && (
+                {/* {draft.slider && (
                   <div className="ad-field">
                     <label className="ad-label">Slider image</label>
                     <input
@@ -852,7 +852,7 @@ export default function ProductAdmin({ compact = false }) {
                       onChange={(e) => setField("sliderImage", e.target.files[0])}
                     />
                   </div>
-                )}
+                )} */}
                 {/* add slider input */}
                 <div className="ad-field">
                   <label className="ad-label">Slider image</label>

@@ -16,13 +16,20 @@ import "./branchroute.scss";
  * once the line reaches it — same idea as a metro-map "next stop" effect.
  */
 
-    // isHQ: true,
+// isHQ: true,
 
 const BRANCHES = [
   {
+    city: "Gurgaon",
+    state: "Haryana",
+    // address: "Unavailable",
+    phone: "+91 8178445597",
+    isHQ: true,
+  },
+  {
     city: "Delhi",
     state: "Delhi NCR",
-    address: "Unavailable",
+    // address: "Unavailable",
     phone: "+91 9354327757",
   },
   {
@@ -34,13 +41,13 @@ const BRANCHES = [
   {
     city: "Guwahati",
     state: "Assam",
-    address: "Unavailable",
+    // address: "Unavailable",
     phone: "+91 9883500259",
   },
   {
     city: "Gaziabad",
     state: "Uttar Pradesh",
-    address: "Unavailable",
+    // address: "Unavailable",
     phone: "+91 9907330121",
   },
 ];
