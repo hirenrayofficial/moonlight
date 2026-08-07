@@ -108,9 +108,9 @@ export default function ContactPage() {
         variants={headerVariants}
       >
         <div className="ct-eyebrow ct-mono">Contact</div>
-        <h1 className="ct-title">Talk to the warehouse</h1>
+        <h1 className="ct-title">No middlemen, just us</h1>
         <p className="ct-subhead">
-          Order questions, product specs, wholesale — send it here and it
+          Order questions, product specs — send it here and it
           goes to the same small team that packs the boxes. No ticket queue,
           no bot first.
         </p>
@@ -263,12 +263,12 @@ export default function ContactPage() {
           >
             <motion.div className="ct-manifest-row" variants={itemVariants}>
               <span className="ct-manifest-label ct-mono">Support</span>
-              <span className="ct-manifest-value">hhelp@moonlightmachinery.com</span>
+              <span className="ct-manifest-value">support@moonlightmachinery.com</span>
             </motion.div>
-            <motion.div className="ct-manifest-row" variants={itemVariants}>
+            {/* <motion.div className="ct-manifest-row" variants={itemVariants}>
               <span className="ct-manifest-label ct-mono">Wholesale</span>
               <span className="ct-manifest-value">wholesale@moonlightmachinery.com</span>
-            </motion.div>
+            </motion.div> */}
             <motion.div className="ct-manifest-row" variants={itemVariants}>
               <span className="ct-manifest-label ct-mono">Phone</span>
               <span className="ct-manifest-value">+91 8178445596,+91 9354327757, +91 9883500259, +91 9907330121</span>

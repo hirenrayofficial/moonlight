@@ -113,7 +113,7 @@ export default function Footer() {
           </div>
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Support</div>
-            <div className="ft-manifest-value">help@moonlightmachinery.com</div>
+            <div className="ft-manifest-value">support@moonlightmachinery.com</div>
           </div>
         </div>
 

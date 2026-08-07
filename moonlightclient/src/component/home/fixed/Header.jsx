@@ -58,7 +58,7 @@ const MOBILE_ACTIONS = [
   },
   {
     label: "Call",
-    href: "tel:+918178445596",
+    href: "tel:+919354327757",
     icon: <FaPhone />,
     color: "orange-500",
     bg: "transparent",
@@ -110,7 +110,7 @@ export default function Header() {
               Moonlight Machinery
             </span>
             <span className="hd-brand-tagline hidden md:block text-[12px] md:text-[14px]">
-              Best disposable paper plates making machine in India
+              We Promise Quality Never Compromised
             </span>
           </span>
         </div>

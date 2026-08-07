@@ -22,8 +22,8 @@ const BRANCHES = [
   {
     city: "Gurgaon",
     state: "Haryana",
-    // address: "Unavailable",
-    phone: "+91 8178445597",
+    address: "Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201",
+    phone: "+91 8178445596",
     isHQ: true,
   },
   {
@@ -36,18 +36,18 @@ const BRANCHES = [
     city: "Siliguri",
     state: "West Bengal",
     address: "Eastern Bypass, PCRA Colony, Siliguri, West Bengal 734001",
-    phone: "+91 8178445597",
+    phone: "+91 8178445596",
   },
   {
     city: "Guwahati",
     state: "Assam",
-    // address: "Unavailable",
+    address: "Upcomming Opening Soon",
     phone: "+91 9883500259",
   },
   {
     city: "Gaziabad",
     state: "Uttar Pradesh",
-    // address: "Unavailable",
+    address: "Upcomming Opening Soon",
     phone: "+91 9907330121",
   },
 ];
