@@ -25,17 +25,29 @@ const SITE_URL = "https://www.moonlightmachinery.com";
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Areca Leaf & Disposable Plates Manufacturer in India | Moonlight Machinery",
-    template: "%s | Moonlight Machinery",
+    default: "Moonlight Machinery, Gourgaon - Manufacturer of Paper Plate Making Machine and Dona Making Machine",
   },
   description:
-    "Leading manufacturer of eco-friendly areca leaf plates & disposable paper plates in India. 100% biodegradable, bulk orders, PAN-India & export shipping. Get a quote today.",
+    "Manufacturer of Paper Plate Making Machine, Dona Making Machine & Fully Automatic Paper Plate Making Machine offered by Moonlight Machinery from Gourgaon, Delhi, India",
   keywords: [
-    "areca leaf plates manufacturer",
-    "disposable plates manufacturer India",
-    "biodegradable plates supplier",
-    "areca leaf plate machine",
-    "eco-friendly disposable plates export",
+    "Paper Plate Making Machine",
+    "Dona Making Machine",
+    "Fully Automatic Paper Plate Making Machine",
+    "Fully Automatic Dona Making Machine",
+    "Hydraulic Paper Plate Making Machine",
+    "Automatic Buffet Plate Making Machine",
+    "Camphor Machine",
+    "Moonlight Machinery",
+    "Gurgaon",
+    "Delhi",
+    "India",
+    "Siliguri",
+    "West Bengal",
+    "Gossaigaon",
+    "Assam",
+    "Gaziabad",
+    "Noida",
+    "Uttar Pradesh",
   ],
   authors: [{ name: "Moonlight Machinery" }],
   creator: "Moonlight Machinery",
@@ -62,9 +74,9 @@ export const metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Moonlight Machinery",
-    title: "Areca Leaf & Disposable Plates Manufacturer in India | Moonlight Machinery",
+    title: "Moonlight Machinery, Gourgaon - Manufacturer of Paper Plate Making Machine and Dona Making Machine",
     description:
-      "Eco-friendly areca leaf plates & disposable paper plates manufacturer in India. Bulk orders, PAN-India & export shipping.",
+      "Manufacturer of Paper Plate Making Machine, Dona Making Machine & Fully Automatic Paper Plate Making Machine offered by Moonlight Machinery from Gourgaon, Delhi, India",
     locale: "en_IN",
     images: [
       {
@@ -78,9 +90,9 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Areca Leaf & Disposable Plates Manufacturer in India | Moonlight Machinery",
+    title: "Moonlight Machinery, Gourgaon - Manufacturer of Paper Plate Making Machine and Dona Making Machine",
     description:
-      "Eco-friendly areca leaf plates & disposable paper plates manufacturer in India.",
+      "Manufacturer of Paper Plate Making Machine, Dona Making Machine & Fully Automatic Paper Plate Making Machine offered by Moonlight Machinery from Gourgaon, Delhi, India",
     images: ["/android-chrome-512x512.png"],
   },
 
@@ -114,11 +126,11 @@ const organizationJsonLd = {
   url: SITE_URL,
   logo: `${SITE_URL}/favicon-32x32.png`,
   description:
-    "Manufacturer of areca leaf plates and disposable paper plate making machines in India.",
+    "Manufacturer of Paper Plate Making Machine, Dona Making Machine & Fully Automatic Paper Plate Making Machine offered by Moonlight Machinery from Gourgaon, Delhi, India",
   address: {
     "@type": "PostalAddress",
     addressCountry: "IN",
-    streetAddress:"Plot -13,Ram Vihar,Dhanwapur Road,Sector-104",
+    streetAddress: "Plot -13,Ram Vihar,Dhanwapur Road,Sector-104",
     addressLocality: "Gurgaon",
     addressRegion: "Haryana",
     postalCode: "122001",
