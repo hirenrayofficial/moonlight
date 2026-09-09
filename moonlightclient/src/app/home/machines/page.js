@@ -1,6 +1,5 @@
 import ProductShowcase from '@/component/home/main/Listproduct'
-import Mview from '@/component/machine/Mview'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 export const metadata = {
   title: "Paper Plate Making Machines in India - Hydraulic, Semi-Automatic & Panel Machines | Moonlight Machinery",
@@ -32,13 +31,16 @@ export const metadata = {
     canonical: "https://www.moonlightmachinery.com/home/machines",
   },
 };
-export default async function page({searchParams}) {
+export default async function page({ searchParams }) {
   const parms = await searchParams
   const query = parms.query
   const show = false
+  
   return (
     <div className='w-full flex justify-center py-16'>
-      <ProductShowcase view={show} query={query} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProductShowcase view={show} query={query} />
+      </Suspense>
     </div>
   )
 }

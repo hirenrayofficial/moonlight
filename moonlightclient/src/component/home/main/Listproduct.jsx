@@ -44,7 +44,7 @@ function SkeletonGrid() {
   );
 }
 
-export default function ProductShowcase({ view, query: initialQuery }) {
+export default function ProductShowcase({hide, view, query: initialQuery }) {
   const router = useRouter();
   const pathname = usePathname() || "/home/machines";
   const searchParams = useSearchParams();
@@ -87,30 +87,32 @@ export default function ProductShowcase({ view, query: initialQuery }) {
           >
             <h2 className="pl-title">In the warehouse now</h2>
           </motion.div>
-          <div
-            className="pl-tabs"
-            role="tablist"
-            aria-label="Filter by category"
-          >
-            {CATEGORIES.map((cat) => {
-              const isActive =
-                cat.query === undefined
-                  ? !activeQuery
-                  : activeQuery === cat.query;
-              return (
-                <button
-                  key={cat.label}
-                  role="tab"
-                  aria-selected={isActive}
-                  className={`pl-tab pl-mono ${isActive ? "active" : ""}`}
-                  onClick={() => handleCategoryClick(cat.query)}
-                  disabled={mounted ? isLoading : false}
-                >
-                  {cat.label}
-                </button>
-              );
-            })}
-          </div>
+          {hide && (
+            <div
+              className="pl-tabs"
+              role="tablist"
+              aria-label="Filter by category"
+            >
+              {CATEGORIES.map((cat) => {
+                const isActive =
+                  cat.query === undefined
+                    ? !activeQuery
+                    : activeQuery === cat.query;
+                return (
+                  <button
+                    key={cat.label}
+                    role="tab"
+                    aria-selected={isActive}
+                    className={`pl-tab pl-mono ${isActive ? "active" : ""}`}
+                    onClick={() => handleCategoryClick(cat.query)}
+                    disabled={mounted ? isLoading : false}
+                  >
+                    {cat.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {isLoading && !safeData.length ? (
