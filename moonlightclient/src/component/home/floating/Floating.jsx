@@ -1,15 +1,16 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Plus, X } from "lucide-react";
 import { FaFacebook, FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { CiViewBoard } from "react-icons/ci";
+import { usePathname } from "next/navigation";
 
 const SOCIALS = [
   {
     key: "whatsapp",
     label: "WhatsApp",
-    href: "https://wa.me/918178445596",
+    href: "https://wa.me/+9193543-27757",
     Icon: FaWhatsapp,
     color: "#22c55e",
   },
@@ -17,7 +18,7 @@ const SOCIALS = [
     key: "instagram",
     label: "Instagram",
     href: "https://instagram.com/moonlightmachinery",
-    Icon: FaInstagram ,
+    Icon: FaInstagram,
     color: "#ec4899",
   },
   {
@@ -36,8 +37,6 @@ const SOCIALS = [
   },
 ];
 
-// tracks whether the viewport is "mobile" (< breakpoint) so we can switch
-// between the always-visible desktop rail and the mobile drawer/FAB
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < breakpoint : false
@@ -55,6 +54,7 @@ function useIsMobile(breakpoint = 768) {
 }
 
 export default function Floating() {
+  const pathname = usePathname();
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
 
@@ -62,6 +62,11 @@ export default function Floating() {
   useEffect(() => {
     if (!isMobile) setOpen(false);
   }, [isMobile]);
+
+  // Safe check *after* all hooks have been called
+  if (pathname && pathname.startsWith("/admin")) {
+    return null;
+  }
 
   const listVariants = {
     hidden: {},

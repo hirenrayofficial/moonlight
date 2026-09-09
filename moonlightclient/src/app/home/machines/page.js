@@ -39,7 +39,7 @@ export default async function page({ searchParams }) {
   return (
     <div className='w-full flex justify-center py-16'>
       <Suspense fallback={<div>Loading...</div>}>
-        <ProductShowcase view={show} query={query} />
+        <ProductShowcase view={show} query={query} hide={true}/>
       </Suspense>
     </div>
   )
