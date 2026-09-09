@@ -219,15 +219,15 @@ export default function PrivacyPolicy() {
             <div className="pv-contact-box">
               <div className="pv-contact-row">
                 <span className="pv-contact-label pv-mono">Email</span>
-                <span className="pv-contact-value pv-mono">privacy@<span className="pv-placeholder">yourdomain.com</span></span>
+                <span className="pv-contact-value pv-mono">privacy@<span className="pv-placeholder">moonlightmachinery.com/</span></span>
               </div>
-              <div className="pv-contact-row">
+              {/* <div className="pv-contact-row">
                 <span className="pv-contact-label pv-mono">Phone</span>
                 <span className="pv-contact-value pv-mono"><span className="pv-placeholder">[business phone]</span></span>
-              </div>
+              </div> */}
               <div className="pv-contact-row">
                 <span className="pv-contact-label pv-mono">Address</span>
-                <span className="pv-contact-value"><span className="pv-placeholder">[registered business address]</span></span>
+                <span className="pv-contact-value"><span className="pv-placeholder">Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201</span></span>
               </div>
             </div>
           </section>

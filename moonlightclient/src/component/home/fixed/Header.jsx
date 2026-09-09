@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import "./header.scss";
 import {
   FaFacebook,
@@ -8,8 +8,9 @@ import {
   FaPhone,
   FaWhatsapp,
   FaYoutube,
+  FaChevronDown,
 } from "react-icons/fa";
-import { color, motion } from "framer-motion";
+import { color, motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 /**
@@ -37,7 +38,7 @@ const SOCIALS = [
   },
   {
     name: "WhatsApp",
-    url: "https://wa.me/918178445596",
+    url: "https://wa.me/919354327757",
     icon: <FaWhatsapp />,
   },
 ];
@@ -48,10 +49,18 @@ const NAV_LINKS = [
   { label: "Blog", href: "/home/blog" },
 ];
 
+const PRODUCT_CATEGORIES = [
+  { label: "Full Automatic", href: "/home/machines?query=full-automatic" },
+  { label: "Semi Automatic", href: "/home/machines?query=Semi-automatic" },
+  { label: "Hydraulic", href: "/home/machines?query=hydraulic" },
+  { label: "Manual", href: "/home/machines?query=manual" },
+  { label: "Lamination Machines", href: "/home/machines?query=lamination" },
+];
+
 const MOBILE_ACTIONS = [
   {
     label: "WhatsApp",
-    href: "https://wa.me/918178445596",
+    href: "https://wa.me/919354327757",
     icon: <FaWhatsapp />,
     color: "green-500",
     bg: "transparent",
@@ -65,12 +74,13 @@ const MOBILE_ACTIONS = [
   },
 ];
 
-
-const handelHome = ()=>{
-  window.location.href = "/"
-}
+const handelHome = () => {
+  window.location.href = "/";
+};
 
 export default function Header() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   return (
     <motion.header
       className="hd-root"
@@ -121,39 +131,64 @@ export default function Header() {
         </div>
 
         <div className="hd-links gap-2 md:gap-8">
-          <nav className="hd-nav">
+          <nav className="hd-nav flex items-center gap-6">
             {NAV_LINKS.map((item) => (
               <Link key={item.href} className="hd-nav-link" href={item.href}>
                 {item.label}
               </Link>
             ))}
+
+            {/* Product Category Dropdown Menu */}
+            <div
+              className="relative py-2 cursor-pointer"
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <div className="hd-nav-link flex items-center gap-1.5 select-none">
+                <span>Product Category</span>
+                <motion.span
+                  animate={{ rotate: isDropdownOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-[10px]"
+                >
+                  <FaChevronDown />
+                </motion.span>
+              </div>
+
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="absolute top-full left-0 mt-1 w-56 bg-white border border-neutral-200 shadow-lg py-2 z-50 rounded-none"
+                  >
+                    {PRODUCT_CATEGORIES.map((category) => (
+                      <Link
+                        key={category.href}
+                        href={category.href}
+                        className="block px-4 py-2.5 text-sm text-neutral-800 hover:bg-neutral-100 transition-colors font-mono"
+                      >
+                        {category.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </nav>
           <div className="hd-actions">
             <Link className="hd-shop-btn" href="/getway">
               Login
             </Link>
-            <a className="hd-shop-btn cal" href="tel:+918178445596">
+            <a className="hd-shop-btn cal" href="tel:+919354327757">
               Call
             </a>
           </div>
         </div>
       </div>
-      {/* <div className="button-links sm:hidden">
-        {MOBILE_ACTIONS.map((item) => (
-          <a
-            key={item.label}
-            className={`button-link bg-${item.bg} text-${item.color}`}
-            href={item.href}
-            target={item.href.startsWith("http") ? "_blank" : undefined}
-            rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-          >
-            <span className={`button-icon`} >
-              {item.icon}
-            </span>
-            {item.label}
-          </a>
-        ))}
-      </div> */}
     </motion.header>
   );
 }

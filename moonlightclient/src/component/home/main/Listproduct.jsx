@@ -4,17 +4,21 @@ import "./listproduct.scss";
 import Card from "../product/Card";
 import { getItem } from "@/services/home/GetProduct";
 import { useQuery } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 /**
  * STOCKROOM — product list / showcase section
- * A landing-page catalog block: filterable grid, hairline dividers,
- * quick-add on hover. Same system as the hero and product page.
  */
 
-const CATEGORIES = ["All"];
+const CATEGORIES = [
+  { label: "All", query: undefined },
+  { label: "Full Automatic", query: "full-automatic" },
+  { label: "Semi Automatic", query: "semi-automatic" },
+  { label: "Hydraulic", query: "hydraulic" },
+  { label: "Manual", query: "manual" },
+];
+
 const SKELETON_COUNT = 8;
 
 function SkeletonCard() {
@@ -40,29 +44,36 @@ function SkeletonGrid() {
   );
 }
 
-export default function ProductShowcase({ view }) {
-  const [active, setActive] = useState("All");
+export default function ProductShowcase({ view, query: initialQuery }) {
+  const router = useRouter();
+  const pathname = usePathname() || "/home/machines";
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
+
+  // Safely grab query from URL search params or fallback to prop
+  const urlQuery = searchParams.get("query");
+  const activeQuery = urlQuery !== null ? urlQuery : initialQuery;
+
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["item"],
-    queryFn: getItem,
+    queryKey: ["item", activeQuery || "all"],
+    queryFn: () => getItem(activeQuery),
+    // Fixes the caching lockup bug when switching rapidly between categories
+    placeholderData: (previousData) => previousData,
   });
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const pathname = usePathname() || "";
+  const handleCategoryClick = (catQuery) => {
+    if (catQuery) {
+      router.push(`${pathname}?query=${catQuery}`, { scroll: false });
+    } else {
+      router.push(pathname, { scroll: false });
+    }
+  };
 
-  // 1. Split the path and filter out empty strings
-  const segments = pathname.split("/").filter((segment) => segment !== "");
-
-  // guard against `data` being undefined while the query is still loading —
-  // filtering undefined was throwing the moment a category tab was clicked
-  // before the first fetch resolved.
   const safeData = data || [];
-  const visible =
-    active === "All" ? safeData : safeData.filter((p) => p.category === active);
 
   return (
     <section className="pl-root mt-16">
@@ -74,7 +85,6 @@ export default function ProductShowcase({ view }) {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            {/* <div className="pl-eyebrow pl-mono">Product No. 014</div> */}
             <h2 className="pl-title">In the warehouse now</h2>
           </motion.div>
           <div
@@ -82,37 +92,43 @@ export default function ProductShowcase({ view }) {
             role="tablist"
             aria-label="Filter by category"
           >
-            {CATEGORIES.map((c) => (
-              <button
-                key={c}
-                role="tab"
-                aria-selected={active === c}
-                className={`pl-tab pl-mono ${active === c ? "active" : ""}`}
-                onClick={() => setActive(c)}
-                disabled={mounted ? isLoading : false}
-              >
-                {c}
-              </button>
-            ))}
+            {CATEGORIES.map((cat) => {
+              const isActive =
+                cat.query === undefined
+                  ? !activeQuery
+                  : activeQuery === cat.query;
+              return (
+                <button
+                  key={cat.label}
+                  role="tab"
+                  aria-selected={isActive}
+                  className={`pl-tab pl-mono ${isActive ? "active" : ""}`}
+                  onClick={() => handleCategoryClick(cat.query)}
+                  disabled={mounted ? isLoading : false}
+                >
+                  {cat.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {isLoading ? (
+        {isLoading && !safeData.length ? (
           <SkeletonGrid />
         ) : isError ? (
           <div className="pl-empty pl-mono">
             Couldn't load products{error?.message ? ` — ${error.message}` : ""}.
           </div>
-        ) : visible?.length === 0 ? (
+        ) : safeData?.length === 0 ? (
           <div className="pl-empty pl-mono">Nothing stocked here yet.</div>
         ) : (
-          <Card product={visible} />
+          <Card product={safeData} key={activeQuery || "all"} />
         )}
         {view && (
           <div className="pl-footer">
             <button
               className="pl-view-all"
-              onClick={(e) => (window.location.href = "/home/machines")}
+              onClick={() => (window.location.href = "/home/machines")}
             >
               View full catalog
             </button>

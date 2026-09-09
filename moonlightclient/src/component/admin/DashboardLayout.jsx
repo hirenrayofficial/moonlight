@@ -7,6 +7,8 @@ import DeviceInfo from "./currentDeviceacces/CurrentDevice";
 import ProductAdmin, { SearchBox } from "./product/ProductAdmin";
 import Notification from "@/component/admin/notification/Notification";
 import axios from "axios";
+import VideoManager from "./VideoManager";
+import ReviewManager from "./ReviewManager";
 
 /**
  * STOCKROOM ADMIN — dashboard
@@ -269,13 +271,13 @@ export default function AdminDashboard() {
     setConfirmDeleteId(null);
   }
 
-  const handelLogout = async ()=>{
-    const res = await axios.post("/api/admin/logout")
-    if(!res){
-      return alert("server error")
+  const handelLogout = async () => {
+    const res = await axios.post("/api/admin/logout");
+    if (!res) {
+      return alert("server error");
     }
-    router.push("/")
-  }
+    router.push("/");
+  };
 
   return (
     <div className="ad-root">
@@ -310,9 +312,23 @@ export default function AdminDashboard() {
           >
             Device Info
           </button>
+          <button
+            className={`ad-nav-item ${view === "video" ? "active" : ""}`}
+            onClick={() => setView("video")}
+          >
+            Video
+          </button>
+          <button
+            className={`ad-nav-item ${view === "review" ? "active" : ""}`}
+            onClick={() => setView("review")}
+          >
+            Review
+          </button>
         </nav>
         <div className="ad-sidebar-foot ad-mono">v1.0 · admin</div>
-        <div className="ad-logout ad-mono" onClick={(e)=> handelLogout()}>Logout</div>
+        <div className="ad-logout ad-mono" onClick={(e) => handelLogout()}>
+          Logout
+        </div>
       </aside>
 
       {/* ---------- main ---------- */}
@@ -373,6 +389,8 @@ export default function AdminDashboard() {
           {view === "products" && <ProductAdmin compact />}
           {view === "notification" && <Notification />}
           {view === "device" && <DeviceInfo />}
+          {view === "video" && <VideoManager />}
+          {view === "review" && <ReviewManager />}
         </div>
       </div>
 

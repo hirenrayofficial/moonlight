@@ -1,16 +1,18 @@
-"use client"
+"use client";
+
 import React, { useState } from "react";
-import './contact.scss'
 import axios from "axios";
 import { motion } from "framer-motion";
-/**
- * STOCKROOM — contact page
- * Form on the left, a manifest-style info panel on the right — same
- * "ticket" device used in the footer and hero, doing the trust-building
- * work instead of a generic "we'd love to hear from you" paragraph.
- */
+import "./contact.scss";
 
-const TOPICS = ["Order support", "Product question", "Returns", "Wholesale", "Press", "Something else"];
+const TOPICS = [
+  "Order support",
+  "Product question",
+  "Returns",
+  "Wholesale",
+  "Press",
+  "Something else",
+];
 
 function useContactForm() {
   const [values, setValues] = useState({
@@ -20,7 +22,7 @@ function useContactForm() {
     topic: TOPICS[0],
     message: "",
   });
-  const [status, setStatus] = useState("idle"); // idle | submitting | submitted | error
+  const [status, setStatus] = useState("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   function update(field, value) {
@@ -44,13 +46,16 @@ function useContactForm() {
         setStatus("submitted");
       } else {
         setStatus("error");
-        setErrorMessage(response?.data?.message || "Unable to send enquiry. Please try again.");
+        setErrorMessage(
+          response?.data?.message || "Unable to send enquiry. Please try again."
+        );
       }
     } catch (error) {
       console.error("Enquiry submission failed:", error);
       setStatus("error");
       setErrorMessage(
-        error?.response?.data?.message || "There was a problem sending your enquiry. Please try again later."
+        error?.response?.data?.message ||
+          "There was a problem sending your enquiry. Please try again later."
       );
     }
   };
@@ -59,7 +64,8 @@ function useContactForm() {
 }
 
 export default function ContactPage() {
-  const { values, update, status, errorMessage, handleSubmit } = useContactForm();
+  const { values, update, status, errorMessage, handleSubmit } =
+    useContactForm();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -67,38 +73,34 @@ export default function ContactPage() {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
 
   const headerVariants = {
-    hidden: { opacity: 0, y: -30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   const panelVariants = {
-    hidden: { opacity: 0, x: 30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.3 } },
-  };
-
-  const successVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+    hidden: { opacity: 0, x: 20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, delay: 0.2 } },
   };
 
   return (
     <div className="ct-root">
-
-
-      {/* <div className="ct-crumb ct-mono">
-        Home / <span className="current">Contact</span>
-      </div> */}
+      {/* Decorative Cyber-Grid Background Lines */}
+      <div className="ct-bg-grid" aria-hidden="true">
+        <div className="grid-line-v"></div>
+        <div className="grid-line-v"></div>
+        <div className="grid-line-h"></div>
+      </div>
 
       <motion.div
         className="ct-head"
@@ -107,12 +109,14 @@ export default function ContactPage() {
         viewport={{ once: true }}
         variants={headerVariants}
       >
-        <div className="ct-eyebrow ct-mono">Contact</div>
-        <h1 className="ct-title">No middlemen, just us</h1>
+        <div className="ct-eyebrow ct-mono">
+          <span className="ct-dot"></span> SECURE TRANSMISSION CHANNEL // 01
+        </div>
+        <h1 className="ct-title">NO MIDDLEMEN, JUST US</h1>
         <p className="ct-subhead">
-          Order questions, product specs — send it here and it
-          goes to the same small team that packs the boxes. No ticket queue,
-          no bot first.
+          Order questions, product specs — send it here and it goes directly to
+          the same small team that packs the boxes. No ticket queue, no bot
+          first.
         </p>
       </motion.div>
 
@@ -123,129 +127,138 @@ export default function ContactPage() {
         viewport={{ once: true }}
         variants={containerVariants}
       >
+        {/* Form Column */}
         <motion.div className="ct-form-col" variants={itemVariants}>
           {status === "submitted" ? (
             <motion.div
               className="ct-success"
-              initial="hidden"
-              animate="visible"
-              variants={successVariants}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
             >
-              <span className="ct-success-title ct-mono">Message received.</span>
+              <div className="ct-success-header ct-mono">
+                [ STATUS: TRANSMITTED SUCCESSFULLY ]
+              </div>
+              <span className="ct-success-title ct-mono">
+                Message received.
+              </span>
               <p className="ct-success-desc">
                 We reply from a real inbox, usually within one business day.
-                You'll hear from us at {values.email}.
+                You'll hear from us at <strong className="ct-mono">{values.email}</strong>.
               </p>
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit}>
               <motion.div className="ct-row2" variants={itemVariants}>
-                <motion.div
-                  className="ct-field"
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <label className="ct-label ct-mono" htmlFor="ct-name">Name</label>
+                <div className="ct-field">
+                  <label className="ct-label ct-mono" htmlFor="ct-name">
+                    01 // Name
+                  </label>
                   <input
                     id="ct-name"
-                    className="ct-input"
+                    className="ct-input ct-mono"
                     type="text"
                     required
                     placeholder="Jordan Reyes"
                     value={values.name}
                     onChange={(e) => update("name", e.target.value)}
                   />
-                </motion.div>
-                <motion.div
-                  className="ct-field"
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <label className="ct-label ct-mono" htmlFor="ct-email">Email</label>
+                </div>
+                <div className="ct-field">
+                  <label className="ct-label ct-mono" htmlFor="ct-email">
+                    02 // Email
+                  </label>
                   <input
                     id="ct-email"
-                    className="ct-input"
+                    className="ct-input ct-mono"
                     type="email"
                     required
                     placeholder="you@email.com"
                     value={values.email}
                     onChange={(e) => update("email", e.target.value)}
                   />
-                </motion.div>
+                </div>
               </motion.div>
 
               <motion.div className="ct-row2" variants={itemVariants}>
-                <motion.div
-                  className="ct-field"
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <label className="ct-label ct-mono" htmlFor="ct-topic">Topic</label>
-                  <select
-                    id="ct-topic"
-                    className="ct-select"
-                    value={values.topic}
-                    onChange={(e) => update("topic", e.target.value)}
-                  >
-                    {TOPICS.map((t) => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
-                  </select>
-                </motion.div>
-                <motion.div
-                  className="ct-field"
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <label className="ct-label ct-mono" htmlFor="ct-order">Order number (optional)</label>
+                <div className="ct-field">
+                  <label className="ct-label ct-mono" htmlFor="ct-topic">
+                    03 // Topic
+                  </label>
+                  <div className="ct-select-wrapper">
+                    <select
+                      id="ct-topic"
+                      className="ct-select ct-mono"
+                      value={values.topic}
+                      onChange={(e) => update("topic", e.target.value)}
+                    >
+                      {TOPICS.map((t) => (
+                        <option key={t} value={t} className="ct-option">
+                          {t}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="ct-field">
+                  <label className="ct-label ct-mono" htmlFor="ct-order">
+                    04 // Order Ref (Optional)
+                  </label>
                   <input
                     id="ct-order"
-                    className="ct-input"
+                    className="ct-input ct-mono"
                     type="text"
                     placeholder="#08213"
                     value={values.order}
                     onChange={(e) => update("order", e.target.value)}
                   />
-                </motion.div>
+                </div>
               </motion.div>
 
               <motion.div className="ct-field" variants={itemVariants}>
-                <label className="ct-label ct-mono" htmlFor="ct-message">Message</label>
+                <label className="ct-label ct-mono" htmlFor="ct-message">
+                  05 // Message Directive
+                </label>
                 <textarea
                   id="ct-message"
-                  className="ct-textarea h-[60px] md:h-[130px]"
+                  className="ct-textarea ct-mono"
                   required
-                  placeholder="What's going on?"
+                  placeholder="Detail your inquiry here..."
                   value={values.message}
                   onChange={(e) => update("message", e.target.value)}
                 />
               </motion.div>
 
               {status === "error" && (
-                <motion.p
+                <motion.div
                   className="ct-error ct-mono"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
                 >
-                  {errorMessage || "Failed to submit enquiry."}
-                </motion.p>
+                  [ ERROR: {errorMessage || "Failed to submit enquiry."} ]
+                </motion.div>
               )}
+
               <motion.button
-                className="ct-submit-btn"
+                className="ct-submit-btn ct-mono"
                 type="submit"
                 disabled={status === "submitting"}
-                variants={itemVariants}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                whileHover={{ backgroundColor: "var(--accent)", color: "#ffffff" }}
+                whileTap={{ scale: 0.99 }}
               >
-                {status === "submitting" ? "Sending…" : "Send message"}
+                {status === "submitting" ? (
+                  <span className="ct-loading-flex">
+                    <span className="ct-spinner"></span> TRANSMITTING...
+                  </span>
+                ) : (
+                  <span>DISPATCH MESSAGE →</span>
+                )}
               </motion.button>
             </form>
           )}
         </motion.div>
 
+        {/* Panel/Manifest Column */}
         <motion.div
           className="ct-panel-col hidden md:flex md:flex-col"
           variants={panelVariants}
@@ -253,53 +266,44 @@ export default function ContactPage() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <motion.div className="ct-panel-title ct-mono" variants={itemVariants}>Direct lines</motion.div>
-          <motion.div
-            className="ct-manifest"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            <motion.div className="ct-manifest-row" variants={itemVariants}>
-              <span className="ct-manifest-label ct-mono">Support</span>
-              <span className="ct-manifest-value">support@moonlightmachinery.com</span>
-            </motion.div>
-            {/* <motion.div className="ct-manifest-row" variants={itemVariants}>
-              <span className="ct-manifest-label ct-mono">Wholesale</span>
-              <span className="ct-manifest-value">wholesale@moonlightmachinery.com</span>
-            </motion.div> */}
-            <motion.div className="ct-manifest-row" variants={itemVariants}>
-              <span className="ct-manifest-label ct-mono">Phone</span>
-              <span className="ct-manifest-value">+91 8178445596,+91 9354327757, +91 9883500259, +91 9907330121</span>
-            </motion.div>
-            <motion.div className="ct-manifest-row" variants={itemVariants}>
-              <span className="ct-manifest-label ct-mono">Warehouse</span>
-              <span className="ct-manifest-value">Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201</span>
-            </motion.div>
-            <motion.div className="ct-manifest-row" variants={itemVariants}>
-              <span className="ct-manifest-label ct-mono">Hours</span>
-              <span className="ct-manifest-value">Mon–Fri, 24hrs</span>
-            </motion.div>
-          </motion.div>
+          <div className="ct-panel-title ct-mono">
+            // MANIFEST & DIRECT CHANNELS
+          </div>
 
-          <motion.div
-            className="ct-response"
-            variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <div className="ct-response-label ct-mono">Average response time</div>
-            <div className="ct-response-value ct-mono">12 hrs</div>
-            <div className="ct-response-sub">During business hours, Mon–Fri</div>
-          </motion.div>
+          <div className="ct-manifest">
+            <div className="ct-manifest-row">
+              <span className="ct-manifest-label ct-mono">SUPPORT</span>
+              <span className="ct-manifest-value ct-mono">
+                support@moonlightmachinery.com
+              </span>
+            </div>
+            <div className="ct-manifest-row">
+              <span className="ct-manifest-label ct-mono">HOTLINES</span>
+              <span className="ct-manifest-value ct-mono">
+                +91 93543-27757 / +91 98835-00259
+              </span>
+            </div>
+            <div className="ct-manifest-row">
+              <span className="ct-manifest-label ct-mono">WAREHOUSE</span>
+              <span className="ct-manifest-value ct-mono">
+                Plot-13, Ram Vihar, Dhanwapur Rd, Sec-104, Gurgaon-122001
+              </span>
+            </div>
+            <div className="ct-manifest-row">
+              <span className="ct-manifest-label ct-mono">UPTIME</span>
+              <span className="ct-manifest-value ct-mono">Mon–Fri, 24 Hours</span>
+            </div>
+          </div>
 
-          {/* <div className="ct-faq-title">Common questions</div>
-          <a className="ct-faq-link" href="#">Where's my order?</a>
-          <a className="ct-faq-link" href="#">How do returns work?</a>
-          <a className="ct-faq-link" href="#">Do you ship internationally?</a>
-          <a className="ct-faq-link" href="#">Do you offer wholesale pricing?</a> */}
+          <div className="ct-response">
+            <div className="ct-response-label ct-mono">
+              AVG SYSTEM RESPONSE LATENCY
+            </div>
+            <div className="ct-response-value ct-mono">~12 HOURS</div>
+            <div className="ct-response-sub ct-mono">
+              Evaluated during standard operational hours
+            </div>
+          </div>
         </motion.div>
       </motion.div>
     </div>

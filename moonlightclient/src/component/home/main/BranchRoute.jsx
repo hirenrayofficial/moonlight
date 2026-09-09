@@ -23,7 +23,7 @@ const BRANCHES = [
     city: "Gurgaon",
     state: "Haryana",
     address: "Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201",
-    phone: "+91 8178445596",
+    phone: "+91 9354327757",
     isHQ: true,
   },
   {
@@ -36,7 +36,7 @@ const BRANCHES = [
     city: "Siliguri",
     state: "West Bengal",
     address: "Eastern Bypass, PCRA Colony, Siliguri, West Bengal 734001",
-    phone: "+91 8178445596",
+    phone: "+91 9354327757",
   },
   {
     city: "Guwahati",

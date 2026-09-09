@@ -56,7 +56,7 @@ export default function About() {
   const segments = pathname.split("/").filter((s) => s !== "");
 
   return (
-    <div className="ab-root py-24 w-full max-w-[1200px] mx-auto">
+    <div className="ab-root py-34 w-full max-w-[1200px] mx-auto">
       {/* <div className="ab-crumb ab-mono flex hidden md:flex">
         <Link href="/">Home</Link>
         {segments.map((segment, index) => {

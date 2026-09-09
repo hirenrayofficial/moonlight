@@ -28,8 +28,8 @@ const MACHINE_INTEREST = [
     "Not sure yet",
 ];
 
-const BUSINESS_PHONE = process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+91 8178445596";
-const WHATSAPP_PHONE = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "+918178445596";
+const BUSINESS_PHONE = process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+91 9883500259";
+const WHATSAPP_PHONE = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "+91 9883500259";
 
 function useContactForm() {
     const [values, setValues] = useState({
@@ -82,7 +82,7 @@ export default function Contact() {
     }
 
     return (
-        <div className="ct-root py-24 w-full max-w-[1200px] mx-auto">
+        <div className="ct-root py-34 w-full max-w-[1200px] mx-auto">
             {/* <div className="ct-crumb ct-mono flex hidden md:flex">
         <Link href="/">Home</Link>
         {segments.map((segment, index) => {

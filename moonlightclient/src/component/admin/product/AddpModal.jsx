@@ -43,6 +43,7 @@ export const MACHINE_TYPES = [
   "Full-Automatic",
   "Hydraulic",
   "All-in-One",
+  "Lamination",
 ];
 
 export const AVAILABILITY_OPTIONS = [
@@ -124,7 +125,8 @@ function validateDraft(draft) {
 
 /** Converts string form fields into the correctly-typed payload the API expects. */
 function buildPayload(draft) {
-  const toNum = (v) => (v === "" || v === null || v === undefined ? null : Number(v));
+  const toNum = (v) =>
+    v === "" || v === null || v === undefined ? null : Number(v);
   return {
     ...draft,
     specifications: {
@@ -182,7 +184,11 @@ function ChipInput({ label, placeholder, values, onChange }) {
             }
           }}
         />
-        <button type="button" className="ad-btn-secondary ad-chip-add" onClick={addChip}>
+        <button
+          type="button"
+          className="ad-btn-secondary ad-chip-add"
+          onClick={addChip}
+        >
           Add
         </button>
       </div>
@@ -275,8 +281,12 @@ export default function ProductPage() {
     setDraft((d) => {
       const pricing = { ...d.pricing, [field]: value };
       if (field === "basePrice" || field === "otherExpenses") {
-        const base = parseFloat(field === "basePrice" ? value : pricing.basePrice) || 0;
-        const other = parseFloat(field === "otherExpenses" ? value : pricing.otherExpenses) || 0;
+        const base =
+          parseFloat(field === "basePrice" ? value : pricing.basePrice) || 0;
+        const other =
+          parseFloat(
+            field === "otherExpenses" ? value : pricing.otherExpenses,
+          ) || 0;
         pricing.totalPrice = base + other;
       }
       return { ...d, pricing };
@@ -304,7 +314,9 @@ export default function ProductPage() {
 
       if (editingId) {
         setProducts((list) =>
-          list.map((p) => (p.id === editingId ? { ...payload, id: editingId } : p)),
+          list.map((p) =>
+            p.id === editingId ? { ...payload, id: editingId } : p,
+          ),
         );
       } else {
         const newId = res?.id || makeId();
@@ -313,7 +325,9 @@ export default function ProductPage() {
 
       closeModal();
     } catch (err) {
-      setSubmitError(err?.message || "Something went wrong while saving. Please try again.");
+      setSubmitError(
+        err?.message || "Something went wrong while saving. Please try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -365,454 +379,486 @@ export default function ProductPage() {
         </div>
       )} */}
 
+      <div className="ad-overlay" onClick={closeModal}>
+        <div
+          className="ad-modal ad-modal-lg"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="ad-modal-head">
+            <span className="ad-modal-title">
+              {editingId ? "Edit product" : "Add product"}
+            </span>
+            <button
+              type="button"
+              className="ad-modal-close"
+              onClick={closeModal}
+            >
+              ✕
+            </button>
+          </div>
 
-        <div className="ad-overlay" onClick={closeModal}>
-          <div className="ad-modal ad-modal-lg" onClick={(e) => e.stopPropagation()}>
-            <div className="ad-modal-head">
-              <span className="ad-modal-title">{editingId ? "Edit product" : "Add product"}</span>
-              <button type="button" className="ad-modal-close" onClick={closeModal}>
-                ✕
-              </button>
+          <form className="ad-modal-body" onSubmit={saveDraft} noValidate>
+            {/* ---------------- BASIC INFO ---------------- */}
+            <div className="ad-section-label">Basic info</div>
+
+            <div className="ad-field">
+              <label className="ad-label">Product name</label>
+              <input
+                className="ad-input"
+                value={draft.name}
+                onChange={(e) => setField("name", e.target.value)}
+              />
+              {errors.name && (
+                <div className="ad-error-text">{errors.name}</div>
+              )}
             </div>
 
-            <form className="ad-modal-body" onSubmit={saveDraft} noValidate>
-              {/* ---------------- BASIC INFO ---------------- */}
-              <div className="ad-section-label">Basic info</div>
-
+            <div className="ad-row2">
               <div className="ad-field">
-                <label className="ad-label">Product name</label>
+                <label className="ad-label">SKU</label>
                 <input
                   className="ad-input"
-                  value={draft.name}
-                  onChange={(e) => setField("name", e.target.value)}
-                />
-                {errors.name && <div className="ad-error-text">{errors.name}</div>}
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">SKU</label>
-                  <input
-                    className="ad-input"
-                    placeholder="Auto-generated"
-                    value={draft.sku}
-                    onChange={(e) => setField("sku", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Category</label>
-                  <select
-                    className="ad-select"
-                    value={draft.category}
-                    onChange={(e) => setField("category", e.target.value)}
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Sub-category</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. Hydraulic Double Cylinder"
-                    value={draft.subCategory}
-                    onChange={(e) => setField("subCategory", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Machine type</label>
-                  <select
-                    className="ad-select"
-                    value={draft.machineType}
-                    onChange={(e) => setField("machineType", e.target.value)}
-                  >
-                    <option value="">Select type</option>
-                    {MACHINE_TYPES.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="ad-field">
-                <label className="ad-label">Description</label>
-                <textarea
-                  className="ad-input ad-textarea"
-                  rows={3}
-                  value={draft.description}
-                  onChange={(e) => setField("description", e.target.value)}
+                  placeholder="Auto-generated"
+                  value={draft.sku}
+                  onChange={(e) => setField("sku", e.target.value)}
                 />
               </div>
-
-              {/* ---------------- SPECIFICATIONS ---------------- */}
-              <div className="ad-section-label">Specifications</div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Production capacity</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 15000 pieces in 10 hours"
-                    value={draft.specifications.productionCapacity}
-                    onChange={(e) => setSpec("productionCapacity", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Motor</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 0.5 HP Crompton Greaves"
-                    value={draft.specifications.motor}
-                    onChange={(e) => setSpec("motor", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Total power</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 2 KW"
-                    value={draft.specifications.totalPower}
-                    onChange={(e) => setSpec("totalPower", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Power source</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 220V 50Hz (Single Phase)"
-                    value={draft.specifications.powerSource}
-                    onChange={(e) => setSpec("powerSource", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Voltage</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 220V"
-                    value={draft.specifications.voltage}
-                    onChange={(e) => setSpec("voltage", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Phase</label>
-                  <select
-                    className="ad-select"
-                    value={draft.specifications.phase}
-                    onChange={(e) => setSpec("phase", e.target.value)}
-                  >
-                    <option value="">Select phase</option>
-                    <option value="Single">Single</option>
-                    <option value="Three">Three</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Weight</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 200 KG Approx"
-                    value={draft.specifications.weight}
-                    onChange={(e) => setSpec("weight", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Raw material</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 80 GSM to 200 GSM"
-                    value={draft.specifications.rawMaterial}
-                    onChange={(e) => setSpec("rawMaterial", e.target.value)}
-                  />
-                </div>
-              </div>
-
               <div className="ad-field">
-                <label className="ad-label">Dimensions (L × W × H)</label>
-                <div className="ad-row3">
-                  <input
-                    className="ad-input"
-                    type="number"
-                    min="0"
-                    placeholder="Length"
-                    value={draft.specifications.dimensions.length}
-                    onChange={(e) => setDimension("length", e.target.value)}
-                  />
-                  <input
-                    className="ad-input"
-                    type="number"
-                    min="0"
-                    placeholder="Width"
-                    value={draft.specifications.dimensions.width}
-                    onChange={(e) => setDimension("width", e.target.value)}
-                  />
-                  <input
-                    className="ad-input"
-                    type="number"
-                    min="0"
-                    placeholder="Height"
-                    value={draft.specifications.dimensions.height}
-                    onChange={(e) => setDimension("height", e.target.value)}
-                  />
-                  <select
-                    className="ad-select ad-unit-select"
-                    value={draft.specifications.dimensions.unit}
-                    onChange={(e) => setDimension("unit", e.target.value)}
-                  >
-                    <option value="inch">inch</option>
-                    <option value="mm">mm</option>
-                    <option value="cm">cm</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Category-specific spec fields */}
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Plate size range</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 4-14 inch (paper plate machines)"
-                    value={draft.specifications.plateSizeRange}
-                    onChange={(e) => setSpec("plateSizeRange", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Roller size</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 32 inch (lamination machines)"
-                    value={draft.specifications.rollerSize}
-                    onChange={(e) => setSpec("rollerSize", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Paper cup size range</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 40ml to 750ml"
-                    value={draft.specifications.paperCupSizeRange}
-                    onChange={(e) => setSpec("paperCupSizeRange", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Est. electricity bill</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 120 to 150 per month"
-                    value={draft.specifications.electricityBillEstimate}
-                    onChange={(e) => setSpec("electricityBillEstimate", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* ---------------- PRICING ---------------- */}
-              <div className="ad-section-label">Pricing</div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Base price</label>
-                  <input
-                    className="ad-input"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={draft.pricing.basePrice}
-                    onChange={(e) => setPricing("basePrice", e.target.value)}
-                  />
-                  {errors.basePrice && <div className="ad-error-text">{errors.basePrice}</div>}
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Price label</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. Gurgaon Price / Ex-Factory Delhi"
-                    value={draft.pricing.priceLabel}
-                    onChange={(e) => setPricing("priceLabel", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Other expenses</label>
-                  <input
-                    className="ad-input"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={draft.pricing.otherExpenses}
-                    onChange={(e) => setPricing("otherExpenses", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Total price (auto)</label>
-                  <input className="ad-input" value={totalPriceDisplay} disabled readOnly />
-                </div>
-              </div>
-
-              {/* ---------------- ARRAY FIELDS ---------------- */}
-              <div className="ad-section-label">Catalog content</div>
-
-              <ChipInput
-                label="Items produced"
-                placeholder="e.g. Fancy Thali — press Enter"
-                values={draft.itemsProduced}
-                onChange={(v) => setField("itemsProduced", v)}
-              />
-
-              <ChipInput
-                label="Special features"
-                placeholder="e.g. Easy maintenance — press Enter"
-                values={draft.features}
-                onChange={(v) => setField("features", v)}
-              />
-
-              <ChipInput
-                label="Tags"
-                placeholder="e.g. dona machine — press Enter"
-                values={draft.tags}
-                onChange={(v) => setField("tags", v)}
-              />
-
-              {/* ---------------- LOGISTICS / STOCK ---------------- */}
-              <div className="ad-section-label">Logistics & stock</div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Stock qty</label>
-                  <input
-                    className="ad-input"
-                    type="number"
-                    min="0"
-                    value={draft.stock}
-                    onChange={(e) => setField("stock", e.target.value)}
-                  />
-                  {errors.stock && <div className="ad-error-text">{errors.stock}</div>}
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Low-stock threshold</label>
-                  <input
-                    className="ad-input"
-                    type="number"
-                    min="0"
-                    value={draft.threshold}
-                    onChange={(e) => setField("threshold", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Warranty</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 12 Months"
-                    value={draft.warranty}
-                    onChange={(e) => setField("warranty", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Delivery time</label>
-                  <input
-                    className="ad-input"
-                    placeholder="e.g. 10 Days"
-                    value={draft.deliveryTime}
-                    onChange={(e) => setField("deliveryTime", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Availability</label>
-                  <select
-                    className="ad-select"
-                    value={draft.availability}
-                    onChange={(e) => setField("availability", e.target.value)}
-                  >
-                    {AVAILABILITY_OPTIONS.map((a) => (
-                      <option key={a} value={a}>
-                        {a}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="ad-field">
-                  <label className="ad-label">Status</label>
-                  <select
-                    className="ad-select"
-                    value={draft.status}
-                    onChange={(e) => setField("status", e.target.value)}
-                  >
-                    {STATUS_OPTIONS.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="ad-row2">
-                <div className="ad-field">
-                  <label className="ad-label">Main market</label>
-                  <input
-                    className="ad-input"
-                    value={draft.mainMarket}
-                    onChange={(e) => setField("mainMarket", e.target.value)}
-                  />
-                </div>
-                <div className="ad-field ad-checkbox-field">
-                  <label className="ad-label">Returnable</label>
-                  <label className="ad-checkbox-row">
-                    <input
-                      type="checkbox"
-                      checked={draft.isReturnable}
-                      onChange={(e) => setField("isReturnable", e.target.checked)}
-                    />
-                    <span>Item can be returned</span>
-                  </label>
-                </div>
-              </div>
-
-              {submitError && <div className="ad-error-text ad-submit-error">{submitError}</div>}
-
-              <div className="ad-modal-actions">
-                <button
-                  type="button"
-                  className="ad-btn-secondary"
-                  onClick={closeModal}
-                  disabled={isSubmitting}
+                <label className="ad-label">Category</label>
+                <select
+                  className="ad-select"
+                  value={draft.category}
+                  onChange={(e) => setField("category", e.target.value)}
                 >
-                  Cancel
-                </button>
-                <button type="submit" className="ad-btn-primary" disabled={isSubmitting}>
-                  {isSubmitting ? "Saving…" : editingId ? "Save changes" : "Add product"}
-                </button>
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Sub-category</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. Hydraulic Double Cylinder"
+                  value={draft.subCategory}
+                  onChange={(e) => setField("subCategory", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Machine type</label>
+                <select
+                  className="ad-select"
+                  value={draft.machineType}
+                  onChange={(e) => setField("machineType", e.target.value)}
+                >
+                  <option value="">Select type</option>
+                  {MACHINE_TYPES.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="ad-field">
+              <label className="ad-label">Description</label>
+              <textarea
+                className="ad-input ad-textarea"
+                rows={3}
+                value={draft.description}
+                onChange={(e) => setField("description", e.target.value)}
+              />
+            </div>
+
+            {/* ---------------- SPECIFICATIONS ---------------- */}
+            <div className="ad-section-label">Specifications</div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Production capacity</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 15000 pieces in 10 hours"
+                  value={draft.specifications.productionCapacity}
+                  onChange={(e) =>
+                    setSpec("productionCapacity", e.target.value)
+                  }
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Motor</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 0.5 HP Crompton Greaves"
+                  value={draft.specifications.motor}
+                  onChange={(e) => setSpec("motor", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Total power</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 2 KW"
+                  value={draft.specifications.totalPower}
+                  onChange={(e) => setSpec("totalPower", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Power source</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 220V 50Hz (Single Phase)"
+                  value={draft.specifications.powerSource}
+                  onChange={(e) => setSpec("powerSource", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Voltage</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 220V"
+                  value={draft.specifications.voltage}
+                  onChange={(e) => setSpec("voltage", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Phase</label>
+                <select
+                  className="ad-select"
+                  value={draft.specifications.phase}
+                  onChange={(e) => setSpec("phase", e.target.value)}
+                >
+                  <option value="">Select phase</option>
+                  <option value="Single">Single</option>
+                  <option value="Three">Three</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Weight</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 200 KG Approx"
+                  value={draft.specifications.weight}
+                  onChange={(e) => setSpec("weight", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Raw material</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 80 GSM to 200 GSM"
+                  value={draft.specifications.rawMaterial}
+                  onChange={(e) => setSpec("rawMaterial", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="ad-field">
+              <label className="ad-label">Dimensions (L × W × H)</label>
+              <div className="ad-row3">
+                <input
+                  className="ad-input"
+                  type="number"
+                  min="0"
+                  placeholder="Length"
+                  value={draft.specifications.dimensions.length}
+                  onChange={(e) => setDimension("length", e.target.value)}
+                />
+                <input
+                  className="ad-input"
+                  type="number"
+                  min="0"
+                  placeholder="Width"
+                  value={draft.specifications.dimensions.width}
+                  onChange={(e) => setDimension("width", e.target.value)}
+                />
+                <input
+                  className="ad-input"
+                  type="number"
+                  min="0"
+                  placeholder="Height"
+                  value={draft.specifications.dimensions.height}
+                  onChange={(e) => setDimension("height", e.target.value)}
+                />
+                <select
+                  className="ad-select ad-unit-select"
+                  value={draft.specifications.dimensions.unit}
+                  onChange={(e) => setDimension("unit", e.target.value)}
+                >
+                  <option value="inch">inch</option>
+                  <option value="mm">mm</option>
+                  <option value="cm">cm</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Category-specific spec fields */}
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Plate size range</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 4-14 inch (paper plate machines)"
+                  value={draft.specifications.plateSizeRange}
+                  onChange={(e) => setSpec("plateSizeRange", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Roller size</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 32 inch (lamination machines)"
+                  value={draft.specifications.rollerSize}
+                  onChange={(e) => setSpec("rollerSize", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Paper cup size range</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 40ml to 750ml"
+                  value={draft.specifications.paperCupSizeRange}
+                  onChange={(e) => setSpec("paperCupSizeRange", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Est. electricity bill</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 120 to 150 per month"
+                  value={draft.specifications.electricityBillEstimate}
+                  onChange={(e) =>
+                    setSpec("electricityBillEstimate", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+
+            {/* ---------------- PRICING ---------------- */}
+            <div className="ad-section-label">Pricing</div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Base price</label>
+                <input
+                  className="ad-input"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={draft.pricing.basePrice}
+                  onChange={(e) => setPricing("basePrice", e.target.value)}
+                />
+                {errors.basePrice && (
+                  <div className="ad-error-text">{errors.basePrice}</div>
+                )}
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Price label</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. Gurgaon Price / Ex-Factory Delhi"
+                  value={draft.pricing.priceLabel}
+                  onChange={(e) => setPricing("priceLabel", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Other expenses</label>
+                <input
+                  className="ad-input"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={draft.pricing.otherExpenses}
+                  onChange={(e) => setPricing("otherExpenses", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Total price (auto)</label>
+                <input
+                  className="ad-input"
+                  value={totalPriceDisplay}
+                  disabled
+                  readOnly
+                />
+              </div>
+            </div>
+
+            {/* ---------------- ARRAY FIELDS ---------------- */}
+            <div className="ad-section-label">Catalog content</div>
+
+            <ChipInput
+              label="Items produced"
+              placeholder="e.g. Fancy Thali — press Enter"
+              values={draft.itemsProduced}
+              onChange={(v) => setField("itemsProduced", v)}
+            />
+
+            <ChipInput
+              label="Special features"
+              placeholder="e.g. Easy maintenance — press Enter"
+              values={draft.features}
+              onChange={(v) => setField("features", v)}
+            />
+
+            <ChipInput
+              label="Tags"
+              placeholder="e.g. dona machine — press Enter"
+              values={draft.tags}
+              onChange={(v) => setField("tags", v)}
+            />
+
+            {/* ---------------- LOGISTICS / STOCK ---------------- */}
+            <div className="ad-section-label">Logistics & stock</div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Stock qty</label>
+                <input
+                  className="ad-input"
+                  type="number"
+                  min="0"
+                  value={draft.stock}
+                  onChange={(e) => setField("stock", e.target.value)}
+                />
+                {errors.stock && (
+                  <div className="ad-error-text">{errors.stock}</div>
+                )}
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Low-stock threshold</label>
+                <input
+                  className="ad-input"
+                  type="number"
+                  min="0"
+                  value={draft.threshold}
+                  onChange={(e) => setField("threshold", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Warranty</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 12 Months"
+                  value={draft.warranty}
+                  onChange={(e) => setField("warranty", e.target.value)}
+                />
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Delivery time</label>
+                <input
+                  className="ad-input"
+                  placeholder="e.g. 10 Days"
+                  value={draft.deliveryTime}
+                  onChange={(e) => setField("deliveryTime", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Availability</label>
+                <select
+                  className="ad-select"
+                  value={draft.availability}
+                  onChange={(e) => setField("availability", e.target.value)}
+                >
+                  {AVAILABILITY_OPTIONS.map((a) => (
+                    <option key={a} value={a}>
+                      {a}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="ad-field">
+                <label className="ad-label">Status</label>
+                <select
+                  className="ad-select"
+                  value={draft.status}
+                  onChange={(e) => setField("status", e.target.value)}
+                >
+                  {STATUS_OPTIONS.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="ad-row2">
+              <div className="ad-field">
+                <label className="ad-label">Main market</label>
+                <input
+                  className="ad-input"
+                  value={draft.mainMarket}
+                  onChange={(e) => setField("mainMarket", e.target.value)}
+                />
+              </div>
+              <div className="ad-field ad-checkbox-field">
+                <label className="ad-label">Returnable</label>
+                <label className="ad-checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={draft.isReturnable}
+                    onChange={(e) => setField("isReturnable", e.target.checked)}
+                  />
+                  <span>Item can be returned</span>
+                </label>
+              </div>
+            </div>
+
+            {submitError && (
+              <div className="ad-error-text ad-submit-error">{submitError}</div>
+            )}
+
+            <div className="ad-modal-actions">
+              <button
+                type="button"
+                className="ad-btn-secondary"
+                onClick={closeModal}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="ad-btn-primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? "Saving…"
+                  : editingId
+                    ? "Save changes"
+                    : "Add product"}
+              </button>
+            </div>
+          </form>
         </div>
-      
+      </div>
     </div>
   );
 }

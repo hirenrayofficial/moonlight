@@ -32,11 +32,13 @@ export const metadata = {
     canonical: "https://www.moonlightmachinery.com/home/machines",
   },
 };
-export default function page() {
+export default async function page({searchParams}) {
+  const parms = await searchParams
+  const query = parms.query
   const show = false
   return (
     <div className='w-full flex justify-center py-16'>
-      <ProductShowcase view={show} />
+      <ProductShowcase view={show} query={query} />
     </div>
   )
 }

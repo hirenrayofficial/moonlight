@@ -9,6 +9,7 @@ import BannerCarousel from '@/component/home/main/Crousal'
 import Header from '@/component/home/fixed/Header'
 import TrustSection from '@/component/home/main/TrustSection'
 import BranchRoute from '@/component/home/main/BranchRoute'
+import FaqSection from '@/component/home/main/FaqSection'
 
 export default function Hero() {
   return (
@@ -29,6 +30,7 @@ export default function Hero() {
       <TrustSection/>
       {/* <SectionTestimonials /> */}
       <SectionContact />
+      <FaqSection/>
       <Footer/>
     </div>
   )
