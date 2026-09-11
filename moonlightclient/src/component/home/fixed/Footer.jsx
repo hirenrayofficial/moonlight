@@ -96,7 +96,7 @@ export default function Footer() {
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Head Office</div>
             <div className="ft-manifest-value">
-              Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201
+              Dhanwapur Rd, near Ajit Stadium, Ram Vihar, Sector 104, Gurugram, Haryana 122006
             </div>
           </div>
           <div className="ft-manifest-cell-a"></div>
