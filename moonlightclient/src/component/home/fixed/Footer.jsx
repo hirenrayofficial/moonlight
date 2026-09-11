@@ -94,7 +94,7 @@ export default function Footer() {
       <div className="ft-inner">
         <div className="ft-manifest">
           <div className="ft-manifest-cell">
-            <div className="ft-manifest-label ft-mono">Office</div>
+            <div className="ft-manifest-label ft-mono">Head Office</div>
             <div className="ft-manifest-value">
               Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201
             </div>
