@@ -44,7 +44,7 @@ export default function QueryModal({ isOpen, onClose, product }) {
     });
 
     try {
-      const response = await fetch("/api/product/user-query", {
+      const response = await fetch("/api/home/product/user-query", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
