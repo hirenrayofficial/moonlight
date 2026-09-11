@@ -17,7 +17,7 @@ export async function POST(req) {
     const type = nextUrl.searchParams.get("type")
 
 
-    const res = await Product.find({ machineType: type }).select("name slug images pricing tag")
+    const res = await Product.find({ machineType: type }).select("name slug images pricing tag").limit(3)
 
 
     return NextResponse.json({ message: "Product get successfull", item: res })

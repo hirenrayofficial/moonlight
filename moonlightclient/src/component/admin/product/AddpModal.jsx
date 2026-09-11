@@ -32,9 +32,13 @@ import { createProduct } from "@/services/admin/apiService/Product";
 
 export const CATEGORIES = [
   "Paper Plate Making Machine",
-  "Lamination Machine",
-  "Cotton Wick Machine",
-  "Paper Cup Machine",
+  "Paper Plate Lamination Machine",
+  "Cotton Wick Making Machine",
+  "Paper Cup Making Machine",
+  "Dona Making Machine",
+  "Areca Leaf Plate Making Machine",
+  "Disposable Plate Making Machine",
+  "Chappal Making Machine",
 ];
 
 export const MACHINE_TYPES = [
@@ -42,8 +46,6 @@ export const MACHINE_TYPES = [
   "Semi-Automatic",
   "Full-Automatic",
   "Hydraulic",
-  "All-in-One",
-  "Lamination",
 ];
 
 export const AVAILABILITY_OPTIONS = [

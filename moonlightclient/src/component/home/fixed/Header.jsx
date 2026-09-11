@@ -194,7 +194,7 @@ export default function Header() {
                 setActiveCategoryIndex(0);
               }}
             >
-              <div 
+              <div
                 className="hd-nav-link flex items-center gap-1.5 select-none"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
@@ -238,13 +238,16 @@ export default function Header() {
                     {/* Sub Categories Column */}
                     <div className="w-[350px] bg-white py-3 px-5 flex flex-col justify-start">
                       <div className="text-xs font-bold text-neutral-400 uppercase px-3 pb-2 mb-2 border-b border-neutral-100">
-                        {activeCategoryIndex !== null && PRODUCT_CATEGORIES[activeCategoryIndex]
+                        {activeCategoryIndex !== null &&
+                        PRODUCT_CATEGORIES[activeCategoryIndex]
                           ? PRODUCT_CATEGORIES[activeCategoryIndex].label
                           : "Select Category"}
                       </div>
                       <div className="flex flex-col gap-1.5">
                         {activeCategoryIndex !== null &&
-                          PRODUCT_CATEGORIES[activeCategoryIndex]?.subCategories.map((sub) => {
+                          PRODUCT_CATEGORIES[
+                            activeCategoryIndex
+                          ]?.subCategories.map((sub) => {
                             const subHref = `/home/machines?query=catagory&Pcatagory=${PRODUCT_CATEGORIES[activeCategoryIndex].slug}&Scatagory=${sub.slug}`;
                             return (
                               <Link
@@ -267,15 +270,18 @@ export default function Header() {
               </AnimatePresence>
             </div>
           </nav>
-          
+
           <div className="hd-actions">
             <Link className="hd-shop-btn hidden md:inline-block" href="/getway">
               Login
             </Link>
-            <a className="hd-shop-btn cal hidden md:inline-block" href="tel:+919354327757">
+            <a
+              className="hd-shop-btn cal hidden md:inline-block"
+              href="tel:+919354327757"
+            >
               Call
             </a>
-            
+
             {/* Mobile Menu Hamburger Button */}
             <button
               className="hd-menu-toggle md:hidden p-2 text-[var(--ink)] cursor-pointer"
@@ -314,7 +320,9 @@ export default function Header() {
               <div className="border-b border-neutral-200 pb-2">
                 <div
                   className="hd-nav-link flex items-center justify-between text-sm font-semibold tracking-wider uppercase py-1 cursor-pointer"
-                  onClick={() => setIsMobileCategoriesOpen(!isMobileCategoriesOpen)}
+                  onClick={() =>
+                    setIsMobileCategoriesOpen(!isMobileCategoriesOpen)
+                  }
                 >
                   <span>Product Category</span>
                   <motion.span
@@ -335,12 +343,17 @@ export default function Header() {
                       className="flex flex-col pl-3 mt-2 gap-3 border-l-2 border-[var(--line-strong)]"
                     >
                       {PRODUCT_CATEGORIES.map((category, idx) => (
-                        <div key={category.slug} className="flex flex-col gap-1">
+                        <div
+                          key={category.slug}
+                          className="flex flex-col gap-1"
+                        >
                           <button
                             type="button"
                             className="text-xs font-bold text-[var(--ink)] uppercase tracking-wider py-2 flex items-center justify-between text-left w-full cursor-pointer"
                             onClick={() =>
-                              setMobileActivePrimary(mobileActivePrimary === idx ? null : idx)
+                              setMobileActivePrimary(
+                                mobileActivePrimary === idx ? null : idx,
+                              )
                             }
                           >
                             <span>{category.label}</span>

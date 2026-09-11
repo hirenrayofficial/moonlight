@@ -16,17 +16,18 @@ import { slugify } from "@/utilis/slujgify";
 
 const CATEGORIES = [
   "Paper Plate Making Machine",
-  "Lamination Machine",
-  "Cotton Wick Machine",
-  "Paper Cup Machine",
+  "Paper Plate Lamination Machine",
+  "Paper Cup Making Machine",
+  "Dona Making Machine",
+  "Areca Leaf Plate Making Machine",
+  "Disposable Plate Making Machine",
+  "Chappal Making Machine",
 ];
-
 const MACHINE_TYPES = [
   "Manual",
   "Semi-Automatic",
   "Full-Automatic",
   "Hydraulic",
-  "All-in-One",
 ];
 
 const AVAILABILITY_OPTIONS = ["In Stock", "Out of Stock", "Made to Order"];
@@ -862,10 +863,11 @@ export default function ProductAdmin({ compact = false }) {
                     onChange={(e) => handleSliderImageUpload(e.target.files[0])}
                   />
                   {sliderUploading && (
-                    <div className="ad-uploading-note">Uploading slider image…</div>
+                    <div className="ad-uploading-note">
+                      Uploading slider image…
+                    </div>
                   )}
                 </div>
-
               </div>
               <div className="ad-section-label">Video</div>
               <div className="ad-row2">

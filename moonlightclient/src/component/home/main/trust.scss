@@ -8,7 +8,7 @@
   --paper: rgba(5, 127, 242, 0.03);
   --paper-hover: rgba(5, 127, 242, 0.08);
   --ink: #f0f0f0;
-  --ink-dim: #a0aec0;
+  --ink-dim: #000000;
   --ink-faint: #63768d;
   --line: rgba(5, 127, 242, 0.2);
   --line-strong: rgba(5, 127, 242, 0.45);
@@ -99,7 +99,7 @@
   }
 
   .tr-subtitle {
-    font-size: 13px;
+    font-size: 16px;
     color: var(--ink-dim);
     line-height: 1.5;
   }
@@ -278,12 +278,12 @@
 
       .tr-review-name {
         font-weight: 700;
-        font-size: 13px;
+        font-size: 16px;
         color: #000000;
       }
 
       .tr-review-location {
-        font-size: 10.5px;
+        font-size: 14.5px;
         color: var(--ink-faint);
         text-transform: uppercase;
       }
@@ -303,7 +303,7 @@
       margin: 14px 0;
       
       .tr-review-text {
-        font-size: 12.5px;
+        font-size: 16.5px;
         color: var(--ink-dim);
         line-height: 1.6;
         
