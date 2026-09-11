@@ -11,6 +11,7 @@ import { ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Video from "@/component/home/main/Video";
+import QueryModal from "./QueryModal";
 
 function money(n) {
   return (n || 0).toLocaleString("en-US", {
@@ -64,6 +65,7 @@ function RelatedSkeleton() {
 
 export default function Mview({ slug, initialProduct }) {
   const [activeImage, setActiveImage] = useState(0);
+  const [isQueryOpen, setIsQueryOpen] = useState(false);
 
   const pathname = usePathname();
   const segments = pathname.split("/").filter((segment) => segment !== "");
@@ -357,9 +359,7 @@ Please provide more information about this product.
                   }`}
                   onClick={() => setActiveImage(i)}
                   aria-label={
-                    isVideoThumb
-                      ? "Show product video"
-                      : `Show image ${i + 1}`
+                    isVideoThumb ? "Show product video" : `Show image ${i + 1}`
                   }
                   variants={itemVariants}
                   whileHover={{ scale: 1.05 }}
@@ -444,8 +444,23 @@ Please provide more information about this product.
             >
               <FaWhatsapp size={24} /> WhatsApp
             </motion.button>
+            <motion.button
+              type="button"
+              className="pd-add-btn py-2 flex items-center justify-center gap-4"
+              onClick={() => setIsQueryOpen(true)}
+              title="Send product query"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Query
+            </motion.button>
           </motion.div>
         </motion.div>
+        <QueryModal
+          isOpen={isQueryOpen}
+          onClose={() => setIsQueryOpen(false)}
+          product={product}
+        />
 
         {/* video is now integrated as the final gallery slide */}
       </motion.section>

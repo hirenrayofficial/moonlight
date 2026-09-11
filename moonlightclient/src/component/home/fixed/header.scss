@@ -109,7 +109,6 @@
    which was only relevant when this div held a text initial ("M")
    instead of an actual image. */
 .hd-brand-mark {
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,10 +154,11 @@
   }
 }
 .hd-nav-link {
-  font-size: 11px;
+  font-size: 14px;
+  font-weight:bold;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: black;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   padding-bottom: 2px;
@@ -224,7 +224,9 @@
   border-radius: 999px;
   font-weight: 600;
   text-decoration: none;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .button-link:hover {
@@ -248,3 +250,33 @@
     display: none;
   }
 }
+/* ---------- Mobile menu toggle styles ---------- */
+.hd-menu-toggle {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+}
+@media (min-width: 500px) {
+  .hd-menu-toggle {
+    display: flex;
+  }
+}
+
+@media (min-width: 800px) {
+  .hd-menu-toggle {
+    display: none;
+  }
+}
+

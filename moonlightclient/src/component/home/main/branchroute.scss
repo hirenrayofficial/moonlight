@@ -1,196 +1,512 @@
+
 .br-root {
-  --bg: #faf9f500;
+  --bg: transparent;
   --paper: #ffffff;
   --ink: #15140f;
-  --ink-dim: #5a594e;
-  --ink-faint: #9b9a8c;
-  --line: #d9d6c9;
-  --line-strong: #b8b5a4;
+  --ink-dim: #66645a;
+  --ink-faint: #99978b;
+  --line: #e5e2d8;
   --accent: #057ff2;
-  --accent-ink: #15140f;
+  --accent-soft: rgba(5, 127, 242, 0.08);
 
-  background: var(--bg);
-  color: var(--ink);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
   width: 100%;
-  padding: 64px 32px;
+  padding: 0px 32px;
+  color: var(--ink);
 
   * {
     box-sizing: border-box;
   }
 
   @media (max-width: 720px) {
-    padding: 44px 16px;
+    padding: 5px 16px;
   }
 }
 
 .br-inner {
-  max-width: 1100px;
+  width: 100%;
+  max-width: 1180px;
   margin: 0 auto;
 }
 
+/* ---------------- HEADER ---------------- */
+
 .br-head {
+  max-width: 650px;
+  margin: 0 auto 48px;
   text-align: center;
-  max-width: 46ch;
-  margin: 0 auto 56px;
 }
+
 .br-eyebrow {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 10px;
-}
-.br-title {
-  font-size: clamp(24px, 3.4vw, 34px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 11px;
   font-weight: 700;
-  margin: 0 0 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  color: var(--accent);
+  margin-bottom: 13px;
 }
-.br-subhead {
-  font-size: 14px;
-  color: var(--ink-dim);
+
+.br-title {
   margin: 0;
+
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  font-weight: 750;
 }
 
-/* ---------- route layout ---------- */
-.br-route {
-  position: relative;
+.br-title span {
+  color: var(--ink-faint);
+}
+
+.br-subhead {
+  max-width: 500px;
+  margin: 16px auto 0;
+
+  color: var(--ink-dim);
+
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ---------------- SHOWCASE ---------------- */
+
+.br-showcase {
   display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 12px;
-}
-@media (max-width: 640px) {
-  .br-route {
-    grid-template-columns: 32px 1fr;
-  }
+  grid-template-columns: minmax(0, 1.35fr) minmax(340px, 0.65fr);
+
+  min-height: 620px;
+
+  background: var(--paper);
+
+  border: 1px solid var(--line);
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.06),
+    0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-.br-line-col {
+/* ---------------- MAP ---------------- */
+
+.br-map-wrapper {
   position: relative;
+  min-height: 620px;
+  background: #eeeeeb;
 }
 
-.br-svg {
-  position: absolute;
-  inset: 0;
+.br-map {
   width: 100%;
   height: 100%;
-}
-.br-path-track {
-  stroke: var(--line-strong);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-}
-.br-path-fill {
-  stroke: var(--accent);
-  stroke-width: 2.5;
-  stroke-linecap: round;
+
+  min-height: 620px;
+
+  display: block;
+
+  border: 0;
 }
 
-.br-dot {
+/* Map floating location */
+
+.br-map-label {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--paper);
-  border: 2px solid var(--line-strong);
-  transform: translate(-50%, -50%);
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-  z-index: 1;
+
+  top: 20px;
+  left: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 14px;
+
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+  pointer-events: none;
 }
-.br-dot.active {
+
+.br-map-label-icon {
+  width: 32px;
+  height: 32px;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--accent);
+
+  background: var(--accent-soft);
+
+  border-radius: 9px;
+}
+
+.br-map-label strong {
+  display: block;
+
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.br-map-label span {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+
+/* Directions */
+
+.br-directions {
+  position: absolute;
+
+  left: 20px;
+  bottom: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 14px;
+
+  color: #fff;
   background: var(--accent);
-  border-color: var(--accent);
-  transform: translate(-50%, -50%) scale(1.25);
-}
-@media (max-width: 640px) {
-  .br-dot {
-    width: 10px;
-    height: 10px;
-  }
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  box-shadow: 0 8px 20px rgba(5, 127, 242, 0.25);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* ---------- stops ---------- */
-.br-stops {
-  display: flex;
-  flex-direction: column;
+.br-directions:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(5, 127, 242, 0.3);
 }
 
-.br-stop {
-  min-height: 180px;
+/* ---------------- BRANCH PANEL ---------------- */
+
+.br-branches {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 20px 0;
+
+  border-left: 1px solid var(--line);
+
+  background: #fff;
+}
+
+.br-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 25px 24px 20px;
+
   border-bottom: 1px solid var(--line);
-  opacity: 0.55;
-  transition: opacity 0.3s ease;
-}
-.br-stop:last-child {
-  border-bottom: none;
-}
-.br-stop.active {
-  opacity: 1;
 }
 
-/* On desktop, alternate which side content leans toward so the wave
-   line reads as connecting to alternating stops. On mobile everything
-   stacks straight since the line column shrinks to a simple guide. */
-@media (min-width: 641px) {
-  .br-stop.left {
-    align-items: flex-start;
-    text-align: left;
-    padding-right: 40%;
-  }
-  .br-stop.right {
-    align-items: flex-end;
-    text-align: right;
-    padding-left: 40%;
-  }
-}
+.br-list-head span {
+  display: block;
 
-.br-hq-badge {
-  display: inline-block;
+  margin-bottom: 4px;
+
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: var(--accent);
-  color: var(--accent-ink);
-  padding: 3px 8px;
-  margin-bottom: 8px;
+
+  color: var(--ink-faint);
 }
 
-.br-stop-city {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 2px;
+.br-list-head h3 {
+  margin: 0;
+
+  font-size: 21px;
+  letter-spacing: -0.02em;
 }
-.br-stop-state {
+
+.br-count {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: var(--accent-soft);
+  color: var(--accent);
+
   font-size: 12px;
-  color: var(--ink-faint);
-  margin-bottom: 8px;
+  font-weight: 800;
 }
-.br-stop-address {
-  font-size: 13px;
+
+/* ---------------- LIST ---------------- */
+
+.br-list {
+  padding: 8px;
+
+  overflow-y: auto;
+}
+
+.br-branch {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 16px 14px;
+
+  text-align: left;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: 13px;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.br-branch:hover {
+  background: #f8f8f5;
+}
+
+.br-branch.active {
+  background: var(--accent-soft);
+  border-color: rgba(5, 127, 242, 0.14);
+}
+
+.br-branch-icon {
+  flex: 0 0 auto;
+
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  background: #f2f1ed;
   color: var(--ink-dim);
-  margin-bottom: 6px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
-.br-stop-phone {
-  font-size: 13px;
+
+.br-branch.active .br-branch-icon {
+  background: var(--accent);
+  color: #fff;
+}
+
+.br-branch-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.br-branch-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.br-branch-top strong {
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.br-hq {
+  display: inline-flex;
+
+  padding: 2px 6px;
+
+  border-radius: 4px;
+
+  background: var(--accent);
+  color: #fff;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 0.06em;
+}
+
+.br-branch-state {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--ink-faint);
+
+  font-size: 10px;
+}
+
+.br-branch-address {
+  display: block;
+
+  margin-top: 7px;
+
+  color: var(--ink-dim);
+
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.br-branch-phone {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  margin-top: 8px;
+
   color: var(--ink);
-  text-decoration: none;
-  font-weight: 600;
+
+  font-size: 11px;
+  font-weight: 650;
 }
-.br-stop-phone:hover {
-  color: var(--accent-ink);
-  text-decoration: underline;
+
+.br-branch-arrow {
+  flex: 0 0 auto;
+
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--ink-faint);
+
+  border-radius: 50%;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
+
+.br-branch.active .br-branch-arrow {
+  color: var(--accent);
+  background: rgba(5, 127, 242, 0.08);
+}
+
+/* ---------------- BOTTOM ---------------- */
+
+.br-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 45px;
+
+  padding-top: 24px;
+}
+
+.br-bottom-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--ink-faint);
+
+  font-size: 11px;
+}
+
+.br-bottom-item svg {
+  color: var(--accent);
+}
+
+/* ---------------- TABLET ---------------- */
+
+@media (max-width: 900px) {
+  .br-showcase {
+    grid-template-columns: 1fr;
+  }
+
+  .br-map-wrapper,
+  .br-map {
+    min-height: 450px;
+  }
+
+  .br-branches {
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .br-list {
+    max-height: 450px;
+  }
+}
+
+/* ---------------- MOBILE ---------------- */
+
+@media (max-width: 640px) {
+  .br-showcase {
+    border-radius: 17px;
+  }
+
+  .br-map-wrapper,
+  .br-map {
+    min-height: 380px;
+  }
+
+  .br-map-label {
+    top: 12px;
+    left: 12px;
+  }
+
+  .br-directions {
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .br-list-head {
+    padding: 20px 17px 16px;
+  }
+
+  .br-branch {
+    padding: 14px 10px;
+  }
+
+  .br-bottom {
+    flex-direction: column;
+    gap: 10px;
+
+    align-items: flex-start;
+
+    padding-left: 4px;
+  }
+}
+

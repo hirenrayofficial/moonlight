@@ -1,5 +1,5 @@
-import ProductShowcase from '@/component/home/main/Listproduct'
-import React, { Suspense } from 'react'
+import ProductShowcase from '@/component/home/main/Listproduct';
+import React, { Suspense } from 'react';
 
 export const metadata = {
   title: "Paper Plate Making Machines in India - Hydraulic, Semi-Automatic & Panel Machines | Moonlight Machinery",
@@ -31,16 +31,20 @@ export const metadata = {
     canonical: "https://www.moonlightmachinery.com/home/machines",
   },
 };
+
 export default async function page({ searchParams }) {
-  const parms = await searchParams
-  const query = parms.query
-  const show = false
-  
+  const parms = await searchParams;
+  const query = parms.query || "";
+  // Support both casing styles to prevent mismatches
+  const Pricategory = parms["p-catagory"] || parms["pCatagory"] || "";
+  const Subcategory = parms["s-catagory"] || parms["sCatagory"] || "";
+  const show = false;
+
   return (
     <div className='w-full flex justify-center py-16'>
       <Suspense fallback={<div>Loading...</div>}>
-        <ProductShowcase view={show} query={query} hide={true}/>
+        <ProductShowcase view={show} Subcategory={Subcategory} Pricategory={Pricategory} query={query} hide={true} />
       </Suspense>
     </div>
-  )
+  );
 }

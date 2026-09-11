@@ -91,14 +91,14 @@ export default function HowItWorks() {
   const currentDuration = current.duration || "2:00";
 
   return (
-    <section className="py-32 px-6 bg-transparent text-blue-100 flex justify-center selection:bg-blue-100 selection:text-blue-950">
+    <section className="py-0 px-6 bg-transparent text-blue-100 flex justify-center selection:bg-blue-100 selection:text-blue-950">
       <div className="w-full max-w-7xl mx-auto flex flex-col gap-20">
         
         {/* Minimalist Editorial Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-blue-800 pb-12">
           <div className="flex flex-col gap-4 max-w-2xl">
             <motion.div
-              className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500-900/40 border border-blue-800 w-fit font-mono text-[11px] uppercase tracking-widest text-gray-400 font-medium rounded-none"
+              className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500-900/40 border border-blue-800 w-fit  text-[11px] uppercase tracking-widest text-gray-400 font-medium rounded-none"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -154,12 +154,12 @@ export default function HowItWorks() {
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className={`font-mono text-xs font-semibold px-3 py-1.5 border rounded-none ${
+                    <span className={` text-xs font-semibold px-3 py-1.5 border rounded-none ${
                       isActive ? "bg-blue-800 text-white border-blue-600" : "bg-blue-900 text-blue-400 border-blue-800"
                     }`}>
                       Stage {step.n}
                     </span>
-                    <span className="font-mono text-xs text-blue-500 group-hover:text-blue-300 transition-colors">
+                    <span className=" text-xs text-blue-500 group-hover:text-blue-300 transition-colors">
                       {isActive ? "Feed Active →" : "Click to load feed"}
                     </span>
                   </div>
@@ -184,7 +184,7 @@ export default function HowItWorks() {
             >
               <div className="w-full aspect-video rounded-none overflow-hidden bg-blue-500 shadow-inner relative border border-blue-800">
                 {loading ? (
-                  <div className="w-full h-full flex items-center justify-center font-mono text-xs text-blue-400">
+                  <div className="w-full h-full flex items-center justify-center  text-xs text-blue-400">
                     LOADING FEED TELEMETRY...
                   </div>
                 ) : (
@@ -205,10 +205,10 @@ export default function HowItWorks() {
 
               <div className="flex items-center justify-between px-2 pt-1">
                 <div className="flex flex-col gap-0.5 max-w-[80%]">
-                  <span className="text-xs font-mono text-blue-900 uppercase tracking-widest">Active Stream</span>
+                  <span className="text-xs  text-blue-900 uppercase tracking-widest">Active Stream</span>
                   <span className="text-sm font-medium text-black tracking-tight line-clamp-1">{currentTitle}</span>
                 </div>
-                <span className="font-mono text-xs font-medium bg-blue-800 text-blue-300 px-3 py-1.5 rounded-none border border-blue-700/60">
+                <span className=" text-xs font-medium bg-blue-800 text-blue-300 px-3 py-1.5 rounded-none border border-blue-700/60">
                   {currentDuration}
                 </span>
               </div>
@@ -220,7 +220,7 @@ export default function HowItWorks() {
                 <button
                   key={v.src || v.video_url || i}
                   onClick={() => setActiveVideo(i)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-none font-mono text-xs transition-all whitespace-nowrap border ${
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-none  text-xs transition-all whitespace-nowrap border ${
                     i === activeVideo 
                       ? "bg-blue-100 text-blue-950 border-blue-100 font-semibold " 
                       : "bg-blue-900 text-blue-00 border-blue-800 hover:bg-blue-900 hover:text-blue-200"

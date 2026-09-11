@@ -22,7 +22,7 @@
   -webkit-backdrop-filter: blur(16px);
   color: var(--ink);
   width: 100%;
-  padding: 80px 20px;
+  padding: 0px 20px;
   overflow-x: hidden;
 
   * {
@@ -59,7 +59,7 @@
 }
 
 .tr-mono {
-  font-family: "IBM Plex Mono", monospace;
+  // font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.04em;
 }
 
@@ -89,7 +89,7 @@
   }
 
   .tr-title {
-    font-family: "Archivo Black", sans-serif, system-ui;
+    // font-family: "Archivo Black", sans-serif, system-ui;
     text-transform: uppercase;
     font-size: clamp(26px, 3.5vw, 38px);
     line-height: 1.1;

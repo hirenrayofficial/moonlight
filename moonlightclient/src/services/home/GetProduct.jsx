@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const getItem = async (query) => {
+export const getItem = async (query, pCategory, sCategory) => {
   const res = await axios.get("/api/home/product", {
-    params: { query }, // Automatically appends ?query=... to your request
+    params: { query, pCategory, sCategory }, // Automatically appends ?query=... to your request
   });
 
   return res?.data?.item;

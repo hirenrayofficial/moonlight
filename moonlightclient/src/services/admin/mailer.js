@@ -14,32 +14,32 @@ import nodemailer from "nodemailer";
  * @returns {Promise}
  */
 export async function sendEnquiryEmail(enquiry) {
-    const {
-        name,
-        phone,
-        email,
-        machine,
-        message,
-    } = enquiry;
-    console.log(enquiry)
+  const {
+    name,
+    phone,
+    email,
+    machine,
+    message,
+  } = enquiry;
+  console.log(enquiry)
 
-    try {
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST || "smtp.gmail.com",
-            port: process.env.SMTP_PORT || 587,
-            secure: false, // true for 465, false for other ports
-            auth: {
-                user: process.NEXT_APP_SMPT_USER,
-                pass: process.env.NEXT_APP_SMPT_USER,
-            },
-        });
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || "smtp.gmail.com",
+      port: process.env.SMTP_PORT || 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.NEXT_APP_SMPT_USER,
+        pass: process.env.NEXT_APP_SMPT_USER,
+      },
+    });
 
-        // Email to admin
-        const adminMailOptions = {
-            from: process.NEXT_APP_SMPT_USER,
-            to: process.NEXT_APP_SMPT_TO_USER,
-            subject: `New Machine Enquiry from ${name}`,
-            html: `
+    // Email to admin
+    const adminMailOptions = {
+      from: process.NEXT_APP_SMPT_USER,
+      to: process.NEXT_APP_SMPT_TO_USER,
+      subject: `New Machine Enquiry from ${name}`,
+      html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
           <div style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <h2 style="color: #333; margin-bottom: 20px;">New Machine Enquiry</h2>
@@ -62,7 +62,7 @@ export async function sendEnquiryEmail(enquiry) {
           </div>
         </div>
       `,
-            text: `
+      text: `
 New Machine Enquiry
 
 Name: ${name}
@@ -73,14 +73,14 @@ Machine of Interest: ${machine}
 Message:
 ${message || "No message provided"}
       `,
-        };
+    };
 
-        // Confirmation email to user
-        const userMailOptions = {
-            from: process.NEXT_APP_SMPT_USER,
-            to: email || phone, // In case email is not provided, we still need to know where to send
-            subject: "We received your enquiry - Moonlight Machinery",
-            html: `
+    // Confirmation email to user
+    const userMailOptions = {
+      from: process.NEXT_APP_SMPT_USER,
+      to: email || phone, // In case email is not provided, we still need to know where to send
+      subject: "We received your enquiry - Moonlight Machinery",
+      html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
           <div style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <h2 style="color: #333; margin-bottom: 20px;">Thank You, ${name}!</h2>
@@ -110,7 +110,7 @@ ${message || "No message provided"}
           </div>
         </div>
       `,
-            text: `
+      text: `
 Thank you, ${name}!
 
 We've received your enquiry about the ${machine} and will get back to you shortly.
@@ -126,18 +126,293 @@ Quick Contact Options:
 
 © 2024 Moonlight Machinery. All rights reserved.
       `,
-        };
+    };
 
-        // Send both emails
-        await transporter.sendMail(adminMailOptions);
+    // Send both emails
+    await transporter.sendMail(adminMailOptions);
 
-        if (email) {
-            await transporter.sendMail(userMailOptions);
-        }
-
-        return { success: true, message: "Enquiry sent successfully" };
-    } catch (error) {
-        console.error("Error sending email:", error);
-        throw new Error(`Failed to send email: ${error.message}`);
+    if (email) {
+      await transporter.sendMail(userMailOptions);
     }
+
+    return { success: true, message: "Enquiry sent successfully" };
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw new Error(`Failed to send email: ${error.message}`);
+  }
 }
+
+
+/**
+ * Moonlight Machinery
+ * Query Email Service
+ *
+ * This service ONLY sends the query by email.
+ * No database is used.
+ */
+
+export async function sendQueryEmail({
+  customerName,
+  customerContact,
+  message,
+  productName,
+  productSku = "",
+}) {
+  if (!customerName || !customerContact || !productName) {
+    throw new Error("Required enquiry details are missing");
+  }
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || "smtp.gmail.com",
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: Number(process.env.SMTP_PORT || 587) === 465,
+
+      auth: {
+        user: process.env.NEXT_APP_SMPT_USER,
+        pass: process.env.NEXT_APP_SMPT_PASS,
+      },
+    });
+
+    const adminMailOptions = {
+      from: `"Moonlight Machinery" <${process.env.NEXT_APP_SMPT_USER}>`,
+      to: process.env.NEXT_APP_SMPT_TO_USER,
+
+      replyTo: process.env.NEXT_APP_SMPT_USER,
+
+      subject: `New Product Query - ${productName}`,
+
+      text: `
+New Product Query - Moonlight Machinery
+
+Customer Name:
+${customerName}
+
+Customer Contact:
+${customerContact}
+
+Product:
+${productName}
+
+Product SKU:
+${productSku || "Not provided"}
+
+Message:
+${message || "No message provided"}
+
+--------------------------------
+This query was submitted from the Moonlight Machinery website.
+            `,
+
+      html: `
+                <div style="
+                    margin:0;
+                    padding:30px 15px;
+                    background:#f4f4f4;
+                    font-family:Arial,Helvetica,sans-serif;
+                ">
+
+                    <div style="
+                        max-width:650px;
+                        margin:0 auto;
+                        background:#ffffff;
+                        border-radius:12px;
+                        overflow:hidden;
+                        border:1px solid #e5e5e5;
+                    ">
+
+                        <!-- Header -->
+                        <div style="
+                            padding:25px 30px;
+                            background:#111111;
+                            color:#ffffff;
+                        ">
+                            <h2 style="
+                                margin:0;
+                                font-size:24px;
+                            ">
+                                New Product Query
+                            </h2>
+
+                            <p style="
+                                margin:8px 0 0;
+                                color:#cccccc;
+                                font-size:14px;
+                            ">
+                                Moonlight Machinery Website
+                            </p>
+                        </div>
+
+
+                        <!-- Content -->
+                        <div style="padding:30px;">
+
+                            <h3 style="
+                                margin:0 0 20px;
+                                color:#222222;
+                                font-size:18px;
+                            ">
+                                Customer Details
+                            </h3>
+
+                            <table style="
+                                width:100%;
+                                border-collapse:collapse;
+                                font-size:14px;
+                            ">
+
+                                <tr>
+                                    <td style="
+                                        padding:12px 0;
+                                        color:#777777;
+                                        width:160px;
+                                    ">
+                                        <strong>Name</strong>
+                                    </td>
+
+                                    <td style="
+                                        padding:12px 0;
+                                        color:#222222;
+                                    ">
+                                        ${escapeHtml(customerName)}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="
+                                        padding:12px 0;
+                                        color:#777777;
+                                    ">
+                                        <strong>Contact</strong>
+                                    </td>
+
+                                    <td style="
+                                        padding:12px 0;
+                                        color:#222222;
+                                    ">
+                                        ${escapeHtml(customerContact)}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="
+                                        padding:12px 0;
+                                        color:#777777;
+                                    ">
+                                        <strong>Product</strong>
+                                    </td>
+
+                                    <td style="
+                                        padding:12px 0;
+                                        color:#222222;
+                                        font-weight:600;
+                                    ">
+                                        ${escapeHtml(productName)}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="
+                                        padding:12px 0;
+                                        color:#777777;
+                                    ">
+                                        <strong>SKU</strong>
+                                    </td>
+
+                                    <td style="
+                                        padding:12px 0;
+                                        color:#222222;
+                                    ">
+                                        ${escapeHtml(productSku || "Not provided")}
+                                    </td>
+                                </tr>
+
+                            </table>
+
+
+                            <!-- Message -->
+                            <div style="
+                                margin-top:25px;
+                                padding:20px;
+                                background:#f7f7f7;
+                                border-radius:8px;
+                                border:1px solid #eeeeee;
+                            ">
+
+                                <p style="
+                                    margin:0 0 10px;
+                                    color:#222222;
+                                    font-weight:600;
+                                ">
+                                    Customer Message
+                                </p>
+
+                                <p style="
+                                    margin:0;
+                                    color:#666666;
+                                    line-height:1.7;
+                                    white-space:pre-line;
+                                ">
+                                    ${escapeHtml(message || "No message provided")}
+                                </p>
+
+                            </div>
+
+
+                            <!-- Footer -->
+                            <div style="
+                                margin-top:25px;
+                                padding-top:20px;
+                                border-top:1px solid #eeeeee;
+                            ">
+
+                                <p style="
+                                    margin:0;
+                                    color:#999999;
+                                    font-size:12px;
+                                    line-height:1.6;
+                                ">
+                                    This is an automated query notification
+                                    from the Moonlight Machinery website.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `,
+    };
+
+    await transporter.sendMail(adminMailOptions);
+
+    return {
+      success: true,
+      message: "Query sent successfully",
+    };
+
+  } catch (error) {
+    console.error("Nodemailer query error:", error);
+
+    throw new Error(
+      error?.message || "Failed to send query email"
+    );
+  }
+}
+
+
+/**
+ * Escape user input before putting it inside HTML email.
+ */
+function escapeHtml(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+

@@ -7,18 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
-/**
- * STOCKROOM — product list / showcase section
- */
-
-const CATEGORIES = [
-  { label: "All", query: undefined },
-  { label: "Full Automatic", query: "full-automatic" },
-  { label: "Semi Automatic", query: "semi-automatic" },
-  { label: "Hydraulic", query: "hydraulic" },
-  { label: "Manual", query: "manual" },
-];
-
 const SKELETON_COUNT = 8;
 
 function SkeletonCard() {
@@ -44,20 +32,29 @@ function SkeletonGrid() {
   );
 }
 
-export default function ProductShowcase({hide, view, query: initialQuery }) {
+export default function ProductShowcase({ hide, view, query: initialQuery, Subcategory: initialSub, Pricategory: initialPrice }) {
   const router = useRouter();
   const pathname = usePathname() || "/home/machines";
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
 
-  // Safely grab query from URL search params or fallback to prop
+  // Check both variations for safety
   const urlQuery = searchParams.get("query");
+  const urlPrice = searchParams.get("p-catagory") || searchParams.get("Pcatagory");
+  const urlSub = searchParams.get("s-catagory") || searchParams.get("Scatagory");
+
   const activeQuery = urlQuery !== null ? urlQuery : initialQuery;
+  const activePrice = urlPrice !== null ? urlPrice : initialPrice;
+  const activeSub = urlSub !== null ? urlSub : initialSub;
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["item", activeQuery || "all"],
-    queryFn: () => getItem(activeQuery),
-    // Fixes the caching lockup bug when switching rapidly between categories
+    queryKey: ["item", activeQuery, activePrice, activeSub],
+    queryFn: () =>
+      getItem({
+        query: activeQuery,
+        pCategory: activePrice,
+        sCategory: activeSub,
+      }),
     placeholderData: (previousData) => previousData,
   });
 
@@ -66,11 +63,14 @@ export default function ProductShowcase({hide, view, query: initialQuery }) {
   }, []);
 
   const handleCategoryClick = (catQuery) => {
+    // Preserve existing search parameters using URLSearchParams
+    const params = new URLSearchParams(searchParams.toString());
     if (catQuery) {
-      router.push(`${pathname}?query=${catQuery}`, { scroll: false });
+      params.set("query", catQuery);
     } else {
-      router.push(pathname, { scroll: false });
+      params.delete("query");
     }
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const safeData = data || [];
@@ -85,34 +85,8 @@ export default function ProductShowcase({hide, view, query: initialQuery }) {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <h2 className="pl-title">In the warehouse now</h2>
+            <h2 className="pl-title">In Stock</h2>
           </motion.div>
-          {hide && (
-            <div
-              className="pl-tabs"
-              role="tablist"
-              aria-label="Filter by category"
-            >
-              {CATEGORIES.map((cat) => {
-                const isActive =
-                  cat.query === undefined
-                    ? !activeQuery
-                    : activeQuery === cat.query;
-                return (
-                  <button
-                    key={cat.label}
-                    role="tab"
-                    aria-selected={isActive}
-                    className={`pl-tab pl-mono ${isActive ? "active" : ""}`}
-                    onClick={() => handleCategoryClick(cat.query)}
-                    disabled={mounted ? isLoading : false}
-                  >
-                    {cat.label}
-                  </button>
-                );
-              })}
-            </div>
-          )}
         </div>
 
         {isLoading && !safeData.length ? (
@@ -124,7 +98,7 @@ export default function ProductShowcase({hide, view, query: initialQuery }) {
         ) : safeData?.length === 0 ? (
           <div className="pl-empty pl-mono">Nothing stocked here yet.</div>
         ) : (
-          <Card product={safeData} key={activeQuery || "all"} />
+          <Card product={safeData} key={activeQuery || activePrice || "all"} />
         )}
         {view && (
           <div className="pl-footer">
