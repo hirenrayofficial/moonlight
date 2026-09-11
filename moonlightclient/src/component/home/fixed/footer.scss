@@ -13,41 +13,28 @@
 
   background: var(--bg);
   color: var(--ink);
-  // font-family: "Work Sans", sans-serif;
   width: 100%;
 }
+
 .ft-root * {
   box-sizing: border-box;
 }
 
 .ft-mono {
-  // font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.03em;
 }
+
 .ft-inner {
   max-width: 1200px;
   margin: 0 auto;
   padding: 56px 32px 0;
 }
-@media (max-width: 720px) {
-  .ft-inner {
-    padding: 10px 10px 0;
-  }
-}
 
 /* ---------- manifest strip ---------- */
+
 .ft-manifest {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
   border: 1px solid var(--line-strong);
   margin-bottom: 48px;
-  display: flex;
-  justify-content: space-between;
-}
-@media (max-width: 720px) {
-  .ft-manifest {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .ft-manifest-grid {
@@ -58,48 +45,18 @@
 
 .ft-manifest-cell {
   padding: 18px 20px;
-  // border-right: 1px solid var(--line-strong);
-  min-width: 0; // prevents grid blowout from long text
+  min-width: 0;
   overflow: hidden;
-}
-.ft-manifest-cell-a {
-  // padding: 18px 20px;
   border-right: 1px solid var(--line-strong);
-  min-width: 0; // prevents grid blowout from long text
-  overflow: hidden;
 }
 
 .ft-manifest-cell:last-child {
   border-right: none;
 }
 
-@media (max-width: 720px) {
-  .ft-manifest-cell {
-    padding: 14px 16px;
-  }
-
-  // remove right border on every 2nd cell (end of row)
-  .ft-manifest-cell:nth-child(2n) {
-    border-right: none;
-  }
-
-  // add bottom border to first row only (first 2 cells)
-  .ft-manifest-cell:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--line-strong);
-  }
-}
-
-// ✅ single-column stack for very small screens
-@media (max-width: 420px) {
-  .ft-manifest-cell {
-    border-right: none !important;
-    border-bottom: 1px solid var(--line-strong);
-    padding: 12px 16px;
-  }
-
-  .ft-manifest-cell:last-child {
-    border-bottom: none;
-  }
+.ft-manifest-cell-a {
+  min-width: 0;
+  overflow: hidden;
 }
 
 .ft-manifest-label {
@@ -116,43 +73,22 @@
 .ft-manifest-value {
   font-size: 13px;
   color: var(--ink);
-  word-break: break-word; // stops long values (like emails/IDs) from overflowing the cell
-  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
+
 /* ---------- main grid ---------- */
+
 .ft-grid {
   display: grid;
   grid-template-columns: 1.3fr repeat(3, 0.8fr) 1.3fr;
   gap: 18px;
   padding-bottom: 48px;
   border-bottom: 1px solid var(--line-strong);
-  display: flex;
-  justify-content: space-between;
 }
-@media (max-width: 900px) {
-  .ft-grid {
-    grid-template-columns: 2fr 1fr;
-    row-gap: 18px;
-  }
-}
-// @media (max-width: 560px) {
-//   .ft-grid {
-//     grid-template-columns: 1fr;
-//   }
-// }
 
 .ft-brand-col {
   grid-column: span 1;
-}
-@media (max-width: 900px) {
-  .ft-brand-col {
-    grid-column: span 2;
-  }
-}
-@media (max-width: 560px) {
-  .ft-brand-col {
-    grid-column: span 1;
-  }
 }
 
 .ft-brand {
@@ -161,10 +97,10 @@
   gap: 10px;
   margin-bottom: 14px;
 }
+
 .ft-brand-mark {
   width: 22px;
   height: 22px;
-  // background: var(--accent);
   color: var(--accent-ink);
   display: flex;
   align-items: center;
@@ -172,12 +108,14 @@
   font-size: 12px;
   font-weight: 600;
 }
+
 .ft-brand-name {
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+
 .ft-tagline {
   font-size: 13px;
   line-height: 1.6;
@@ -192,11 +130,13 @@
   color: var(--ink-faint);
   margin-bottom: 14px;
 }
+
 .ft-col-links {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .ft-col-link {
   font-size: 13px;
   color: var(--ink-dim);
@@ -204,10 +144,12 @@
   width: fit-content;
   border-bottom: 1px solid transparent;
 }
+
 .ft-col-link:hover {
   color: var(--ink);
   border-color: var(--line-strong);
 }
+
 .ft-col-link:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -216,11 +158,6 @@
 .ft-sub-col {
   grid-column: span 1;
 }
-@media (max-width: 560px) {
-  .ft-sub-col {
-    grid-column: span 1;
-  }
-}
 
 .ft-sub-desc {
   font-size: 12.5px;
@@ -228,28 +165,32 @@
   color: var(--ink-dim);
   margin-bottom: 14px;
 }
+
 .ft-sub-form {
   display: flex;
   border: 1px solid var(--line-strong);
+  width: 100%;
 }
+
 .ft-sub-input {
   flex: 1;
   min-width: 0;
   background: transparent;
   border: none;
   padding: 11px 12px;
-  // font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   color: var(--ink);
 }
+
 .ft-sub-input::placeholder {
   color: var(--ink-faint);
 }
+
 .ft-sub-input:focus {
   outline: none;
 }
+
 .ft-sub-btn {
-  // font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -261,25 +202,30 @@
   cursor: pointer;
   flex-shrink: 0;
 }
+
 .ft-sub-btn:hover {
   background: var(--ink);
   color: var(--bg);
 }
+
 .ft-sub-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
 .ft-sub-note {
   font-size: 11px;
   color: var(--ink-faint);
   margin-top: 8px;
 }
+
 .ft-sub-success {
   font-size: 12.5px;
   color: var(--accent);
 }
 
 /* ---------- bottom bar ---------- */
+
 .ft-bottom {
   display: flex;
   align-items: center;
@@ -288,32 +234,210 @@
   flex-wrap: wrap;
   padding: 20px 32px;
 }
-@media (max-width: 720px) {
-  .ft-bottom {
-    padding: 20px;
-  }
-}
 
 .ft-copyright {
   font-size: 11.5px;
   color: var(--ink-faint);
 }
+
 .ft-bottom-links {
   display: flex;
   align-items: center;
   gap: 18px;
   flex-wrap: wrap;
 }
+
 .ft-bottom-link {
   font-size: 11px;
   letter-spacing: 0.04em;
   color: var(--ink-faint);
   text-decoration: none;
 }
+
 .ft-bottom-link:hover {
   color: var(--ink);
 }
+
 .ft-bottom-link:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* ---------- tablet ---------- */
+
+@media (max-width: 900px) {
+  .ft-inner {
+    padding: 40px 24px 0;
+  }
+
+  .ft-manifest-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ft-manifest-cell:nth-child(2n) {
+    border-right: none;
+  }
+
+  .ft-manifest-cell:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .ft-grid {
+    grid-template-columns: 2fr 1fr;
+    gap: 24px 18px;
+  }
+
+  .ft-brand-col {
+    grid-column: span 2;
+  }
+
+  .ft-sub-col {
+    grid-column: span 1;
+  }
+}
+
+
+/* ---------- mobile ---------- */
+
+@media (max-width: 720px) {
+  .ft-inner {
+    padding: 24px 16px 0;
+  }
+
+  .ft-manifest {
+    margin-bottom: 32px;
+  }
+
+  .ft-manifest-cell {
+    padding: 14px 16px;
+  }
+
+  .ft-manifest-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ft-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 18px;
+    padding-bottom: 32px;
+  }
+
+  .ft-brand-col {
+    grid-column: span 2;
+  }
+
+  .ft-sub-col {
+    grid-column: span 2;
+  }
+
+  .ft-sub-form {
+    max-width: 100%;
+  }
+
+  .ft-bottom {
+    padding: 20px 0;
+  }
+}
+
+
+/* ---------- small mobile ---------- */
+
+@media (max-width: 560px) {
+  .ft-inner {
+    padding: 20px 12px 0;
+  }
+
+  .ft-manifest {
+    margin-bottom: 28px;
+  }
+
+  .ft-manifest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ft-manifest-cell {
+    padding: 13px 14px;
+    border-right: none !important;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .ft-manifest-cell:last-child {
+    border-bottom: none;
+  }
+
+  .ft-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .ft-brand-col,
+  .ft-sub-col {
+    grid-column: span 1;
+  }
+
+  .ft-tagline {
+    max-width: 100%;
+  }
+
+  .ft-sub-form {
+    width: 100%;
+  }
+
+  .ft-sub-input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .ft-sub-btn {
+    padding: 0 14px;
+  }
+
+  .ft-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .ft-bottom-links {
+    gap: 12px 18px;
+  }
+}
+
+
+/* ---------- very small phones ---------- */
+
+@media (max-width: 360px) {
+  .ft-inner {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .ft-manifest-cell {
+    padding: 12px;
+  }
+
+  .ft-sub-form {
+    flex-direction: column;
+  }
+
+  .ft-sub-input {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .ft-sub-btn {
+    min-height: 40px;
+    width: 100%;
+  }
+
+  .ft-bottom-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }
