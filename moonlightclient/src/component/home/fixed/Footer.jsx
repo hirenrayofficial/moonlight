@@ -19,10 +19,6 @@ const LINK_COLUMNS = [
         name: "Machines",
         href: "/home/machines",
       },
-      {
-        name: "Spare parts",
-        href: "/home/spare-parts",
-      },
     ],
   },
   {
@@ -46,27 +42,27 @@ const LINK_COLUMNS = [
       },
     ],
   },
-  {
-    title: "Support",
-    links: [
-      {
-        name: "Shipping",
-        href: "/home/shipping",
-      },
-      {
-        name: "Returns",
-        href: "/home/returns",
-      },
-      {
-        name: "Track an order",
-        href: "/home/track-order",
-      },
-      {
-        name: "Contact",
-        href: "/home/contact",
-      },
-    ],
-  },
+  // {
+  //   title: "Support",
+  //   links: [
+  //     {
+  //       name: "Shipping",
+  //       href: "/home/shipping",
+  //     },
+  //     {
+  //       name: "Returns",
+  //       href: "/home/returns",
+  //     },
+  //     {
+  //       name: "Track an order",
+  //       href: "/home/track-order",
+  //     },
+  //     {
+  //       name: "Contact",
+  //       href: "/home/contact",
+  //     },
+  //   ],
+  // },
 ];
 
 const SOCIALS = ["Instagram", "X", "YouTube"];
@@ -98,19 +94,20 @@ export default function Footer() {
       <div className="ft-inner">
         <div className="ft-manifest">
           <div className="ft-manifest-cell">
-            <div className="ft-manifest-label ft-mono">Warehouse</div>
+            <div className="ft-manifest-label ft-mono">Office</div>
             <div className="ft-manifest-value">
               Plot -13,Ram Vihar,Dhanwapur Road,Sector-104,Gurgaon-12201
             </div>
           </div>
-          <div className="ft-manifest-cell">
+          <div className="ft-manifest-cell-a"></div>
+          {/* <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Hours</div>
             <div className="ft-manifest-value">Mon–Fri, 24hrs</div>
-          </div>
-          <div className="ft-manifest-cell">
+          </div> */}
+          {/* <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Next dispatch</div>
             <div className="ft-manifest-value">Today, 3:00pm ET</div>
-          </div>
+          </div> */}
           <div className="ft-manifest-cell">
             <div className="ft-manifest-label ft-mono">Support</div>
             <div className="ft-manifest-value">

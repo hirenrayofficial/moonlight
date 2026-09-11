@@ -266,9 +266,9 @@ export default function ContactPage() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <div className="ct-panel-title ct-mono">
+          {/* <div className="ct-panel-title ct-mono">
             // MANIFEST & DIRECT CHANNELS
-          </div>
+          </div> */}
 
           <div className="ct-manifest">
             <div className="ct-manifest-row">
@@ -284,7 +284,7 @@ export default function ContactPage() {
               </span>
             </div>
             <div className="ct-manifest-row">
-              <span className="ct-manifest-label ct-mono">WAREHOUSE</span>
+              <span className="ct-manifest-label ct-mono">Office</span>
               <span className="ct-manifest-value ct-mono">
                 Plot-13, Ram Vihar, Dhanwapur Rd, Sec-104, Gurgaon-122001
               </span>

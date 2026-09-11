@@ -23,9 +23,10 @@
 .hd-topbar {
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  // display: flex;
+  align-items: start;
+  right: 0;
+  // justify-content: space-between;
   gap: 16px;
   padding: 7px 24px;
   border-bottom: 1px solid var(--line-strong);

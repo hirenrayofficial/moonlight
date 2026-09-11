@@ -444,7 +444,7 @@ Please provide more information about this product.
             >
               <FaWhatsapp size={24} /> WhatsApp
             </motion.button>
-            <motion.button
+            {/* <motion.button
               type="button"
               className="pd-add-btn py-2 flex items-center justify-center gap-4"
               onClick={() => setIsQueryOpen(true)}
@@ -453,7 +453,7 @@ Please provide more information about this product.
               whileTap={{ scale: 0.98 }}
             >
               Query
-            </motion.button>
+            </motion.button> */}
           </motion.div>
         </motion.div>
         <QueryModal

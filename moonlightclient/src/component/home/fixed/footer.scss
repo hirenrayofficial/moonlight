@@ -41,6 +41,8 @@
   grid-template-columns: repeat(4, 1fr);
   border: 1px solid var(--line-strong);
   margin-bottom: 48px;
+  display: flex;
+  justify-content: space-between;
 }
 @media (max-width: 720px) {
   .ft-manifest {
@@ -52,12 +54,16 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   width: 100%;
-
-
 }
 
 .ft-manifest-cell {
   padding: 18px 20px;
+  // border-right: 1px solid var(--line-strong);
+  min-width: 0; // prevents grid blowout from long text
+  overflow: hidden;
+}
+.ft-manifest-cell-a {
+  // padding: 18px 20px;
   border-right: 1px solid var(--line-strong);
   min-width: 0; // prevents grid blowout from long text
   overflow: hidden;
@@ -120,6 +126,8 @@
   gap: 18px;
   padding-bottom: 48px;
   border-bottom: 1px solid var(--line-strong);
+  display: flex;
+  justify-content: space-between;
 }
 @media (max-width: 900px) {
   .ft-grid {

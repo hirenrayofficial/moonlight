@@ -119,7 +119,7 @@ export default function HowItWorks() {
               Absolute visibility. Zero blind spots.
             </motion.h2>
           </div>
-
+{/* 
           <motion.p 
             className="text-blue-400 text-base max-w-sm leading-relaxed"
             initial="hidden"
@@ -129,7 +129,7 @@ export default function HowItWorks() {
             transition={{ delay: 0.1 }}
           >
             Explore our end-to-end framework through live camera feeds, complete data visibility, and audited processing steps.
-          </motion.p>
+          </motion.p> */}
         </div>
 
         {/* Square Layout Model: Sticky Viewport + Interactive Timeline */}

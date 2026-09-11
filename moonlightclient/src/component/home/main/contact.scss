@@ -8,8 +8,8 @@
   --paper: rgba(255, 255, 255, 0.03);
   --paper-hover: rgba(255, 255, 255, 0.06);
   --ink: #111111;
-  --ink-dim: #555555;
-  --ink-faint: #888888;
+  --ink-dim: #000000;
+  --ink-faint: #000000;
   --line: rgba(0, 0, 0, 0.12);
   --line-strong: rgba(0, 0, 0, 0.3);
   --accent: #057ff2;
@@ -63,10 +63,7 @@
   }
 }
 
-.ct-mono {
-  font-family: "IBM Plex Mono", monospace;
-  letter-spacing: 0.04em;
-}
+
 
 /* Header Section */
 .ct-head {
@@ -98,7 +95,7 @@
 }
 
 .ct-title {
-  font-family: "Archivo Black", sans-serif, system-ui;
+  // font-family: "Archivo Black", sans-serif, system-ui;
   text-transform: uppercase;
   font-size: clamp(32px, 4.5vw, 52px);
   line-height: 0.95;
@@ -108,7 +105,7 @@
 }
 
 .ct-subhead {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--ink-dim);
   max-width: 58ch;
   line-height: 1.65;
@@ -147,7 +144,7 @@
 
 .ct-label {
   display: block;
-  font-size: 10.5px;
+  font-size: 14.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -171,7 +168,7 @@
   background: var(--paper);
   border: 1px solid var(--line-strong);
   padding: 13px 14px;
-  font-size: 13.5px;
+  font-size: 16.5px;
   color: var(--ink);
   transition: all 0.2s ease;
 
@@ -207,7 +204,7 @@
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--ink-faint);
   }
 }
@@ -311,7 +308,7 @@
 }
 
 .ct-panel-title {
-  font-size: 10.5px;
+  font-size: 16.5px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -339,13 +336,13 @@
 }
 
 .ct-manifest-label {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--ink-faint);
   flex-shrink: 0;
 }
 
 .ct-manifest-value {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--ink);
   text-align: right;
   word-break: break-word;

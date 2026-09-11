@@ -136,9 +136,9 @@ export default function Header() {
       transition={{ duration: 0.4 }}
     >
       <div className="hd-topbar">
-        <span className="hd-topbar-msg">
+        {/* <span className="hd-topbar-msg">
           Genuine machine , shipped pan-India
-        </span>
+        </span> */}
         <div className="hd-social">
           {SOCIALS.map((s) => (
             <a

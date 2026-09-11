@@ -18,48 +18,53 @@ const BRANCHES = [
     address: "Plot -13, Ram Vihar, Dhanwapur Road, Sector-104, Gurgaon-12201",
     phone: "+91 9354327757",
     isHQ: true,
-    mapQuery: "Plot 13 Ram Vihar Dhanwapur Road Sector 104 Gurgaon Haryana",
+    // Using explicit name + location query to pull the exact business map pin
+    mapQuery: "MOONLIGHT MACHINERY Gurgaon Sector 104 Haryana",
+    directionsQuery: "Plot 13 Ram Vihar Dhanwapur Road Sector 104 Gurgaon",
   },
   {
     city: "Delhi",
     state: "Delhi NCR",
-    address: "Delhi NCR",
+    address:
+      "Street No. 1, Pocket J-D, Hari Enclave, Hari Nagar, New Delhi, Delhi, 110064",
     phone: "+91 9354327757",
-    mapQuery: "Delhi NCR India",
+    mapQuery: "Moonlight Machinery New Delhi Hari Nagar",
+    directionsQuery: "Street No. 1 Pocket JD Hari Enclave Hari Nagar New Delhi",
   },
   {
     city: "Siliguri",
     state: "West Bengal",
     address: "Eastern Bypass, PCRA Colony, Siliguri, West Bengal 734001",
     phone: "+91 9354327757",
-    mapQuery: "Eastern Bypass PCRA Colony Siliguri West Bengal 734001",
+    mapQuery: "MOONLIGHT MACHINERY SILIGURI Eastern Bypass",
+    directionsQuery: "Eastern Bypass PCRA Colony Siliguri West Bengal",
   },
   {
     city: "Guwahati",
     state: "Assam",
     address: "Guwahati, Barpeta Road, Assam",
     phone: "+91 9883500259",
-    mapQuery: "Guwahati Assam India",
+    // mapQuery: "Moonlight Machinery Guwahati Barpeta Road Assam",
+    // directionsQuery: "Barpeta Road Guwahati Assam",
   },
   {
     city: "Gaziabad",
     state: "Uttar Pradesh",
     address: "Hindon Vihar, Gaziabad, Uttar Pradesh",
     phone: "+91 9907330121",
-    mapQuery: "Hindon Vihar Ghaziabad Uttar Pradesh India",
+    // mapQuery: "Moonlight Machinery Hindon Vihar Ghaziabad Uttar Pradesh",
+    // directionsQuery: "Hindon Vihar Ghaziabad Uttar Pradesh",
   },
 ];
 
+// Uses Google Maps place search query embed which drops the exact registered business pin
 function getMapUrl(query) {
-  return `https://www.google.com/maps?q=${encodeURIComponent(
-    query,
-  )}&output=embed`;
+  return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 }
 
+// Generates precise navigation directions URL
 function getDirectionsUrl(query) {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-    query,
-  )}`;
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
 }
 
 export default function BranchRoute() {
@@ -126,7 +131,7 @@ export default function BranchRoute() {
 
             {/* DIRECTIONS */}
             <a
-              href={getDirectionsUrl(activeBranch.mapQuery)}
+              href={getDirectionsUrl(activeBranch.directionsQuery)}
               target="_blank"
               rel="noopener noreferrer"
               className="br-directions"

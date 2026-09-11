@@ -26,7 +26,7 @@ export default function Hero() {
 
       {/* <ProductPage /> */}
       {/* <HeroDesign /> */}
-      <HowItWorks />
+      {/* <HowItWorks /> */}
       {/* <SectionServices /> */}
       {/* <ProductPA /> */}
       {/* <StackScroll /> */}
