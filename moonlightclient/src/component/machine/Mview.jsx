@@ -239,7 +239,6 @@ Please provide more information about this product.
 
   const hasVideoSlide = !!product.video && !!product.video_link;
 
-  // derive a thumbnail for YouTube links so the video appears in thumbs
   function extractYouTubeId(url) {
     if (!url) return null;
     const patterns = [
@@ -290,6 +289,7 @@ Please provide more information about this product.
         {crumb}
       </motion.div>
 
+      {/* TOP SECTION: Gallery (Left) & Specifications (Right) */}
       <motion.section
         className="pd-main"
         initial="hidden"
@@ -386,227 +386,218 @@ Please provide more information about this product.
           </motion.div>
         </motion.div>
 
+        {/* Specifications shifted to the top right side */}
         <motion.div
-          className="pd-info p-8 md:p-0"
+          className="pd-specs-section p-8 md:p-0"
           variants={infoVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <motion.div
-            className="pd-eyebrow "
-            variants={itemVariants}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className="pd-dot" aria-hidden="true" />
-            In stock — {product.stock} available
-          </motion.div>
+          <div className="pd-specs-title mt-0">Specification</div>
 
-          <motion.h1 className="pd-name" variants={itemVariants}>
-            {product.name}
-          </motion.h1>
-          <motion.div className="pd-sku " variants={itemVariants}>
-            SKU {product.sku}
-          </motion.div>
-
-          <motion.div className="pd-price " variants={itemVariants}>
-            ₹{money(product.pricing?.basePrice || 0)}
-          </motion.div>
-          {product.pricing?.otherExpenses && (
-            <motion.div className="pd-delivery-cost " variants={itemVariants}>
-              + ₹{money(product.pricing?.otherExpenses || 0)} Other Expenses
-            </motion.div>
+          {product.specifications?.productionCapacity && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Production Capacity</span>
+              <span className="pd-spec-value">
+                {product.specifications?.productionCapacity}
+              </span>
+            </div>
+          )}
+          {product.specifications?.motor && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Motor</span>
+              <span className="pd-spec-value">
+                {product.specifications?.motor}
+              </span>
+            </div>
+          )}
+          {product.specifications?.totalPower && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Total Power</span>
+              <span className="pd-spec-value">
+                {product.specifications?.totalPower}
+              </span>
+            </div>
+          )}
+          {product.specifications?.voltage && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Voltage</span>
+              <span className="pd-spec-value">
+                {product.specifications?.voltage}
+              </span>
+            </div>
+          )}
+          {product.specifications?.phase && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Phase</span>
+              <span className="pd-spec-value">
+                {product.specifications?.phase}
+              </span>
+            </div>
+          )}
+          {product.specifications?.weight && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Weight</span>
+              <span className="pd-spec-value">
+                {product.specifications?.weight}
+              </span>
+            </div>
+          )}
+          {product.specifications?.rawMaterial && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Raw Material</span>
+              <span className="pd-spec-value">
+                {product.specifications?.rawMaterial}
+              </span>
+            </div>
+          )}
+          {product.specifications?.dimensions && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Dimensions</span>
+              <span className="pd-spec-value">
+                {product.specifications?.dimensions?.length} x{" "}
+                {product.specifications?.dimensions?.width} x{" "}
+                {product.specifications?.dimensions?.height}{" "}
+                {product.specifications?.dimensions?.unit}
+              </span>
+            </div>
+          )}
+          {product.specifications?.plateSizeRange && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Plate Size Range</span>
+              <span className="pd-spec-value">
+                {product.specifications?.plateSizeRange}
+              </span>
+            </div>
+          )}
+          {product.specifications?.rollerSize && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Roller Size</span>
+              <span className="pd-spec-value">
+                {product.specifications?.rollerSize}
+              </span>
+            </div>
+          )}
+          {product.specifications?.drive && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Drive</span>
+              <span className="pd-spec-value">
+                {product.specifications?.drive}
+              </span>
+            </div>
+          )}
+          {product.specifications?.paperCupSizeRange && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Paper Cup Size Range</span>
+              <span className="pd-spec-value">
+                {product.specifications?.paperCupSizeRange}
+              </span>
+            </div>
+          )}
+          {product.specifications?.electricityBillEstimate && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Electricity Bill Estimate</span>
+              <span className="pd-spec-value">
+                {product.specifications?.electricityBillEstimate}
+              </span>
+            </div>
           )}
 
-          <motion.p className="pd-desc" variants={itemVariants}>
-            {product.description}
-          </motion.p>
-
-          <motion.div className="pd-buy-row" variants={itemVariants}>
-            <motion.button
-              type="button"
-              className="pd-add-btn py-2 flex items-center justify-center gap-4"
-              onClick={handleEnquiry}
-              title="Call us"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <PhoneCall width={15} /> Call Now
-            </motion.button>
-            <motion.button
-              type="button"
-              className="pd-add-btna py-2 flex items-center justify-center gap-4 bg-green-600 "
-              onClick={handleWhatsApp}
-              title="Send WhatsApp message"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <FaWhatsapp size={24} /> WhatsApp
-            </motion.button>
-            {/* <motion.button
-              type="button"
-              className="pd-add-btn py-2 flex items-center justify-center gap-4"
-              onClick={() => setIsQueryOpen(true)}
-              title="Send product query"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Query
-            </motion.button> */}
-          </motion.div>
+          <div className="pd-specs-title">Delivery</div>
+          {product.deliveryTime && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Delivery</span>
+              <span className="pd-spec-value">{product.deliveryTime}</span>
+            </div>
+          )}
+          {product.isReturnable !== undefined && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Returnable</span>
+              <span className="pd-spec-value">
+                {product.isReturnable ? "Yes" : "No"}
+              </span>
+            </div>
+          )}
+          {product.mainMarket && (
+            <div className="pd-spec-row">
+              <span className="pd-spec-label">Market</span>
+              <span className="pd-spec-value">{product.mainMarket}</span>
+            </div>
+          )}
         </motion.div>
-        <QueryModal
-          isOpen={isQueryOpen}
-          onClose={() => setIsQueryOpen(false)}
-          product={product}
-        />
-
-        {/* video is now integrated as the final gallery slide */}
       </motion.section>
 
+      {/* BOTTOM SECTION: Product Details, Pricing, & Action Buttons */}
       <motion.section
-        className="pd-specs-section"
+        className="pd-info-bottom"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={specsVariants}
       >
-        <div className="pd-specs-title ">Specification</div>
+        <motion.div
+          className="pd-eyebrow"
+          variants={itemVariants}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <span className="pd-dot" aria-hidden="true" />
+          In stock — {product.stock} available
+        </motion.div>
 
-        {product.specifications?.productionCapacity && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Production Capacity</span>
-            <span className="pd-spec-value">
-              {product.specifications?.productionCapacity}
-            </span>
-          </div>
-        )}
-        {product.specifications?.motor && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Motor</span>
-            <span className="pd-spec-value">
-              {product.specifications?.motor}
-            </span>
-          </div>
-        )}
-        {product.specifications?.totalPower && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Total Power</span>
-            <span className="pd-spec-value">
-              {product.specifications?.totalPower}
-            </span>
-          </div>
-        )}
-        {product.specifications?.voltage && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Voltage</span>
-            <span className="pd-spec-value">
-              {product.specifications?.voltage}
-            </span>
-          </div>
-        )}
-        {product.specifications?.phase && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Phase</span>
-            <span className="pd-spec-value">
-              {product.specifications?.phase}
-            </span>
-          </div>
-        )}
-        {product.specifications?.weight && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Weight</span>
-            <span className="pd-spec-value">
-              {product.specifications?.weight}
-            </span>
-          </div>
-        )}
-        {product.specifications?.rawMaterial && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Raw Material</span>
-            <span className="pd-spec-value">
-              {product.specifications?.rawMaterial}
-            </span>
-          </div>
-        )}
-        {product.specifications?.dimensions && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Dimensions</span>
-            <span className="pd-spec-value">
-              {product.specifications?.dimensions?.length} x{" "}
-              {product.specifications?.dimensions?.width} x{" "}
-              {product.specifications?.dimensions?.height}{" "}
-              {product.specifications?.dimensions?.unit}
-            </span>
-          </div>
-        )}
-        {product.specifications?.plateSizeRange && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Plate Size Range</span>
-            <span className="pd-spec-value">
-              {product.specifications?.plateSizeRange}
-            </span>
-          </div>
-        )}
-        {product.specifications?.rollerSize && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Roller Size</span>
-            <span className="pd-spec-value">
-              {product.specifications?.rollerSize}
-            </span>
-          </div>
-        )}
-        {product.specifications?.drive && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Drive</span>
-            <span className="pd-spec-value">
-              {product.specifications?.drive}
-            </span>
-          </div>
-        )}
-        {product.specifications?.paperCupSizeRange && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Paper Cup Size Range</span>
-            <span className="pd-spec-value">
-              {product.specifications?.paperCupSizeRange}
-            </span>
-          </div>
-        )}
-        {product.specifications?.electricityBillEstimate && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Electricity Bill Estimate</span>
-            <span className="pd-spec-value">
-              {product.specifications?.electricityBillEstimate}
-            </span>
-          </div>
+        <motion.h1 className="pd-name" variants={itemVariants}>
+          {product.name}
+        </motion.h1>
+        <motion.div className="pd-sku" variants={itemVariants}>
+          SKU {product.sku}
+        </motion.div>
+
+        <motion.div className="pd-price" variants={itemVariants}>
+          ₹{money(product.pricing?.basePrice || 0)}
+        </motion.div>
+        {product.pricing?.otherExpenses && (
+          <motion.div className="pd-delivery-cost" variants={itemVariants}>
+            + ₹{money(product.pricing?.otherExpenses || 0)} Other Expenses
+          </motion.div>
         )}
 
-        <div className="pd-specs-title ">Delivery</div>
-        {product.deliveryTime && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Delivery</span>
-            <span className="pd-spec-value">{product.deliveryTime}</span>
-          </div>
-        )}
-        {product.isReturnable !== undefined && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Returnable</span>
-            <span className="pd-spec-value">
-              {product.isReturnable ? "Yes" : "No"}
-            </span>
-          </div>
-        )}
-        {product.mainMarket && (
-          <div className="pd-spec-row">
-            <span className="pd-spec-label ">Market</span>
-            <span className="pd-spec-value">{product.mainMarket}</span>
-          </div>
-        )}
+        <motion.p className="pd-desc" variants={itemVariants}>
+          {product.description}
+        </motion.p>
+
+        <motion.div className="pd-buy-row" variants={itemVariants}>
+          <motion.button
+            type="button"
+            className="pd-add-btn py-2 flex items-center justify-center gap-4"
+            onClick={handleEnquiry}
+            title="Call us"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <PhoneCall width={15} /> Call Now
+          </motion.button>
+          <motion.button
+            type="button"
+            className="pd-add-btna py-2 flex items-center justify-center gap-4 bg-green-600"
+            onClick={handleWhatsApp}
+            title="Send WhatsApp message"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <FaWhatsapp size={24} /> WhatsApp
+          </motion.button>
+        </motion.div>
       </motion.section>
 
+      <QueryModal
+        isOpen={isQueryOpen}
+        onClose={() => setIsQueryOpen(false)}
+        product={product}
+      />
+
       <motion.div
-        className="pd-related-head "
+        className="pd-related-head"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
