@@ -174,7 +174,11 @@ export default function RootLayout({ children }) {
           }}
         />
 
-
+        {/* Organization structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
 
         <noscript>
           <iframe
