@@ -66,6 +66,33 @@ export default async function Page({ params }) {
       "@context": "https://schema.org",
       "@graph": [
         {
+          "@type": "Organization",
+          "name": "Moonlight Machinery",
+          "url": SITE_URL,
+          "logo": `${SITE_URL}/favicon-32x32.png`,
+          "description": "Manufacturer of Paper Plate Making Machine, Dona Making Machine & Fully Automatic Paper Plate Making Machine offered by Moonlight Machinery from Gourgaon, Delhi, India",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "IN",
+            "streetAddress": "Plot -13,Ram Vihar,Dhanwapur Road,Sector-104",
+            "addressLocality": "Gurgaon",
+            "addressRegion": "Haryana",
+            "postalCode": "122001",
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "areaServed": "IN",
+            "availableLanguage": ["en", "hi"],
+            "telephone": "+91-8178445596",
+          },
+          "sameAs": [
+            "https://www.facebook.com/people/Moonlight-machinery/100068148668790/",
+            "https://www.instagram.com/moonlightmachinery",
+            "https://www.youtube.com/@moonlightmachinery6670?si=1W37CtkGFkI7vX7A",
+          ],
+        },
+        {
           "@type": "Product",
           "@id": `${url}#product`,
           name: product.name,
