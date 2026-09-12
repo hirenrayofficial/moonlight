@@ -72,7 +72,7 @@ export default async function Page({ params }) {
           image: product.images || [],
           description: product.description || "",
           sku: String(product.sku || product.slug).replace(/\s+/g, "-"),
-          brand: { "@type": "Brand", name: "Moonlight Machinery" },
+          // brand: { "@type": "Brand", name: "Moonlight Machinery" },
           offers: {
             "@type": "Offer",
             url,
