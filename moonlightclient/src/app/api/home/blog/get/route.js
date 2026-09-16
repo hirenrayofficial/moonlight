@@ -24,6 +24,7 @@ export async function POST(request) {
     try {
         const { searchParams } = new URL(request.url);
         const slug = searchParams.get("slug");
+        // console.log(slug + 'hiii')
 
         // 2. Validate that the slug was provided
         if (!slug) {
@@ -39,7 +40,7 @@ export async function POST(request) {
             .select()
             .eq("slug", slug)
             .single(); // Use .single() since a slug should return only one record
-
+        // console.log(data)
         if (error) {
             console.error("Supabase Database Error:", error);
             return NextResponse.json(

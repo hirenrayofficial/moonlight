@@ -1,33 +1,14 @@
-import axios from 'axios';
 import React from 'react';
 import BlogPostPage from '../component/desing/BlogView';
+import { getProduct } from '@/services/home/BlogService';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.moonlightmachinery.com";
-
-// Centralized helper using absolute URL for server-side fetching
-
-async function getProduct(slug) {
-    if (!slug) {
-        return null;
-    }
-
-    try {
-        // 1st arg: URL, 2nd arg: Request Body (empty object since you use query params), 3rd arg: Config
-        const res = await axios.post(`/api/home/blog/get?slug=${slug}`, {});
-
-        // Axios stores parsed response data in res.data
-        // Since Supabase .single() returns a single object, item is an object (not an array)
-        return res.data?.item || null;
-    } catch (error) {
-        console.error("Server-side getProduct error:", error?.response?.data || error.message);
-        return null;
-    }
-}
 
 // Dynamic SEO Metadata Generator
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
     const slug = resolvedParams?.slug;
+    // console.log(slug)
     const product = await getProduct(slug);
 
     if (!product) {
@@ -54,7 +35,10 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
     const resolvedParams = await params;
     const slug = resolvedParams?.slug;
+    
+    // Fetch data directly on the server
     const Blog = await getProduct(slug);
+    // console.log(Blog)
 
     // Define url here so it's accessible for JSON-LD
     const url = `${SITE_URL}/blog/${slug}`;
@@ -96,7 +80,7 @@ export default async function Page({ params }) {
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
                 />
             )}
-           <BlogPostPage data={Blog}/>
+            <BlogPostPage data={Blog} />
         </div>
     );
 }
