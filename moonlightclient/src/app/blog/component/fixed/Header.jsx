@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import "./header.scss";
+import "./heade.scss";
 import {
   FaFacebook,
   FaInstagram,
@@ -41,7 +41,7 @@ const SOCIALS = [
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Product", href: "/home/machines" },
-  { label: "Blog", href: "/blog" },
+  { label: "Blog", href: "/home/blog" },
 ];
 
 const PRODUCT_CATEGORIES = [
@@ -180,11 +180,14 @@ export default function Header() {
         <div className="hd-links gap-2 md:gap-8">
           <nav className="hd-nav flex items-center gap-6">
             {NAV_LINKS.map((item) => (
-              <Link key={item.href} className="hd-nav-link" href={item.href}>
+              <Link
+                key={item.href}
+                className={`hd-nav-link ${item.href === "/blog" ? "border" : ""}`}
+                href={item.href}
+              >
                 {item.label}
               </Link>
             ))}
-
             {/* Product Category Dropdown Menu */}
             <div
               className="relative py-2 cursor-pointer"
@@ -223,9 +226,9 @@ export default function Header() {
                         <div
                           key={category.slug}
                           onMouseEnter={() => setActiveCategoryIndex(idx)}
-                          className={`px-5 py-3.5 text-sm flex items-center justify-between cursor-pointer transition-colors  ${
+                          className={`px-5 py-3.5 text-sm flex items-center justify-between cursor-pointer transition-colors font-mono ${
                             activeCategoryIndex === idx
-                              ? "bg-white text-[var(--accent)] font-bold border-l-4 border-[var(--accent)]"
+                              ? "bg-white text-[var(--accent)] font-semibold border-l-4 border-[var(--accent)]"
                               : "text-neutral-800 hover:bg-neutral-100"
                           }`}
                         >
@@ -257,7 +260,7 @@ export default function Header() {
                                   setIsDropdownOpen(false);
                                   setActiveCategoryIndex(0);
                                 }}
-                                className="px-3 py-3 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-[var(--accent)] transition-colors  rounded"
+                                className="px-3 py-3 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-[var(--accent)] transition-colors font-mono rounded"
                               >
                                 {sub.label}
                               </Link>
@@ -272,9 +275,6 @@ export default function Header() {
           </nav>
 
           <div className="hd-actions">
-            <Link className="hd-shop-btn hidden md:inline-block" href="/getway">
-              Login
-            </Link>
             <a
               className="hd-shop-btn cal hidden md:inline-block"
               href="tel:+919354327757"
@@ -309,7 +309,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="hd-nav-link text-sm font-bold tracking-wider uppercase py-1 border-b border-neutral-200 pb-2"
+                  className="hd-nav-link text-sm font-semibold tracking-wider uppercase py-1 border-b border-neutral-200 pb-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
@@ -319,7 +319,7 @@ export default function Header() {
               {/* Mobile Product Categories Dropdown Section */}
               <div className="border-b border-neutral-200 pb-2">
                 <div
-                  className="hd-nav-link flex items-center justify-between text-sm font-bold tracking-wider uppercase py-1 cursor-pointer"
+                  className="hd-nav-link flex items-center justify-between text-sm font-semibold tracking-wider uppercase py-1 cursor-pointer"
                   onClick={() =>
                     setIsMobileCategoriesOpen(!isMobileCategoriesOpen)
                   }
@@ -391,13 +391,6 @@ export default function Header() {
 
               {/* Mobile Action Buttons */}
               <div className="flex items-center gap-3 pt-4">
-                <Link
-                  className="hd-shop-btn flex-1 text-center"
-                  href="/getway"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
                 <a
                   className="hd-shop-btn cal flex-1 text-center"
                   href="tel:+919354327757"

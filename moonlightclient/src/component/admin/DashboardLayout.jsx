@@ -9,6 +9,8 @@ import Notification from "@/component/admin/notification/Notification";
 import axios from "axios";
 import VideoManager from "./VideoManager";
 import ReviewManager from "./ReviewManager";
+import CreateBlog from "./blogComponent/CreateBlog";
+import BlogSection from "./blogComponent/Blogsection";
 
 /**
  * STOCKROOM ADMIN — dashboard
@@ -148,122 +150,6 @@ export default function AdminDashboard() {
     );
   }
 
-  // function markAllRead() {
-  //   setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-  // }
-
-  // const filtered = useMemo(() => {
-  //   return products.filter((p) => {
-  //     const matchesQuery =
-  //       p.name.toLowerCase().includes(query.toLowerCase()) ||
-  //       p.sku.toLowerCase().includes(query.toLowerCase());
-  //     const matchesCategory =
-  //       categoryFilter === "All" || p.category === categoryFilter;
-  //     return matchesQuery && matchesCategory;
-  //   });
-  // }, [products, query, categoryFilter]);
-
-  // const stats = useMemo(() => {
-  //   const totalProducts = products.length;
-  //   const lowStock = products.filter((p) => stockStatus(p) === "low").length;
-  //   const outOfStock = products.filter((p) => stockStatus(p) === "out").length;
-  //   const stockValue = products.reduce((sum, p) => sum + p.price * p.stock, 0);
-  //   return { totalProducts, lowStock, outOfStock, stockValue };
-  // }, [products]);
-
-  // function openAddModal() {
-  //   setEditingId(null);
-  //   setDraft(emptyDraft);
-  //   setModalOpen(true);
-  // }
-
-  // function openEditModal(p) {
-  //   setEditingId(p.id);
-  //   setDraft({
-  //     name: p.name,
-  //     sku: p.sku,
-  //     category: p.category,
-  //     price: String(p.price),
-  //     stock: String(p.stock),
-  //     threshold: String(p.threshold),
-  //   });
-  //   setModalOpen(true);
-  // }
-
-  // function closeModal() {
-  //   setModalOpen(false);
-  //   setEditingId(null);
-  //   setDraft(emptyDraft);
-  // }
-
-  // function saveDraft(e) {
-  //   e.preventDefault();
-  //   const parsed = {
-  //     name: draft.name.trim(),
-  //     sku: draft.sku.trim() || `SR-${Math.floor(1000 + Math.random() * 9000)}`,
-  //     category: draft.category,
-  //     price: parseFloat(draft.price) || 0,
-  //     stock: parseInt(draft.stock, 10) || 0,
-  //     threshold: parseInt(draft.threshold, 10) || 10,
-  //   };
-  //   if (!parsed.name) return;
-
-  //   if (editingId) {
-  //     setProducts((prev) =>
-  //       prev.map((p) => {
-  //         if (p.id !== editingId) return p;
-  //         const updated = { ...p, ...parsed };
-  //         if (stockStatus(updated) === "low" && stockStatus(p) !== "low") {
-  //           pushNotif(
-  //             "low-stock",
-  //             `${updated.name} is running low (${updated.stock} left).`,
-  //           );
-  //         }
-  //         if (stockStatus(updated) === "out" && stockStatus(p) !== "out") {
-  //           pushNotif("out-of-stock", `${updated.name} is now out of stock.`);
-  //         }
-  //         return updated;
-  //       }),
-  //     );
-  //     pushNotif("system", `Updated ${parsed.name}.`);
-  //   } else {
-  //     const newProduct = { id: `p${Date.now()}`, ...parsed };
-  //     setProducts((prev) => [newProduct, ...prev]);
-  //     pushNotif("system", `Added ${parsed.name} to inventory.`);
-  //     if (stockStatus(newProduct) === "low") {
-  //       pushNotif(
-  //         "low-stock",
-  //         `${newProduct.name} started below its stock threshold.`,
-  //       );
-  //     }
-  //   }
-  //   // closeModal();
-  // }
-
-  // function adjustStock(id, delta) {
-  //   setProducts((prev) =>
-  //     prev.map((p) => {
-  //       if (p.id !== id) return p;
-  //       const newStock = Math.max(0, p.stock + delta);
-  //       const updated = { ...p, stock: newStock };
-  //       if (stockStatus(updated) === "low" && stockStatus(p) === "ok") {
-  //         pushNotif(
-  //           "low-stock",
-  //           `${updated.name} is running low (${newStock} left).`,
-  //         );
-  //       }
-  //       if (stockStatus(updated) === "out" && stockStatus(p) !== "out") {
-  //         pushNotif("out-of-stock", `${updated.name} is now out of stock.`);
-  //       }
-  //       return updated;
-  //     }),
-  //   );
-  // }
-
-  // function confirmDelete(id) {
-  //   setConfirmDeleteId(id);
-  // }
-
   function performDelete() {
     const p = products.find((pr) => pr.id === confirmDeleteId);
     setProducts((prev) => prev.filter((pr) => pr.id !== confirmDeleteId));
@@ -323,6 +209,12 @@ export default function AdminDashboard() {
             onClick={() => setView("review")}
           >
             Review
+          </button>
+          <button
+            className={`ad-nav-item ${view === "Blog" ? "active" : ""}`}
+            onClick={() => setView("Blog")}
+          >
+            Blog
           </button>
         </nav>
         <div className="ad-sidebar-foot ad-mono">v1.0 · admin</div>
@@ -391,6 +283,7 @@ export default function AdminDashboard() {
           {view === "device" && <DeviceInfo />}
           {view === "video" && <VideoManager />}
           {view === "review" && <ReviewManager />}
+          {view === "Blog" && <BlogSection />}
         </div>
       </div>
 
