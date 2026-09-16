@@ -2,7 +2,7 @@ import React from 'react';
 import BlogPostPage from '../component/desing/BlogView';
 import { getProduct } from '@/services/home/BlogService';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.moonlightmachinery.com";
+const SITE_URL = "https://www.moonlightmachinery.com";
 
 // Dynamic SEO Metadata Generator
 export async function generateMetadata({ params }) {

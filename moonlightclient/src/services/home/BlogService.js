@@ -1,5 +1,5 @@
 import axios from "axios";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.moonlightmachinery.com";
+const SITE_URL =  "https://www.moonlightmachinery.com";
 
 export async function getProduct(slug) {
     // console.log(slug)
