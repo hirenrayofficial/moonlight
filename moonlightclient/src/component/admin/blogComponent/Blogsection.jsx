@@ -3,13 +3,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 import "./review-manager.scss";
-import CreateBlog from "./CreateBlog";
+
+// Load CreateBlog dynamically with SSR disabled (Removes the duplicate declaration error)
+const CreateBlog = dynamic(() => import("./CreateBlog"), {
+  ssr: false,
+  loading: () => (
+    <div className="rm-empty-msg rm-mono">LOADING EDITOR WORKSPACE...</div>
+  ),
+});
 
 export default function BlogSection() {
+  // ... rest of your code remains the same
   const [reviews, setReviews] = useState([]);
   const [loadingList, setLoadingList] = useState(true);
-  
+
   // Form fields
   const [editId, setEditId] = useState(null);
   const [personName, setPersonName] = useState("");
@@ -50,7 +59,12 @@ export default function BlogSection() {
   };
 
   const handleAction = async (method) => {
-    if (!personName.trim() || !feedback.trim() || !location.trim() || !reviewType.trim()) {
+    if (
+      !personName.trim() ||
+      !feedback.trim() ||
+      !location.trim() ||
+      !reviewType.trim()
+    ) {
       setStatus("error");
       setMessage("All structural text fields are mandatory.");
       return;
@@ -91,14 +105,18 @@ export default function BlogSection() {
     } catch (error) {
       console.error("API request failed:", error);
       setStatus("error");
-      setMessage(error?.response?.data?.message || "Communication protocol failed.");
+      setMessage(
+        error?.response?.data?.message || "Communication protocol failed.",
+      );
     }
   };
 
   const handleDelete = async (id) => {
     if (!confirm(`Are you sure you want to purge review ID: [${id}]?`)) return;
     try {
-      const res = await axios.delete(`/api/admin/dashboard/review-set?id=${id}`);
+      const res = await axios.delete(
+        `/api/admin/dashboard/review-set?id=${id}`,
+      );
       if (res?.data?.success) {
         fetchReviews();
       }
@@ -140,9 +158,7 @@ export default function BlogSection() {
             <span className="rm-dot"></span> DATABASE FEEDBACK REGISTRY // 03
           </div>
           <h1 className="rm-title">Your Blogs</h1>
-          <p className="rm-sub">
-            Monitor Your Blog, inject new Blog
-          </p>
+          <p className="rm-sub">Monitor Your Blog, inject new Blog</p>
         </div>
 
         {/* Navigation Tabs */}
@@ -184,10 +200,13 @@ export default function BlogSection() {
             {activeTab === "list" ? (
               <div className="rm-list-container">
                 {loadingList ? (
-                  <div className="rm-empty-msg rm-mono">QUERYING DATABASE...</div>
+                  <div className="rm-empty-msg rm-mono">
+                    QUERYING DATABASE...
+                  </div>
                 ) : reviews.length === 0 ? (
                   <div className="rm-empty-msg rm-mono">
-                    NO FEEDBACK ENTRIES RECORDED. CLICK "+ ADD NEW REVIEW" TO BEGIN.
+                    NO FEEDBACK ENTRIES RECORDED. CLICK "+ ADD NEW REVIEW" TO
+                    BEGIN.
                   </div>
                 ) : (
                   <div className="rm-grid-items">
@@ -199,7 +218,9 @@ export default function BlogSection() {
                               <strong>{rev.blog_title}</strong>
                             </span>
                           </div>
-                          <p className="rm-item-feedback">"{rev.blog_description}"</p>
+                          <p className="rm-item-feedback">
+                            "{rev.blog_description}"
+                          </p>
                         </div>
                         <div className="rm-item-actions">
                           {/* <button
@@ -222,8 +243,7 @@ export default function BlogSection() {
               </div>
             ) : (
               <div>
-                <CreateBlog/>
-
+                <CreateBlog />
               </div>
             )}
           </div>

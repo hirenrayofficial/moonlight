@@ -9,7 +9,6 @@ import Notification from "@/component/admin/notification/Notification";
 import axios from "axios";
 import VideoManager from "./VideoManager";
 import ReviewManager from "./ReviewManager";
-import CreateBlog from "./blogComponent/CreateBlog";
 import BlogSection from "./blogComponent/Blogsection";
 
 /**
