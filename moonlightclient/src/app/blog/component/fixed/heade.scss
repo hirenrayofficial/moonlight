@@ -1,0 +1,284 @@
+// @import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+.hd-root {
+  --bg: #faf9f5;
+  --ink: #15140f;
+  --ink-dim: #5a594e;
+  --line-strong: #b8b5a4;
+  --accent: #057ff2;
+  --accent-ink: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 100%;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-strong);
+  // font-family: "IBM Plex Mono", monospace;
+}
+.hd-root * {
+  box-sizing: border-box;
+}
+
+/* ---------- top social strip ---------- */
+.hd-topbar {
+  max-width: 1200px;
+  margin: 0 auto;
+  // display: flex;
+  align-items: start;
+  right: 0;
+  // justify-content: space-between;
+  gap: 16px;
+  padding: 7px 24px;
+  border-bottom: 1px solid var(--line-strong);
+}
+@media (min-width: 768px) {
+  .hd-topbar {
+    padding: 7px 0;
+  }
+}
+
+.hd-topbar-msg {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+@media (max-width: 560px) {
+  .hd-topbar-msg {
+    display: none;
+  }
+}
+
+.hd-social {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.hd-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: var(--ink-dim);
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+.hd-social-link:hover {
+  color: var(--accent-ink);
+  background: var(--accent);
+}
+.hd-social-link:hover svg {
+  color: var(--accent-ink);
+}
+.hd-social-link svg {
+  color: inherit;
+}
+.hd-social-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.hd-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+}
+@media (min-width: 768px) {
+  .hd-inner {
+    padding: 14px 0;
+  }
+}
+.hd-brand {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* FIX: this previously had no overflow/sizing rule for the <Image>
+   inside it, and the JSX passed width={50} height={200} — a 1:4 aspect
+   ratio inside a 50x50 box, so the logo rendered 4x too tall and blew
+   out of the header. `overflow: hidden` plus a dedicated
+   `.hd-brand-logo { object-fit: contain }` class keeps the real logo's
+   proportions inside the fixed box no matter what its native
+   dimensions are. Also dropped the leftover `color: var(--bg)` rule,
+   which was only relevant when this div held a text initial ("M")
+   instead of an actual image. */
+.hd-brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hd-brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hd-brand-name {
+  font-weight: 600;
+  // font-size: 22px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.hd-brand-tagline {
+  font-size: 12px;
+  color: var(--ink-dim);
+}
+
+.hd-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.hd-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hd-nav {
+  display: none;
+  align-items: center;
+  gap: 28px;
+}
+@media (min-width: 768px) {
+  .hd-nav {
+    display: flex;
+  }
+}
+.hd-nav-link {
+  font-size: 14px;
+  font-weight:bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: black;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.hd-nav-link:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.hd-nav-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.hd-shop-btn {
+  // font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  padding: 9px 18px;
+  cursor: pointer;
+}
+.hd-shop-btn:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.cal {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.cal:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+.hd-shop-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.button-links {
+  display: flex;
+  // justify-content: center;
+  gap: 10px;
+  padding: 1px 8px 8px;
+  // border-top: 1px solid var(--line-strong);
+  // background: rgba(250, 249, 245, 0.95);
+}
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.button-link:hover {
+  transform: translateY(-1px);
+  background: var(--accent);
+}
+
+.button-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .button-links {
+    display: none;
+  }
+}
+/* ---------- Mobile menu toggle styles ---------- */
+.hd-menu-toggle {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+}
+@media (min-width: 500px) {
+  .hd-menu-toggle {
+    display: flex;
+  }
+}
+
+@media (min-width: 800px) {
+  .hd-menu-toggle {
+    display: none;
+  }
+}
+

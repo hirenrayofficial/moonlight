@@ -41,7 +41,7 @@ const SOCIALS = [
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Product", href: "/home/machines" },
-  { label: "Blog", href: "/home/blog" },
+  { label: "Blog", href: "/blog" },
 ];
 
 const PRODUCT_CATEGORIES = [
@@ -223,9 +223,9 @@ export default function Header() {
                         <div
                           key={category.slug}
                           onMouseEnter={() => setActiveCategoryIndex(idx)}
-                          className={`px-5 py-3.5 text-sm flex items-center justify-between cursor-pointer transition-colors font-mono ${
+                          className={`px-5 py-3.5 text-sm flex items-center justify-between cursor-pointer transition-colors  ${
                             activeCategoryIndex === idx
-                              ? "bg-white text-[var(--accent)] font-semibold border-l-4 border-[var(--accent)]"
+                              ? "bg-white text-[var(--accent)] font-bold border-l-4 border-[var(--accent)]"
                               : "text-neutral-800 hover:bg-neutral-100"
                           }`}
                         >
@@ -257,7 +257,7 @@ export default function Header() {
                                   setIsDropdownOpen(false);
                                   setActiveCategoryIndex(0);
                                 }}
-                                className="px-3 py-3 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-[var(--accent)] transition-colors font-mono rounded"
+                                className="px-3 py-3 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-[var(--accent)] transition-colors  rounded"
                               >
                                 {sub.label}
                               </Link>
@@ -309,7 +309,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="hd-nav-link text-sm font-semibold tracking-wider uppercase py-1 border-b border-neutral-200 pb-2"
+                  className="hd-nav-link text-sm font-bold tracking-wider uppercase py-1 border-b border-neutral-200 pb-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
@@ -319,7 +319,7 @@ export default function Header() {
               {/* Mobile Product Categories Dropdown Section */}
               <div className="border-b border-neutral-200 pb-2">
                 <div
-                  className="hd-nav-link flex items-center justify-between text-sm font-semibold tracking-wider uppercase py-1 cursor-pointer"
+                  className="hd-nav-link flex items-center justify-between text-sm font-bold tracking-wider uppercase py-1 cursor-pointer"
                   onClick={() =>
                     setIsMobileCategoriesOpen(!isMobileCategoriesOpen)
                   }

@@ -16,28 +16,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 16px;
+  // padding: 0 16px;
   overflow: hidden;
 
-  // ----- Large desktop / big screens -----
-  @media (min-width: 1600px) {
-    padding: 0 80px;
-  }
-
-  // ----- Standard desktop -----
-  @media (min-width: 1200px) and (max-width: 1599px) {
-    padding: 0 60px;
-  }
-
-  // ----- Small desktop / laptop -----
-  @media (min-width: 992px) and (max-width: 1199px) {
-    padding: 0 40px;
-  }
-
-  // ----- Tablet landscape -----
-  @media (min-width: 768px) and (max-width: 991px) {
-    padding: 0 30px;
-  }
 
   // ----- Tablet portrait -----
   @media (min-width: 576px) and (max-width: 767px) {
@@ -53,10 +34,6 @@
     align-items: stretch;
   }
 
-  // ----- Small mobile -----
-  @media (max-width: 375px) {
-    padding: 0 12px;
-  }
 
   // ----- Landscape orientation (short height, e.g. phones rotated) -----
   @media (max-height: 500px) and (orientation: landscape) {

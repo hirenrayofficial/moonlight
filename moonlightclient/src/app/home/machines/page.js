@@ -41,7 +41,7 @@ export default async function page({ searchParams }) {
   const show = false;
 
   return (
-    <div className='w-full flex justify-center py-16'>
+    <div className='w-full flex justify-center'>
       <Suspense fallback={<div>Loading...</div>}>
         <ProductShowcase view={show} Subcategory={Subcategory} Pricategory={Pricategory} query={query} hide={true} />
       </Suspense>

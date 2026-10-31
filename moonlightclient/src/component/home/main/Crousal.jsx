@@ -82,7 +82,7 @@ export default function BannerCarousel() {
   function LoadingSkeleton() {
     return (
       <motion.div
-        className="cb-root cb-skeleton w-full py-16 md:mt-12"
+        className="cb-root cb-skeleton w-full "
         initial={{ opacity: 0.85 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -115,7 +115,7 @@ export default function BannerCarousel() {
 
   return (
     <motion.div
-      className={`cb-root ${paused ? "cb-paused" : ""} w-full py-16 md:mt-12`}
+      className={`cb-root ${paused ? "cb-paused" : ""} w-full `}
       ref={trackRef}
       tabIndex={0}
       role="region"

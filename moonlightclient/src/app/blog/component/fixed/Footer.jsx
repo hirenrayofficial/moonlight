@@ -1,0 +1,211 @@
+"use client";
+import Image from "next/image";
+import React, { useState } from "react";
+import "./footer.scss";
+import { motion, AnimatePresence } from "framer-motion";
+
+/**
+ * STOCKROOM — footer
+ * Same system as the rest: hairline rules, mono labels, sharp corners.
+ * Signature bit: a warehouse "manifest" line (address, hours, next
+ * dispatch) instead of a generic newsletter teaser.
+ */
+
+const LINK_COLUMNS = [
+  {
+    title: "Catalog",
+    links: [
+      {
+        name: "Machines",
+        href: "/home/machines",
+      },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      {
+        name: "About",
+        href: "/home/about",
+      },
+      {
+        name: "Blog",
+        href: "/home/blog",
+      },
+      {
+        name: "Contact",
+        href: "/home/contact",
+      },
+      {
+        name: "Privacy",
+        href: "/home/privacy",
+      },
+    ],
+  },
+  // {
+  //   title: "Support",
+  //   links: [
+  //     {
+  //       name: "Shipping",
+  //       href: "/home/shipping",
+  //     },
+  //     {
+  //       name: "Returns",
+  //       href: "/home/returns",
+  //     },
+  //     {
+  //       name: "Track an order",
+  //       href: "/home/track-order",
+  //     },
+  //     {
+  //       name: "Contact",
+  //       href: "/home/contact",
+  //     },
+  //   ],
+  // },
+];
+
+const SOCIALS = ["Instagram", "X", "YouTube"];
+
+function useSubscribe() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | submitted
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setStatus("submitted");
+  }
+
+  return { email, setEmail, status, handleSubmit };
+}
+
+export default function Footer() {
+  const { email, setEmail, status, handleSubmit } = useSubscribe();
+  const year = new Date().getFullYear();
+
+  return (
+    <motion.footer
+      className="ft-root"
+      initial={{ y: 50, opacity: 1 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className="ft-inner">
+        <div className="ft-manifest">
+          <div className="ft-manifest-cell">
+            <div className="ft-manifest-label ft-mono">Head Office</div>
+            <div className="ft-manifest-value">
+              Dhanwapur Rd, near Ajit Stadium, Ram Vihar, Sector 104, Gurugram, Haryana 122006
+            </div>
+          </div>
+          <div className="ft-manifest-cell-a"></div>
+          {/* <div className="ft-manifest-cell">
+            <div className="ft-manifest-label ft-mono">Hours</div>
+            <div className="ft-manifest-value">Mon–Fri, 24hrs</div>
+          </div> */}
+          {/* <div className="ft-manifest-cell">
+            <div className="ft-manifest-label ft-mono">Next dispatch</div>
+            <div className="ft-manifest-value">Today, 3:00pm ET</div>
+          </div> */}
+          <div className="ft-manifest-cell">
+            <div className="ft-manifest-label ft-mono">Support</div>
+            <div className="ft-manifest-value">
+              support@moonlightmachinery.com
+            </div>
+          </div>
+        </div>
+
+        <div className="ft-grid">
+          <div className="ft-brand-col">
+            <div className="ft-brand">
+              <div className="ft-brand-mark">
+                <Image
+                  width={200}
+                  height={200}
+                  alt="Moonlight Machinery"
+                  src="/logo.png"
+                />
+              </div>
+              <span className="ft-brand-name">MoonLight Machinery</span>
+            </div>
+            <p className="ft-tagline">
+              Moonlight Machinery manufactures a complete line of India-made
+              paper plate and bowl equipment—including single/double cylinder
+              hydraulic presses, dona machines, and laminators—shipping
+              pan-India for setups of all sizes.
+            </p>
+          </div>
+
+          {LINK_COLUMNS.map((col) => (
+            <div className="ft-sub-col" key={col.title}>
+              <div className="ft-col-title ft-mono">{col.title}</div>
+              <div className="ft-col-links">
+                {col.links.map((l) => (
+                  <a className="ft-col-link ft-mono" href={l.href} key={l.name}>
+                    {l.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          <div className="ft-sub-col">
+            <div className="ft-col-title ft-mono">Moonlight alerts</div>
+            <p className="ft-sub-desc">
+              One email when a sold-out item is back. Nothing else.
+            </p>
+            {status === "submitted" ? (
+              <p className="ft-sub-success ft-mono">You're on the list.</p>
+            ) : (
+              <form className="ft-sub-form" onSubmit={handleSubmit}>
+                <input
+                  className="ft-sub-input"
+                  type="email"
+                  required
+                  placeholder="you@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  aria-label="Email address"
+                />
+                <button className="ft-sub-btn" type="submit">
+                  Notify me
+                </button>
+              </form>
+            )}
+            <p className="ft-sub-note ft-mono">No spam. Unsubscribe anytime.</p>
+          </div>
+        </div>
+
+        <div className="ft-bottom">
+          <a
+            href="https://iam.hirenray.rest"
+            className="ft-copyright ft-mono cursor-pointer"
+          >
+            © {year} Rtech Agency.
+          </a>
+          <div className="ft-bottom-links">
+            <a
+              className="ft-bottom-link ft-mono"
+              href="https://instagram.com/moonlightmachinery"
+            >
+              Instagram
+            </a>
+            <a
+              className="ft-bottom-link ft-mono"
+              href="https://youtube.com/@moonlightmachinery6670?si=1W37CtkGFkI7vX7A"
+            >
+              Youtube
+            </a>
+            <a className="ft-bottom-link ft-mono" href="/home/privacy">
+              Privacy
+            </a>
+            <a className="ft-bottom-link ft-mono" href="/home/privacy">
+              Terms
+            </a>
+          </div>
+        </div>
+      </div>
+    </motion.footer>
+  );
+}

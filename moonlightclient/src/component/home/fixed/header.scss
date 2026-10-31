@@ -6,7 +6,8 @@
   --line-strong: #b8b5a4;
   --accent: #057ff2;
   --accent-ink: #ffffff;
-  position: fixed;
+  position: sticky;
+  // z-index: 10;
   top: 0;
   left: 0;
   z-index: 40;

@@ -40,6 +40,10 @@ const LINK_COLUMNS = [
         name: "Privacy",
         href: "/home/privacy",
       },
+      {
+        name: "Return",
+        href: "/home/return-policy",
+      },
     ],
   },
   // {
