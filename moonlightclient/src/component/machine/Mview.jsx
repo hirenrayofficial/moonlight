@@ -184,7 +184,7 @@ Please provide more information about this product.
 
   if (isLoading) {
     return (
-      <div className="pd-root py-32 w-full max-w-[1200px]">
+      <div className="pd-root  w-full max-w-[1200px]">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -204,7 +204,7 @@ Please provide more information about this product.
 
   if (isError) {
     return (
-      <div className="pd-root py-32 w-full max-w-[1200px]">
+      <div className="pd-root w-full max-w-[1200px]">
         {crumb}
         <motion.div
           className="pd-error "
@@ -279,7 +279,7 @@ Please provide more information about this product.
   }
 
   return (
-    <div className="pd-root py-32 w-full max-w-[1200px]">
+    <div className="pd-root  w-full max-w-[1200px]">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}

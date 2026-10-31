@@ -82,7 +82,7 @@ export default function Contact() {
     }
 
     return (
-        <div className="ct-root py-34 w-full max-w-[1200px] mx-auto">
+        <div className="ct-root w-full max-w-[1200px] mx-auto">
             {/* <div className="ct-crumb ct-mono flex hidden md:flex">
         <Link href="/">Home</Link>
         {segments.map((segment, index) => {

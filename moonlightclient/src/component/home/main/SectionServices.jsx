@@ -30,7 +30,7 @@ const services = [
 
 export default function SectionServices() {
   return (
-    <section id="services" className="w-full bg-[#f7f5f5] py-16">
+    <section id="services" className="w-full bg-[#f7f5f5] ">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 max-w-2xl">
           <p className="text-sm uppercase tracking-[0.4em] text-[#E8794A] font-semibold">

@@ -76,7 +76,7 @@ export default function ProductShowcase({ hide, view, query: initialQuery, Subca
   const safeData = data || [];
 
   return (
-    <section className="pl-root mt-16">
+    <section className="pl-root  ">
       <div className="pl-inner">
         <div className="pl-head">
           <motion.div

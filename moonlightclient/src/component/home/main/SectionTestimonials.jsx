@@ -109,7 +109,6 @@ export default function Testimonials() {
           color: var(--ink);
           // font-family: 'Work Sans', sans-serif;
           width: 100%;
-          padding: 56px 32px 64px;
           border-top: 1px solid var(--line-strong);
         }
         .tm-root * { box-sizing: border-box; }
