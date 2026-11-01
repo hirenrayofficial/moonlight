@@ -30,7 +30,7 @@ const LINK_COLUMNS = [
       },
       {
         name: "Blog",
-        href: "/home/blog",
+        href: "/blog",
       },
       {
         name: "Contact",

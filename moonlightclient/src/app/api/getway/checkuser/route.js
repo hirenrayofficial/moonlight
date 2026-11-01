@@ -17,6 +17,7 @@ export async function POST(req) {
     }
 
     const checkUser = await User.findOne({ username });
+    // console.log(checkUser)
 
     if (!checkUser) {
         return NextResponse.json({ success: false, message: 'Username not valid' }, { status: 404 })

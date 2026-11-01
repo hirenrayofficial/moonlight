@@ -41,7 +41,7 @@ const SOCIALS = [
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Product", href: "/home/machines" },
-  { label: "Blog", href: "/home/blog" },
+  { label: "Blog", href: "/blog" },
 ];
 
 const PRODUCT_CATEGORIES = [
