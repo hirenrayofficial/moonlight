@@ -3,6 +3,8 @@ import { getPublicBlogs } from "@/services/public/BlogService";
 
 const SITE_URL = "https://www.moonlightmachinery.com";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Machinery Business Guides & News | Moonlight Machinery Blog",
   description:
