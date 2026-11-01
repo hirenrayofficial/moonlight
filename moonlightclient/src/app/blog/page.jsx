@@ -29,7 +29,16 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const posts = await getPublicBlogs();
+  let posts = [];
+  let loadError = false;
+
+  try {
+    posts = await getPublicBlogs();
+  } catch (error) {
+    console.error("Failed to load public blog posts:", error);
+    loadError = true;
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -52,7 +61,7 @@ export default async function BlogPage() {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      <MainBlog posts={posts} />
+      <MainBlog posts={posts} loadError={loadError} />
     </>
   );
 }
