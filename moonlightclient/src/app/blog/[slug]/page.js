@@ -1,86 +1,114 @@
-import React from 'react';
-import BlogPostPage from '../component/desing/BlogView';
-import { getProduct } from '@/services/home/BlogService';
+import BlogPostPage from "../component/desing/BlogView";
+import { getPublicBlogBySlug } from "@/services/public/BlogService";
+import { notFound } from "next/navigation";
 
 const SITE_URL = "https://www.moonlightmachinery.com";
 
-// Dynamic SEO Metadata Generator
 export async function generateMetadata({ params }) {
-    const resolvedParams = await params;
-    const slug = resolvedParams?.slug;
-    // console.log(slug)
-    const product = await getProduct(slug);
+  const { slug } = await params;
+  const blog = await getPublicBlogBySlug(slug);
 
-    if (!product) {
-        return { title: "Blog Machine Details | Moonlight Machinery" };
-    }
-
-    const url = `${SITE_URL}/blog/${slug}`;
-    const title = product.blog_title?.trim();
-    const description =
-        product.blog_description?.trim() ||
-        (product.blog_description
-            ? product.blog_description.trim().slice(0, 155)
-            : `${product.blog_title}`);
-
+  if (!blog) {
     return {
-        title,
-        description,
-        keywords: "Paper plate making machine, Paper plate making price, Low price paper plate making machine, Best paper plate making machine",
-        alternates: { canonical: url },
-        openGraph: { title, description, url, images: product.images?.[0] ? [{ url: product.images[0] }] : "/logo.png" },
+      title: "Blog post not found | Moonlight Machinery",
+      robots: { index: false, follow: true },
     };
+  }
+
+  const url = `${SITE_URL}/blog/${slug}`;
+  const title = blog.blog_title?.trim() || "Moonlight Machinery Blog";
+  const description =
+    blog.blog_description?.trim().slice(0, 160) ||
+    `Read ${title} on the Moonlight Machinery blog.`;
+  const image = blog.image_url || blog.images?.[0] || "/logo.png";
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url,
+      siteName: "Moonlight Machinery",
+      publishedTime: blog.created_at || undefined,
+      images: [{ url: image, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
 }
 
-export default async function Page({ params }) {
-    const resolvedParams = await params;
-    const slug = resolvedParams?.slug;
-    
-    // Fetch data directly on the server
-    const Blog = await getProduct(slug);
-    // console.log(Blog)
+export default async function BlogPage({ params }) {
+  const { slug } = await params;
+  const blog = await getPublicBlogBySlug(slug);
 
-    // Define url here so it's accessible for JSON-LD
-    const url = `${SITE_URL}/blog/${slug}`;
+  if (!blog) {
+    notFound();
+  }
 
-    // Structured Data (JSON-LD)
-    const jsonLd = Blog
-        ? {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@id": `${url}#product`,
-                    name: Blog.blog_title,
-                    image: Blog.images || [],
-                    description: Blog.blog_description || "",
-                },
-                {
-                    "@type": "BreadcrumbList",
-                    itemListElement: [
-                        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-                        {
-                            "@type": "ListItem",
-                            position: 2,
-                            name: "Blogs",
-                            item: `${SITE_URL}/home/blog`,
-                        },
-                        { "@type": "ListItem", position: 3, name: Blog.blog_title, item: url },
-                    ],
-                },
-            ],
-        }
-        : null;
+  const url = `${SITE_URL}/blog/${slug}`;
+  const image = blog.image_url || blog.images?.[0];
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#article`,
+        headline: blog.blog_title,
+        description: blog.blog_description || "",
+        image: image ? [image] : undefined || "/logo.png",
+        datePublished: blog.created_at || undefined,
+        dateModified: blog.updated_at || blog.created_at || undefined,
+        author: {
+          "@type": "Organization",
+          name: "Moonlight Machinery",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Moonlight Machinery",
+          logo: {
+            "@type": "ImageObject",
+            url: `${SITE_URL}/android-chrome-512x512.png`,
+          },
+        },
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blogs",
+            item: `${SITE_URL}/blog`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: blog.blog_title,
+            item: url,
+          },
+        ],
+      },
+    ],
+  };
 
-    return (
-        <div>
-            {/* Inject JSON-LD Structured Data */}
-            {jsonLd && (
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-                />
-            )}
-            <BlogPostPage data={Blog} />
-        </div>
-    );
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <BlogPostPage data={blog} />
+    </>
+  );
 }

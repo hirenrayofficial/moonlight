@@ -1,41 +1,49 @@
-import { dataTagErrorSymbol } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 export default function BlogCard({ post }) {
-  
   return (
-    <Link href={`/blog/${post.slug}`} className="group mt-[48px] mb-[8px] cursor-pointer flex flex-col px-4 md:px-0 sm:flex-row h-auto sm:h-[120px] gap-4 sm:gap-5 items-start sm:items-center">
-      {/* Thumbnail */}
-      <div className="relative w-full sm:w-[180px] h-[180px] sm:h-[110px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
+    <Link
+      href={`/blog/${post.slug}`}
+      className="group mb-2 mt-12 flex h-auto cursor-pointer flex-col items-start gap-4 px-4 sm:h-[120px] sm:flex-row sm:items-center sm:gap-5 md:px-0"
+    >
+      <div className="relative h-[180px] w-full flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 sm:h-[110px] sm:w-[180px]">
         <Image
-          src={"/logo.png"}
-          className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-          alt={post?.blog_title || "Blog thumbnail"}
-          width={500}
-          height={500}
+          src={post.image_url || "/logo.png"}
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          alt={post.blog_title || "Blog thumbnail"}
+          fill
+          sizes="(max-width: 640px) 100vw, 180px"
         />
       </div>
 
-      {/* Content Details */}
-      <div className="flex flex-col justify-between h-fit py-0.5 w-full">
-        <div className="flex items-center gap-3 text-xs text-gray-400 font-medium">
+      <article className="flex h-fit w-full flex-col justify-between py-0.5">
+        <div className="flex items-center gap-3 text-xs font-medium text-gray-400">
           <span className="text-gray-600">Moonlight Machinery</span>
-          <span>•</span>
-          <span>{post?.readingTime || "5 min read"}</span>
+          {post.created_at && (
+            <>
+              <span aria-hidden="true">•</span>
+              <time dateTime={post.created_at}>
+                {new Date(post.created_at).toLocaleDateString("en-IN", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  timeZone: "UTC",
+                })}
+              </time>
+            </>
+          )}
         </div>
 
         <div className="space-y-1 mt-1 sm:mt-0">
-          <h1 className="text-base sm:text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1">
-            {post?.blog_title || "Default Blog Title"}
-          </h1>
-          <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
-            {post?.blog_description ||
-              "A short description of the blog post goes here..."}
+          <h2 className="line-clamp-1 text-base font-semibold text-gray-900 transition-colors group-hover:text-blue-600 sm:text-lg">
+            {post.blog_title}
+          </h2>
+          <p className="line-clamp-2 text-sm leading-relaxed text-gray-500">
+            {post.blog_description}
           </p>
         </div>
-      </div>
+      </article>
     </Link>
   );
 }

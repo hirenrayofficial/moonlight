@@ -166,7 +166,16 @@ export default async function BlogPostPage({ data }) {
                         <span>•</span>
                         <span>{data.readingTime || "5 min read"}</span>
                         <span>•</span>
-                        <span>{data.publishedAt || "Recent"}</span>
+                        <time dateTime={data.created_at || undefined}>
+                            {data.created_at
+                                ? new Date(data.created_at).toLocaleDateString("en-IN", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                    timeZone: "UTC",
+                                })
+                                : "Recent"}
+                        </time>
                     </div>
 
                     <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
@@ -179,10 +188,10 @@ export default async function BlogPostPage({ data }) {
                 </div>
 
                 {/* Featured Cover Image */}
-                {data.images?.[0] && (
+                {(data.image_url || data.images?.[0]) && (
                     <div className="relative w-full h-[280px] sm:h-[400px] mb-12 overflow-hidden rounded-2xl shadow-md bg-gray-100">
                         <Image
-                            src={data.images[0]}
+                            src={data.image_url || data.images[0]}
                             alt={data.blog_title || "Blog cover"}
                             fill
                             priority

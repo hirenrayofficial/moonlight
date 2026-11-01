@@ -62,7 +62,7 @@ export default function CreateBlog() {
       setIsPublishing(true);
       const contentData = await editorRef.current.save();
       const extractedImage = extractFirstImage(contentData?.blocks);
-      const finalImageUrl = extractedImage || "/aurora-gradient-1788443208608.webp";
+      const finalImageUrl = extractedImage || "/logo.png";
 
       const payload = {
         blog_title: title,

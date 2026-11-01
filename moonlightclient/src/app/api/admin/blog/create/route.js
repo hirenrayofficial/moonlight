@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { v4 } from "uuid";
 
 // Helper function to convert blog title into a URL slug
 function createSlug(text) {
@@ -74,11 +75,13 @@ export async function POST(request) {
       .from("moonlightblogs")
       .insert([
         {
+          // id:v4(),
           blog_title,
           slug: uniqueSlug, // <-- Saved here
           blog_description,
           image_url: finalImageUrl,
           content, // Stores raw Editor.js JSON blocks
+          created_at:new Date().toISOString()
         },
       ])
       .select()
