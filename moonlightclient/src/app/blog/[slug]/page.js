@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 
 const SITE_URL = "https://www.moonlightmachinery.com";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const blog = await getPublicBlogBySlug(slug);
@@ -62,7 +64,7 @@ export default async function BlogPage({ params }) {
         "@id": `${url}#article`,
         headline: blog.blog_title,
         description: blog.blog_description || "",
-        image: image ? [image] : undefined || "/logo.png",
+        image: [image || `${SITE_URL}/logo.png`],
         datePublished: blog.created_at || undefined,
         dateModified: blog.updated_at || blog.created_at || undefined,
         author: {
